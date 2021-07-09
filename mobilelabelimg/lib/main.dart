@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widgets/rect.dart';
+import 'widgets/rect2.dart';
 
 void main() {
   runApp(new MaterialApp(
