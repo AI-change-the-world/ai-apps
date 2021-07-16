@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const circleSize = 30.0;
+const defaultRectSize = 300.0;
 
 GlobalKey<_PointState> topLeftKey = GlobalKey(debugLabel: "topLeftKey");
 GlobalKey<_PointState> topRightKey = GlobalKey(debugLabel: "topRightKey");
@@ -13,13 +14,14 @@ class RectDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return SafeArea(
+        child: Stack(
       children: [
         Rect(
           key: rectKey,
         )
       ],
-    );
+    ));
   }
 }
 
@@ -31,20 +33,20 @@ class Rect extends StatefulWidget {
 }
 
 class _RectState extends State<Rect> {
-  double height = 300;
-  double width = 300;
+  double height = defaultRectSize;
+  double width = defaultRectSize;
 
   double defaultLeft = 0;
   double defaultTop = 0;
 
-  setHeight(double height, double _top) {
+  setHeight(double height) {
     setState(() {
       this.height = height;
       // this.defaultTop = _top;
     });
   }
 
-  setWidth(double width, double _left) {
+  setWidth(double width) {
     setState(() {
       this.width = width;
       // this.defaultLeft = _left;
@@ -69,7 +71,7 @@ class _RectState extends State<Rect> {
                 this.defaultLeft = offset.dx;
                 this.defaultTop = offset.dy;
                 topLeftKey.currentState!.offset = offset;
-                topLeftKey.currentState!.offset =
+                topRightKey.currentState!.offset =
                     Offset(offset.dx - circleSize + width, offset.dy);
                 bottomLeftKey.currentState!.offset =
                     Offset(offset.dx, offset.dy - circleSize + height);
@@ -115,20 +117,22 @@ class _RectState extends State<Rect> {
         p = Point(
             key: key,
             color: Colors.green,
-            offset: Offset(300 - circleSize + defaultLeft, defaultTop));
+            offset:
+                Offset(defaultRectSize - circleSize + defaultLeft, defaultTop));
         break;
       case 2:
         p = Point(
             key: key,
             color: Colors.blue,
-            offset: Offset(defaultLeft, 300 - circleSize + defaultTop));
+            offset:
+                Offset(defaultLeft, defaultRectSize - circleSize + defaultTop));
         break;
       case 3:
         p = Point(
             key: key,
             color: Colors.black,
-            offset: Offset(
-                300 - circleSize + defaultLeft, 300 - circleSize + defaultTop));
+            offset: Offset(defaultRectSize - circleSize + defaultLeft,
+                defaultRectSize - circleSize + defaultTop));
         break;
       default:
         p = Point(key: key, color: Colors.red, offset: Offset(0, 0));
@@ -177,7 +181,7 @@ class _PointState extends State<Point> {
   }
 
   moveTO(Offset offset) {
-    print(offset);
+    // print(offset);
     setState(() {
       this.offset = offset;
       _left = offset.dx - rectKey.currentState!.defaultLeft;
@@ -206,41 +210,76 @@ class _PointState extends State<Point> {
             onDraggableCanceled: (Velocity velocity, Offset offset) {
               this.moveTO(offset);
 
-              double width = (topLeftKey.currentState!.offset.dx -
-                      topRightKey.currentState!.offset.dx)
-                  .abs();
+              // if (widget.key == topLeftKey) {
+              //   topRightKey.currentState!.offset = Offset(offset.dx, offset.dy);
+              // }
 
-              double height = (topLeftKey.currentState!.offset.dy -
-                      bottomLeftKey.currentState!.offset.dy)
-                  .abs();
+              late double width;
+              late double height;
 
+              if (widget.key == topLeftKey) {
+                width = (topLeftKey.currentState!.offset.dx -
+                        circleSize -
+                        topRightKey.currentState!.offset.dx)
+                    .abs();
+
+                height = (topLeftKey.currentState!.offset.dy -
+                        circleSize -
+                        bottomLeftKey.currentState!.offset.dy)
+                    .abs();
+              } else if (widget.key == topRightKey) {
+                width = (topLeftKey.currentState!.offset.dx -
+                        circleSize -
+                        topRightKey.currentState!.offset.dx)
+                    .abs();
+
+                height = (topRightKey.currentState!.offset.dy -
+                        circleSize -
+                        bottomRightKey.currentState!.offset.dy)
+                    .abs();
+              } else if (widget.key == bottomLeftKey) {
+                width = (bottomLeftKey.currentState!.offset.dx -
+                        circleSize -
+                        bottomRightKey.currentState!.offset.dx)
+                    .abs();
+
+                height = (bottomLeftKey.currentState!.offset.dy -
+                        circleSize -
+                        topLeftKey.currentState!.offset.dy)
+                    .abs();
+              } else {
+                width = (bottomRightKey.currentState!.offset.dx -
+                        circleSize -
+                        topLeftKey.currentState!.offset.dx)
+                    .abs();
+
+                height = (bottomRightKey.currentState!.offset.dy -
+                        circleSize -
+                        topLeftKey.currentState!.offset.dy)
+                    .abs();
+              }
+
+              // print("=============");
               // print(width);
               // print(height);
-
-              // rectKey.currentState!.setHeight(height, height);
-              // rectKey.currentState!.setWidth(width, width);
+              // print("=============");
 
               rectKey.currentState!.moveTo();
 
-              // if (widget.key == topLeftKey) {
-              //   topRightKey.currentState!.dyMoveTo(this.offset.dy);
-              //   bottomLeftKey.currentState!.dxMoveTo(this.offset.dx);
-              // }
+              rectKey.currentState!.setHeight(height);
+              rectKey.currentState!.setWidth(width);
 
-              // if (widget.key == topRightKey) {
-              //   topLeftKey.currentState!.dyMoveTo(this.offset.dy);
-              //   bottomRightKey.currentState!.dxMoveTo(this.offset.dx);
-              // }
+              topLeftKey.currentState!._left = 0;
+              topLeftKey.currentState!._top = 0;
 
-              // if (widget.key == bottomLeftKey) {
-              //   bottomRightKey.currentState!.dyMoveTo(this.offset.dy);
-              //   topLeftKey.currentState!.dxMoveTo(this.offset.dx);
-              // }
+              topRightKey.currentState!._left = width - circleSize;
+              topRightKey.currentState!._top = 0;
 
-              // if (widget.key == bottomRightKey) {
-              //   bottomLeftKey.currentState!.dyMoveTo(this.offset.dy);
-              //   topRightKey.currentState!.dxMoveTo(this.offset.dx);
-              // }
+              bottomLeftKey.currentState!._left = 0;
+              bottomLeftKey.currentState!._top = height - circleSize;
+
+              bottomRightKey.currentState!._left = width - circleSize;
+              bottomRightKey.currentState!._top = height - circleSize;
             },
             feedback: Container(
                 width: circleSize,
