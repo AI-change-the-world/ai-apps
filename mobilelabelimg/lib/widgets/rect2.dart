@@ -53,6 +53,18 @@ class _RectState extends State<Rect> {
     });
   }
 
+  setTop(double top) {
+    setState(() {
+      this.defaultTop = top;
+    });
+  }
+
+  setLeft(double left) {
+    setState(() {
+      this.defaultLeft = left;
+    });
+  }
+
   moveTo() {
     setState(() {
       this.defaultLeft = topLeftKey.currentState!.offset.dx;
@@ -180,26 +192,16 @@ class _PointState extends State<Point> {
     // print(this.offset);
   }
 
-  moveTO(Offset offset) {
+  moveTO(Offset offset, {bool b = true}) {
     // print(offset);
     setState(() {
       this.offset = offset;
-      _left = offset.dx - rectKey.currentState!.defaultLeft;
-      _top = offset.dy - rectKey.currentState!.defaultTop;
+      if (b) {
+        _left = offset.dx - rectKey.currentState!.defaultLeft;
+        _top = offset.dy - rectKey.currentState!.defaultTop;
+      }
     });
   }
-
-  // dxMoveTo(double pos) {
-  //   setState(() {
-  //     _left = pos;
-  //   });
-  // }
-
-  // dyMoveTo(double pos) {
-  //   setState(() {
-  //     _top = pos;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -237,6 +239,7 @@ class _PointState extends State<Point> {
                         circleSize -
                         bottomRightKey.currentState!.offset.dy)
                     .abs();
+                rectKey.currentState!.setTop(widget.offset.dy);
               } else if (widget.key == bottomLeftKey) {
                 width = (bottomLeftKey.currentState!.offset.dx -
                         circleSize -
@@ -248,12 +251,12 @@ class _PointState extends State<Point> {
                         topLeftKey.currentState!.offset.dy)
                     .abs();
               } else {
-                width = (bottomRightKey.currentState!.offset.dx -
+                width = (bottomRightKey.currentState!.offset.dx +
                         circleSize -
                         topLeftKey.currentState!.offset.dx)
                     .abs();
 
-                height = (bottomRightKey.currentState!.offset.dy -
+                height = (bottomRightKey.currentState!.offset.dy +
                         circleSize -
                         topLeftKey.currentState!.offset.dy)
                     .abs();
