@@ -65,10 +65,15 @@ class _RectState extends State<Rect> {
     });
   }
 
-  moveTo() {
+  moveTo(Offset? _off) {
     setState(() {
-      this.defaultLeft = topLeftKey.currentState!.offset.dx;
-      this.defaultTop = topLeftKey.currentState!.offset.dy;
+      if (null != _off) {
+        this.defaultLeft = _off.dx;
+        this.defaultTop = _off.dy;
+      } else {
+        this.defaultLeft = topLeftKey.currentState!.offset.dx;
+        this.defaultTop = topLeftKey.currentState!.offset.dy;
+      }
     });
   }
 
@@ -212,10 +217,6 @@ class _PointState extends State<Point> {
             onDraggableCanceled: (Velocity velocity, Offset offset) {
               this.moveTO(offset);
 
-              // if (widget.key == topLeftKey) {
-              //   topRightKey.currentState!.offset = Offset(offset.dx, offset.dy);
-              // }
-
               late double width;
               late double height;
 
@@ -262,13 +263,6 @@ class _PointState extends State<Point> {
                     .abs();
               }
 
-              // print("=============");
-              // print(width);
-              // print(height);
-              // print("=============");
-
-              rectKey.currentState!.moveTo();
-
               rectKey.currentState!.setHeight(height);
               rectKey.currentState!.setWidth(width);
 
@@ -283,6 +277,36 @@ class _PointState extends State<Point> {
 
               bottomRightKey.currentState!._left = width - circleSize;
               bottomRightKey.currentState!._top = height - circleSize;
+
+              Offset? _off;
+
+              // if (widget.key == topLeftKey || widget.key == bottomRightKey) {
+              //   _off = topLeftKey.currentState!.offset;
+              // } else if (widget.key == topRightKey) {
+              //   _off = Offset(
+              //       topRightKey.currentState!.offset.dx + circleSize - width,
+              //       topRightKey.currentState!.offset.dy);
+              // } else {
+              //   _off = Offset(
+              //       bottomLeftKey.currentState!.offset.dx,
+              //       bottomLeftKey.currentState!.offset.dy +
+              //           circleSize -
+              //           height);
+              // }
+
+              if (widget.key == topRightKey) {
+                _off = Offset(
+                    topRightKey.currentState!.offset.dx + circleSize - width,
+                    topRightKey.currentState!.offset.dy);
+              } else if (widget.key == bottomLeftKey) {
+                _off = Offset(
+                    bottomLeftKey.currentState!.offset.dx,
+                    bottomLeftKey.currentState!.offset.dy +
+                        circleSize -
+                        height);
+              }
+
+              rectKey.currentState!.moveTo(_off);
             },
             feedback: Container(
                 width: circleSize,
