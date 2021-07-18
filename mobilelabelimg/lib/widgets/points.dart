@@ -1,172 +1,28 @@
-/// for test
-import 'package:flutter/material.dart';
-
-const circleSize = 30.0;
-const defaultRectSize = 300.0;
-
-GlobalKey<_PointState> topLeftKey = GlobalKey(debugLabel: "topLeftKey");
-GlobalKey<_PointState> topRightKey = GlobalKey(debugLabel: "topRightKey");
-GlobalKey<_PointState> bottomLeftKey = GlobalKey(debugLabel: "bottomLeftKey");
-GlobalKey<_PointState> bottomRightKey = GlobalKey(debugLabel: "bottomRightKey");
-GlobalKey<_RectState> rectKey = GlobalKey(debugLabel: "rectKey");
-
-class RectDemo extends StatelessWidget {
-  const RectDemo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Stack(
-      children: [
-        Rect(
-          key: rectKey,
-        )
-      ],
-    ));
-  }
-}
-
-class Rect extends StatefulWidget {
-  Rect({Key? key}) : super(key: key);
-
-  @override
-  _RectState createState() => _RectState();
-}
-
-class _RectState extends State<Rect> {
-  double height = defaultRectSize;
-  double width = defaultRectSize;
-
-  double defaultLeft = 0;
-  double defaultTop = 0;
-
-  setHeight(double height) {
-    setState(() {
-      this.height = height;
-      // this.defaultTop = _top;
-    });
-  }
-
-  setWidth(double width) {
-    setState(() {
-      this.width = width;
-      // this.defaultLeft = _left;
-    });
-  }
-
-  setTop(double top) {
-    setState(() {
-      this.defaultTop = top;
-    });
-  }
-
-  setLeft(double left) {
-    setState(() {
-      this.defaultLeft = left;
-    });
-  }
-
-  moveTo(Offset? _off) {
-    setState(() {
-      if (null != _off) {
-        this.defaultLeft = _off.dx;
-        this.defaultTop = _off.dy;
-      } else {
-        this.defaultLeft = topLeftKey.currentState!.offset.dx;
-        this.defaultTop = topLeftKey.currentState!.offset.dy;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-        left: defaultLeft,
-        top: defaultTop,
-        child: Draggable(
-            onDraggableCanceled: (velocity, offset) {
-              setState(() {
-                this.defaultLeft = offset.dx;
-                this.defaultTop = offset.dy;
-                topLeftKey.currentState!.offset = offset;
-                topRightKey.currentState!.offset =
-                    Offset(offset.dx - circleSize + width, offset.dy);
-                bottomLeftKey.currentState!.offset =
-                    Offset(offset.dx, offset.dy - circleSize + height);
-                bottomRightKey.currentState!.offset = Offset(
-                    offset.dx - circleSize + width,
-                    offset.dy - circleSize + height);
-              });
-            },
-            child: Container(
-              // margin: EdgeInsets.only(top: 100, left: 50),
-              height: height,
-              width: width,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.green, width: 0.5),
-                color: Colors.transparent,
-              ),
-              child: Stack(
-                children: [
-                  getPoint(0, topLeftKey),
-                  getPoint(1, topRightKey),
-                  getPoint(2, bottomLeftKey),
-                  getPoint(3, bottomRightKey),
-                ],
-              ),
-            ),
-            feedback: Container(
-              color: Colors.green,
-              height: height,
-              width: width,
-            )));
-  }
-
-  Widget getPoint(int position, GlobalKey key) {
-    late Widget p;
-    switch (position) {
-      case 0: // top left
-        p = Point(
-            key: key,
-            color: Colors.red,
-            woffset: Offset(defaultLeft, defaultTop));
-        break;
-      case 1: // top right
-        p = Point(
-            key: key,
-            color: Colors.green,
-            woffset:
-                Offset(defaultRectSize - circleSize + defaultLeft, defaultTop));
-        break;
-      case 2:
-        p = Point(
-            key: key,
-            color: Colors.blue,
-            woffset:
-                Offset(defaultLeft, defaultRectSize - circleSize + defaultTop));
-        break;
-      case 3:
-        p = Point(
-            key: key,
-            color: Colors.black,
-            woffset: Offset(defaultRectSize - circleSize + defaultLeft,
-                defaultRectSize - circleSize + defaultTop));
-        break;
-      default:
-        p = Point(key: key, color: Colors.red, woffset: Offset(0, 0));
-        break;
-    }
-    return p;
-  }
-}
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2021-07-18 21:22:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2021-07-18 21:23:52
+ */
+part of "./rect.dart";
 
 // ignore: must_be_immutable
 class Point extends StatefulWidget {
-  Point({required Key key, required this.color, required this.woffset})
+  Point(
+      {required Key key,
+      required this.color,
+      required this.woffset,
+      required this.globalKeys,
+      required this.rectKey})
       : super(key: key);
 
   Color color;
   Offset woffset;
+  List<GlobalKey> globalKeys;
+  GlobalKey<_RectState> rectKey;
 
   @override
   _PointState createState() => _PointState();
@@ -195,9 +51,20 @@ class _PointState extends State<Point> {
     });
   }
 
+  var topLeftKey;
+  var topRightKey;
+  var bottomLeftKey;
+  var bottomRightKey;
+  var rectKey;
+
   @override
   void initState() {
     super.initState();
+    topLeftKey = widget.globalKeys[0];
+    topRightKey = widget.globalKeys[1];
+    bottomLeftKey = widget.globalKeys[2];
+    bottomRightKey = widget.globalKeys[3];
+    rectKey = widget.rectKey;
     offset = widget.woffset;
 
     if (widget.key == topRightKey) {
