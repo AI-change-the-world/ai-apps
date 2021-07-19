@@ -7,7 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2021-07-18 21:23:52
  */
-part of "./rect.dart";
+part of 'rect.dart';
 
 // ignore: must_be_immutable
 class Point extends StatefulWidget {
@@ -100,18 +100,24 @@ class _PointState extends State<Point> {
         top: _top,
         child: Draggable(
             onDraggableCanceled: (Velocity velocity, Offset _offset) {
+              // print(_offset);
               currentOffset = this.offset;
               Offset topLeftOffset = topLeftKey.currentState!.offset;
               Offset topRightOffset = topRightKey.currentState!.offset;
               Offset bottomLeftOffset = bottomLeftKey.currentState!.offset;
               Offset bottomRightOffset = bottomRightKey.currentState!.offset;
 
+              // print("左上:" + topLeftOffset.toString());
+              // print("右上:" + topRightOffset.toString());
+              // print("左下:" + bottomLeftOffset.toString());
+              // print("右下:" + bottomRightOffset.toString());
+
               _moveX = _offset.dx - currentOffset.dx;
               _moveY = _offset.dx - currentOffset.dx;
               if (widget.key == topLeftKey) {
                 topLeftOffset = _offset;
-                topRightOffset = Offset(_offset.dx, _offset.dy + _moveY);
-                bottomLeftOffset = Offset(_offset.dx + _moveX, _offset.dy);
+                topRightOffset = Offset(topRightOffset.dx, _offset.dy);
+                bottomLeftOffset = Offset(_offset.dx, bottomLeftOffset.dy);
               }
 
               if (widget.key == topRightKey) {
@@ -137,18 +143,24 @@ class _PointState extends State<Point> {
               bottomLeftKey.currentState!.moveTO(bottomLeftOffset);
               bottomRightKey.currentState!.moveTO(bottomRightOffset);
 
+              // print("--------------------------------------------");
+              // print("左上:" + topLeftOffset.toString());
+              // print("右上:" + topRightOffset.toString());
+              // print("左下:" + bottomLeftOffset.toString());
+              // print("右下:" + bottomRightOffset.toString());
+
               late double width;
               late double height;
 
               width = (topLeftKey.currentState!.offset.dx -
-                      circleSize -
-                      bottomRightKey.currentState!.offset.dx)
-                  .abs();
+                          bottomRightKey.currentState!.offset.dx)
+                      .abs() +
+                  circleSize;
 
               height = (topLeftKey.currentState!.offset.dy -
-                      circleSize -
-                      bottomRightKey.currentState!.offset.dy)
-                  .abs();
+                          bottomRightKey.currentState!.offset.dy)
+                      .abs() +
+                  circleSize;
 
               // print("========================");
               // print(width);
@@ -169,6 +181,10 @@ class _PointState extends State<Point> {
 
               bottomRightKey.currentState!.setLeft(width - circleSize);
               bottomRightKey.currentState!.setTop(height - circleSize);
+
+              // print(topRightKey.currentState!.offset);
+              // print(topLeftKey.currentState!.offset);
+              // print("========================");
 
               rectKey.currentState!.moveTo(topLeftKey.currentState!.offset);
             },
