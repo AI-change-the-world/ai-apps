@@ -41,13 +41,13 @@ class _PointState extends State<Point> {
 
   void setLeft(double left) {
     setState(() {
-      this._left = left;
+      this._left = left.toDouble();
     });
   }
 
   void setTop(double top) {
     setState(() {
-      this._top = top;
+      this._top = top.toDouble();
     });
   }
 
@@ -170,13 +170,13 @@ class _PointState extends State<Point> {
               rectKey.currentState!.setHeight(height);
               rectKey.currentState!.setWidth(width);
 
-              topLeftKey.currentState!.setLeft(0);
-              topLeftKey.currentState!.setTop(0);
+              topLeftKey.currentState!.setLeft(0.0);
+              topLeftKey.currentState!.setTop(0.0);
 
               topRightKey.currentState!.setLeft(width - circleSize);
-              topRightKey.currentState!.setTop(0);
+              topRightKey.currentState!.setTop(0.0);
 
-              bottomLeftKey.currentState!.setLeft(0);
+              bottomLeftKey.currentState!.setLeft(0.0);
               bottomLeftKey.currentState!.setTop(height - circleSize);
 
               bottomRightKey.currentState!.setLeft(width - circleSize);

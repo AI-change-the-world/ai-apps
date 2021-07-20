@@ -33,6 +33,9 @@ dependencies:
   flutter_bloc: ^7.0.0 #状态管理框架
   equatable: ^2.0.0 #增强组件相等性判断
   rxdart: ^0.26.0
+  xml: ^5.1.2
+  permission_handler: ^8.1.2 #权限
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
