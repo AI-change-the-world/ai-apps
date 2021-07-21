@@ -138,9 +138,11 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
               .firstChild
               .toString());
 
+          ClassObject classObject = ClassObject(name: name, bndbox: bndbox);
+
           RectBox rectBox = RectBox(
             id: index,
-            bndbox: bndbox,
+            classObject: classObject,
             // imgName: event.filename,
           );
           index += 1;

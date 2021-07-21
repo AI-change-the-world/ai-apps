@@ -12,7 +12,7 @@ import 'package:mobilelabelimg/main_page.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
 // import 'package:mobilelabelimg/tests/drag_scale.dart';
 // import 'package:mobilelabelimg/tests/scale_demo.dart';
-import 'package:mobilelabelimg/widgets/rect.dart';
+// import 'package:mobilelabelimg/widgets/rect.dart';
 // import 'package:mobilelabelimg/workboard/views/workboard_demo.dart';
 
 void main() {
@@ -21,36 +21,4 @@ void main() {
     debugShowCheckedModeBanner: false,
     home: MainPage(),
   ));
-}
-
-class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: RectDemo(),
-    );
-  }
-}
-
-class RectDemo extends StatelessWidget {
-  const RectDemo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        RectBox(
-          id: 0,
-          // imgName: "",
-        ),
-      ],
-    );
-  }
 }

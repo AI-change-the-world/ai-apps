@@ -22,8 +22,9 @@ const defaultRectSize = 300.0;
 class RectBox extends StatelessWidget {
   int id;
   // 这里要初始化一个 bndbox
-  Bndbox? bndbox;
-  RectBox({Key? key, required this.id, this.bndbox}) : super(key: key);
+  ClassObject? classObject;
+  // Bndbox? bndbox;
+  RectBox({Key? key, required this.id, this.classObject}) : super(key: key);
 
   GlobalKey<_PointState> topLeftKey = GlobalKey(debugLabel: "topLeftKey");
   GlobalKey<_PointState> topRightKey = GlobalKey(debugLabel: "topRightKey");
@@ -38,7 +39,7 @@ class RectBox extends StatelessWidget {
       id: this.id,
       key: rectKey,
       globalKeys: [topLeftKey, topRightKey, bottomLeftKey, bottomRightKey],
-      bndbox: this.bndbox,
+      classObject: this.classObject,
     );
   }
 }
@@ -46,8 +47,9 @@ class RectBox extends StatelessWidget {
 class Rect extends StatefulWidget {
   List<GlobalKey> globalKeys;
   int id;
-  Bndbox? bndbox;
-  Rect({Key? key, required this.globalKeys, required this.id, this.bndbox})
+  // Bndbox? bndbox;
+  ClassObject? classObject;
+  Rect({Key? key, required this.globalKeys, required this.id, this.classObject})
       : super(key: key);
 
   @override
@@ -92,20 +94,27 @@ class _RectState extends State<Rect> {
     _workboardBloc = context.read<WorkboardBloc>();
     print(_workboardBloc.state.param.imageName);
 
-    if (null == widget.bndbox) {
+    if (null == widget.classObject) {
       width = defaultRectSize;
       height = defaultRectSize;
     } else {
       // print("true");
-      width = (widget.bndbox!.xmax! - widget.bndbox!.xmin!) * 1.0;
-      height = (widget.bndbox!.ymax! - widget.bndbox!.ymin!) * 1.0;
-      defaultLeft = widget.bndbox!.xmin! * 1.0;
-      defaultTop = widget.bndbox!.ymin! * 1.0;
+      width = (widget.classObject!.bndbox!.xmax! -
+              widget.classObject!.bndbox!.xmin!) *
+          1.0;
+      height = (widget.classObject!.bndbox!.ymax! -
+              widget.classObject!.bndbox!.ymin!) *
+          1.0;
+      defaultLeft = widget.classObject!.bndbox!.xmin! * 1.0;
+      defaultTop = widget.classObject!.bndbox!.ymin! * 1.0;
 
-      print(width);
-      print(height);
-      print(defaultLeft);
-      print(defaultTop);
+      this.controller.text = widget.classObject!.name!;
+      this.className = widget.classObject!.name!;
+
+      // print(width);
+      // print(height);
+      // print(defaultLeft);
+      // print(defaultTop);
     }
   }
 
