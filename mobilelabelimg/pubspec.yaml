@@ -36,6 +36,9 @@ dependencies:
   xml: ^5.1.2
   permission_handler: ^8.1.2 #权限
   path_provider: ^2.0.2
+  fluttertoast: ^8.0.6
+  # image_picker: ^0.8.2
+  file_picker: ^3.0.3
 
 dev_dependencies:
   flutter_test:

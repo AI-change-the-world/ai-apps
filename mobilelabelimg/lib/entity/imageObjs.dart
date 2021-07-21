@@ -54,7 +54,7 @@ class ImageObjs {
       });
 
       var _xml = builder.buildDocument();
-      return _xml.toXmlString(pretty: true);
+      return _xml.toXmlString();
     }
 
     return "";

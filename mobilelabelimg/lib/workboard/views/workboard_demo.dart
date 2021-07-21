@@ -35,8 +35,7 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
 
   int currentId = -1;
 
-  String _filepath =
-      "http://h.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=0d023672312ac65c67506e77cec29e27/9f2f070828381f30dea167bbad014c086e06f06c.jpg";
+  // String _filepath = "";
 
   @override
   void initState() {
@@ -46,6 +45,10 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
 
   @override
   Widget build(BuildContext context) {
+    final String? imgPath =
+        ModalRoute.of(context)!.settings.arguments as String;
+    // _filepath = imgPath!;
+    _workboardBloc.add(GetSingleImageRects(filename: imgPath!));
     return BlocBuilder<WorkboardBloc, WorkboardState>(
         builder: (context, state) {
       return Scaffold(
@@ -54,13 +57,13 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
             decoration: BoxDecoration(
                 image: DecorationImage(
               fit: BoxFit.fill,
-              image: NetworkImage(_filepath),
+              image: FileImage(File(imgPath)),
             )),
             // color: Colors.greenAccent,
             width: double.infinity,
             height: double.infinity,
             child: Stack(
-              children: _workboardBloc.state.rectBoxes,
+              children: _workboardBloc.state.param.rectBoxes,
             ),
           ),
         ),
@@ -70,6 +73,60 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
             children: [
               FloatingActionButton(
                 onPressed: () {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          actions: [
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("取消"))
+                          ],
+                          content: Material(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              width: 300,
+                              child: Wrap(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.chevron_left,
+                                            color: Colors.white),
+                                        Text(
+                                          "退出",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      padding: EdgeInsets.all(20),
+                                      primary: Colors.blue, // <-- Button color
+                                      onPrimary: Colors.red, // <-- Splash color
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                },
+                heroTag: "tool",
+                child: Icon(Icons.work),
+              ),
+              FloatingActionButton(
+                heroTag: "add",
+                onPressed: () {
                   // addRect();
                   currentId += 1;
                   _workboardBloc.add(RectAdded(id: currentId));
@@ -77,17 +134,18 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
                 child: Icon(Icons.add),
               ),
               FloatingActionButton(
+                heroTag: "save",
                 onPressed: () async {
                   // print(_filepath.split("/").last);
 
                   Annotation annotation = Annotation();
 
                   String _name, _ext;
-                  _name = _filepath.split("/").last.split(".").first;
-                  _ext = _filepath.split("/").last.split(".").last;
+                  _name = imgPath.split("/").last.split(".").first;
+                  _ext = imgPath.split("/").last.split(".").last;
 
                   annotation.filename = _name + "." + _ext;
-                  annotation.path = _filepath;
+                  annotation.path = imgPath;
                   annotation.source = Source();
                   annotation.size = ClassSize(
                       width: CommonUtil.screenW().floor(),
@@ -97,7 +155,7 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
 
                   print(_name);
                   print(_ext);
-                  for (var rect in _workboardBloc.state.rectBoxes) {
+                  for (var rect in _workboardBloc.state.param.rectBoxes) {
                     // print(rect.rectKey.currentState!.className);
                     // print(rect.rectKey.currentState!.getRectBox());
                     ClassObject classObject = ClassObject();
@@ -114,8 +172,8 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
                   ImageObjs imageObjs = ImageObjs(annotation: annotation);
                   // print(imageObjs.toXmlStr());
                   if (await Permission.storage.request().isGranted) {
-                    getApplicationDocumentsDirectory().then((value) async {
-                      print(value.path);
+                    getExternalStorageDirectory().then((value) async {
+                      print(value!.path);
                       File file = new File(value.path + "/" + _name + ".xml");
                       try {
                         await file.writeAsString(imageObjs.toXmlStr());

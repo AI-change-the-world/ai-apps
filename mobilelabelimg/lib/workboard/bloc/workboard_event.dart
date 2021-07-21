@@ -18,3 +18,8 @@ class RectRemove extends WorkboardEvent {
   final int id;
   const RectRemove({required this.id});
 }
+
+class GetSingleImageRects extends WorkboardEvent {
+  final String filename;
+  const GetSingleImageRects({required this.filename});
+}

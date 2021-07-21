@@ -73,5 +73,23 @@ main(List<String> args) {
   annotation.segmented = 0;
   annotation.object = [classObject1, classObject2, classObject3];
   ImageObjs imageObjs = ImageObjs(annotation: annotation);
-  print(imageObjs.toXmlStr());
+  // print(imageObjs.toXmlStr());
+
+  String _s =
+      "<annotation><folder>TEST</folder><filename>image_picker-94381381.jpg</filename><path>/data/user/0/com.xiaoshuyui.mobilelabelimg/cache/image_picker-94381381.jpg</path><source><database>Unknown</database></source><size><width>480</width><height>853</height><depth/></size><segmented>0</segmented><object><name>mess</name><difficult>0</difficult><bndbox><xmin>46</xmin><xmax>341</xmax><ymin>167</ymin><ymax>648</ymax></bndbox></object></annotation>";
+
+  final _document = XmlDocument.parse(_s);
+  // print(_document.children);
+  final objets = _document.findAllElements("object");
+  // print(objets);
+  for (var i in objets) {
+    print(i.findElements("name").first.firstChild);
+    print(i
+        .findElements("bndbox")
+        .first
+        .findElements("xmin")
+        .first
+        .firstChild
+        .toString());
+  }
 }
