@@ -23,3 +23,5 @@ class GetSingleImageRects extends WorkboardEvent {
   final String filename;
   const GetSingleImageRects({required this.filename});
 }
+
+class ForceRefresh extends WorkboardEvent {}

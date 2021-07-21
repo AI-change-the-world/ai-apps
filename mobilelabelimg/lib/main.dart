@@ -48,6 +48,7 @@ class RectDemo extends StatelessWidget {
       children: [
         RectBox(
           id: 0,
+          // imgName: "",
         ),
       ],
     );

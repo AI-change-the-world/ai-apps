@@ -33,7 +33,7 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
   // List<Widget> rects = [];
   late WorkboardBloc _workboardBloc;
 
-  int currentId = -1;
+  late int currentId;
 
   // String _filepath = "";
 
@@ -41,6 +41,11 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
   void initState() {
     super.initState();
     _workboardBloc = context.read<WorkboardBloc>();
+    if (_workboardBloc.state.param.rectBoxes.isEmpty) {
+      currentId = -1;
+    } else {
+      currentId = _workboardBloc.state.param.rectBoxes.last.id;
+    }
   }
 
   @override

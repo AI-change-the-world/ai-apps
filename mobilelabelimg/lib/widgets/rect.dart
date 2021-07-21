@@ -11,6 +11,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobilelabelimg/entity/imageObjs.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 
 part './points.dart';
@@ -20,7 +21,9 @@ const defaultRectSize = 300.0;
 
 class RectBox extends StatelessWidget {
   int id;
-  RectBox({Key? key, required this.id}) : super(key: key);
+  // 这里要初始化一个 bndbox
+  Bndbox? bndbox;
+  RectBox({Key? key, required this.id, this.bndbox}) : super(key: key);
 
   GlobalKey<_PointState> topLeftKey = GlobalKey(debugLabel: "topLeftKey");
   GlobalKey<_PointState> topRightKey = GlobalKey(debugLabel: "topRightKey");
@@ -35,6 +38,7 @@ class RectBox extends StatelessWidget {
       id: this.id,
       key: rectKey,
       globalKeys: [topLeftKey, topRightKey, bottomLeftKey, bottomRightKey],
+      bndbox: this.bndbox,
     );
   }
 }
@@ -42,7 +46,8 @@ class RectBox extends StatelessWidget {
 class Rect extends StatefulWidget {
   List<GlobalKey> globalKeys;
   int id;
-  Rect({Key? key, required this.globalKeys, required this.id})
+  Bndbox? bndbox;
+  Rect({Key? key, required this.globalKeys, required this.id, this.bndbox})
       : super(key: key);
 
   @override
@@ -50,8 +55,8 @@ class Rect extends StatefulWidget {
 }
 
 class _RectState extends State<Rect> {
-  double height = defaultRectSize;
-  double width = defaultRectSize;
+  late double height;
+  late double width;
 
   double defaultLeft = 0;
   double defaultTop = 0;
@@ -85,6 +90,23 @@ class _RectState extends State<Rect> {
     bottomLeftKey = widget.globalKeys[2] as GlobalKey<_PointState>;
     bottomRightKey = widget.globalKeys[3] as GlobalKey<_PointState>;
     _workboardBloc = context.read<WorkboardBloc>();
+    print(_workboardBloc.state.param.imageName);
+
+    if (null == widget.bndbox) {
+      width = defaultRectSize;
+      height = defaultRectSize;
+    } else {
+      // print("true");
+      width = (widget.bndbox!.xmax! - widget.bndbox!.xmin!) * 1.0;
+      height = (widget.bndbox!.ymax! - widget.bndbox!.ymin!) * 1.0;
+      defaultLeft = widget.bndbox!.xmin! * 1.0;
+      defaultTop = widget.bndbox!.ymin! * 1.0;
+
+      print(width);
+      print(height);
+      print(defaultLeft);
+      print(defaultTop);
+    }
   }
 
   setHeight(double height) {
@@ -227,6 +249,13 @@ class _RectState extends State<Rect> {
   }
 
   Widget getPoint(int position, GlobalKey key) {
+    // var _value = _workboardBloc.state.param.rectBoxes
+    //     .where((element) => element.id == widget.id);
+    // print("+++++++++++++++++++++++++++++++++");
+    // print(widget.bndbox == null);
+    // print("+++++++++++++++++++++++++++++++++");
+    // double _width = _workboardBloc.state
+
     late Widget p;
     switch (position) {
       case 0: // top left
@@ -242,8 +271,7 @@ class _RectState extends State<Rect> {
         p = Point(
           key: key,
           color: Colors.green,
-          woffset:
-              Offset(defaultRectSize - circleSize + defaultLeft, defaultTop),
+          woffset: Offset(width - circleSize + defaultLeft, defaultTop),
           globalKeys: widget.globalKeys,
           rectKey: widget.key as GlobalKey<_RectState>,
         );
@@ -252,8 +280,7 @@ class _RectState extends State<Rect> {
         p = Point(
           key: key,
           color: Colors.blue,
-          woffset:
-              Offset(defaultLeft, defaultRectSize - circleSize + defaultTop),
+          woffset: Offset(defaultLeft, height - circleSize + defaultTop),
           globalKeys: widget.globalKeys,
           rectKey: widget.key as GlobalKey<_RectState>,
         );
@@ -262,8 +289,8 @@ class _RectState extends State<Rect> {
         p = Point(
           key: key,
           color: Colors.black,
-          woffset: Offset(defaultRectSize - circleSize + defaultLeft,
-              defaultRectSize - circleSize + defaultTop),
+          woffset: Offset(width - circleSize + defaultLeft,
+              height - circleSize + defaultTop),
           globalKeys: widget.globalKeys,
           rectKey: widget.key as GlobalKey<_RectState>,
         );

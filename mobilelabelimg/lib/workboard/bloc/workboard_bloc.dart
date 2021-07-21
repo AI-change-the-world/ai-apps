@@ -38,6 +38,10 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     if (event is GetSingleImageRects) {
       yield await _getSingleImageRectsToState(state, event);
     }
+
+    if (event is ForceRefresh) {
+      yield await _forceRefresh(state, event);
+    }
   }
 
   @override
@@ -63,7 +67,10 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
       WorkboardState state, RectAdded event) async {
     ImageRectBox imageRectBox =
         ImageRectBox(imageName: "", rectBoxes: state.param.rectBoxes);
-    imageRectBox.rectBoxes.add(RectBox(id: event.id));
+    imageRectBox.rectBoxes.add(RectBox(
+      id: event.id,
+      // imgName: "",
+    ));
     // state.param.rectBoxes.add(RectBox(id: event.id));
     return state.copyWith(WorkboardStatus.add, imageRectBox);
   }
@@ -96,9 +103,9 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
         final _document = XmlDocument.parse(content);
         final objects = _document.findAllElements("object");
         int index = 0;
-        print("***********************************");
-        print(objects);
-        print("***********************************");
+        // print("***********************************");
+        // print(objects);
+        // print("***********************************");
         for (var i in objects) {
           Bndbox bndbox = Bndbox();
           String name = i.findElements("name").first.firstChild.toString();
@@ -131,7 +138,11 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
               .firstChild
               .toString());
 
-          RectBox rectBox = RectBox(id: index);
+          RectBox rectBox = RectBox(
+            id: index,
+            bndbox: bndbox,
+            // imgName: event.filename,
+          );
           index += 1;
           imageRectBox.rectBoxes.add(rectBox);
         }
@@ -143,5 +154,10 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     } else {
       return state.copyWith(WorkboardStatus.add, imageRectBox);
     }
+  }
+
+  Future<WorkboardState> _forceRefresh(
+      WorkboardState state, ForceRefresh event) async {
+    return state.copyWith(WorkboardStatus.refresh, state.param);
   }
 }

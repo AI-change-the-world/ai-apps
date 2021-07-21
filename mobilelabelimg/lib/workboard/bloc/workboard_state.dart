@@ -1,6 +1,6 @@
 part of 'workboard_bloc.dart';
 
-enum WorkboardStatus { initial, add, delete }
+enum WorkboardStatus { initial, add, delete, refresh }
 
 class ImageRectBox extends Equatable {
   final List<RectBox> rectBoxes;
@@ -34,7 +34,8 @@ class WorkboardState extends Equatable {
 
   @override
   bool operator ==(Object other) {
-    if (this.status == WorkboardStatus.add) {
+    if (this.status == WorkboardStatus.add ||
+        this.status == WorkboardStatus.refresh) {
       return false;
     }
     return identical(this, other) ||
