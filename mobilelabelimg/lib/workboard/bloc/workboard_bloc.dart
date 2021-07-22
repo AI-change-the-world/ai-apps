@@ -103,9 +103,6 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
         final _document = XmlDocument.parse(content);
         final objects = _document.findAllElements("object");
         int index = 0;
-        // print("***********************************");
-        // print(objects);
-        // print("***********************************");
         for (var i in objects) {
           Bndbox bndbox = Bndbox();
           String name = i.findElements("name").first.firstChild.toString();
@@ -138,15 +135,17 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
               .firstChild
               .toString());
 
-          ClassObject classObject = ClassObject(name: name, bndbox: bndbox);
+          if (bndbox.xmin! < bndbox.xmax! && bndbox.ymin! < bndbox.ymax!) {
+            ClassObject classObject = ClassObject(name: name, bndbox: bndbox);
 
-          RectBox rectBox = RectBox(
-            id: index,
-            classObject: classObject,
-            // imgName: event.filename,
-          );
-          index += 1;
-          imageRectBox.rectBoxes.add(rectBox);
+            RectBox rectBox = RectBox(
+              id: index,
+              classObject: classObject,
+              // imgName: event.filename,
+            );
+            index += 1;
+            imageRectBox.rectBoxes.add(rectBox);
+          }
         }
       } catch (e) {
         print(e);

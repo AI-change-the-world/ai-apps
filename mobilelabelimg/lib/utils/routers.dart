@@ -9,6 +9,7 @@ class Routers {
 
   static final Map<String, WidgetBuilder> routers = {
     pageAnnotationWorkboard: (ctx) => SingleImageAnnotationPage(),
+    // pageAnnotationWorkboard: (ctx) => DragDemo(),
     pageMain: (ctx) => MainPage(),
   };
 }

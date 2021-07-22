@@ -4,8 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_drag_scale/core/drag_scale_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ftpconnect/ftpconnect.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
 import 'package:mobilelabelimg/utils/common.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
@@ -14,13 +14,16 @@ import 'package:permission_handler/permission_handler.dart';
 
 const _size = 50.0;
 
-class SingleImageAnnotationPage extends StatelessWidget {
-  const SingleImageAnnotationPage({Key? key}) : super(key: key);
+class DragDemo extends StatelessWidget {
+  const DragDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        child: SingleAnnotationWorkBoard(),
+        child: DragScaleContainer(
+          doubleTapStillScale: true,
+          child: SingleAnnotationWorkBoard(),
+        ),
         create: (BuildContext context) {
           return WorkboardBloc()..add(RectIntial());
         });
@@ -40,8 +43,6 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
   late WorkboardBloc _workboardBloc;
 
   late int currentId;
-
-  String? xmlSavedPath;
 
   // String _filepath = "";
 
@@ -129,151 +130,7 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
                                     ),
                                   ),
                                   ElevatedButton(
-                                    onPressed: () async {
-                                      var result = await showCupertinoDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return CupertinoAlertDialog(
-                                              title: Text("注意！！！"),
-                                              content: Text(
-                                                  "本产品采用ftp进行上传服务，需输入用户名及密码。本产品不会采集任何用户信息，不过，如对安全风险存在疑问，请使用内网进行传输。"),
-                                              actions: [
-                                                CupertinoActionSheetAction(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(0);
-                                                    },
-                                                    child: Text("取消")),
-                                                CupertinoActionSheetAction(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(1);
-                                                    },
-                                                    child: Text("确定")),
-                                              ],
-                                            );
-                                          });
-
-                                      if (result == 1) {
-                                        TextEditingController urlController =
-                                            TextEditingController();
-                                        TextEditingController userController =
-                                            TextEditingController();
-                                        TextEditingController
-                                            passwordController =
-                                            TextEditingController();
-                                        if (null == xmlSavedPath) {
-                                          var value =
-                                              await getExternalStorageDirectory();
-                                          var _name = imgPath!
-                                              .split("/")
-                                              .last
-                                              .split(".")
-                                              .first;
-                                          xmlSavedPath = value!.path +
-                                              "/" +
-                                              _name +
-                                              ".xml";
-                                        }
-
-                                        if (await File(xmlSavedPath!)
-                                            .exists()) {
-                                          var _result =
-                                              await showCupertinoDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return CupertinoAlertDialog(
-                                                      title: Text("请填写个人信息"),
-                                                      content: Material(
-                                                        child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text("请填写url"),
-                                                              TextField(
-                                                                controller:
-                                                                    urlController,
-                                                              ),
-                                                              Text("请输入用户名"),
-                                                              TextField(
-                                                                controller:
-                                                                    userController,
-                                                              ),
-                                                              Text("请输入密码"),
-                                                              TextField(
-                                                                controller:
-                                                                    passwordController,
-                                                              )
-                                                            ]),
-                                                      ),
-                                                      actions: [
-                                                        CupertinoActionSheetAction(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(0);
-                                                            },
-                                                            child: Text("取消")),
-                                                        CupertinoActionSheetAction(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(1);
-                                                            },
-                                                            child: Text("确定")),
-                                                      ],
-                                                    );
-                                                  });
-                                          if (_result == 1) {
-                                            FTPConnect ftpConnect = FTPConnect(
-                                                urlController.text,
-                                                user: userController.text,
-                                                pass: passwordController.text);
-                                            try {
-                                              File fileToUpload =
-                                                  File(xmlSavedPath!);
-                                              await ftpConnect.connect();
-                                              await ftpConnect
-                                                  .uploadFile(fileToUpload);
-                                              await ftpConnect.disconnect();
-                                              Fluttertoast.showToast(
-                                                  msg: "上传成功",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.CENTER,
-                                                  timeInSecForIosWeb: 2,
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            } catch (e) {
-                                              Fluttertoast.showToast(
-                                                  msg: "上传失败",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.CENTER,
-                                                  timeInSecForIosWeb: 2,
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            }
-                                          }
-                                        } else {
-                                          Fluttertoast.showToast(
-                                              msg: "未检测到存储文件",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.CENTER,
-                                              timeInSecForIosWeb: 2,
-                                              backgroundColor: Colors.orange,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
-                                        }
-                                      }
-
-                                      Navigator.of(context).pop();
-                                    },
+                                    onPressed: () {},
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -417,8 +274,8 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
                   annotation.segmented = 0;
                   annotation.object = [];
 
-                  // print(_name);
-                  // print(_ext);
+                  print(_name);
+                  print(_ext);
                   for (var rect in _workboardBloc.state.param.rectBoxes) {
                     // print(rect.rectKey.currentState!.className);
                     // print(rect.rectKey.currentState!.getRectBox());
@@ -437,11 +294,11 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
                   // print(imageObjs.toXmlStr());
                   if (await Permission.storage.request().isGranted) {
                     getExternalStorageDirectory().then((value) async {
-                      // print(value!.path);
-                      File file = new File(value!.path + "/" + _name + ".xml");
+                      print(value!.path);
+                      File file = new File(value.path + "/" + _name + ".xml");
                       try {
                         await file.writeAsString(imageObjs.toXmlStr());
-                        xmlSavedPath = value.path + "/" + _name + ".xml";
+
                         Fluttertoast.showToast(
                             msg: "保存成功",
                             toastLength: Toast.LENGTH_SHORT,

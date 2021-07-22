@@ -43,10 +43,10 @@ class _MainPageState extends State<MainPage> {
                       FilePickerResult? image = await FilePicker.platform
                           .pickFiles(type: FileType.image);
                       if (null != image) {
-                        print("==========================================");
+                        // print("==========================================");
                         File file = File(image.files.single.path!);
-                        print(file.path);
-                        print("==========================================");
+                        // print(file.path);
+                        // print("==========================================");
                         _imgpath = file.path;
                         Navigator.of(context).pushNamed(
                             Routers.pageAnnotationWorkboard,

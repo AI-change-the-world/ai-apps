@@ -92,7 +92,7 @@ class _RectState extends State<Rect> {
     bottomLeftKey = widget.globalKeys[2] as GlobalKey<_PointState>;
     bottomRightKey = widget.globalKeys[3] as GlobalKey<_PointState>;
     _workboardBloc = context.read<WorkboardBloc>();
-    print(_workboardBloc.state.param.imageName);
+    // print(_workboardBloc.state.param.imageName);
 
     if (null == widget.classObject) {
       width = defaultRectSize;

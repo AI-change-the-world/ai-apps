@@ -15,11 +15,15 @@
     flutter pub get
     flutter run --web-renderer html --no-sound-null-safety
 
+## 4.change shapes
+
+use this  https://github.com/guchengxi1994/mask2json/blob/master/convertmask/utils/auglib/optional/resize.py to reshape images.
+
 # TODO
 
-## 1.support changing image scales
+## 1.support changing image scales (maybe cannot done,hard for me)
 
-## 2.save xmls,maybe upload xmls
+## 2.~~save xmls~~ (done),maybe upload xmls 
 
 ## 3.next/previous button
 
