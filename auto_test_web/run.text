@@ -1,0 +1,13 @@
+flutter channel dev
+flutter upgrade
+flutter pub global activate webdev
+flutter config --enable-web
+
+flutter run -d chrome --web-renderer html
+flutter build web --web-renderer html
+flutter run  --web-renderer html --no-sound-null-safety
+
+flutter run  -d chrome  --web-renderer html --no-sound-null-safety
+
+
+.\nginx.exe  -c conf/nginx.conf
