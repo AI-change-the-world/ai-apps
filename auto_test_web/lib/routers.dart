@@ -1,6 +1,6 @@
 import 'package:auto_test_web/pages/admin_main/admin_main_page.dart';
 import 'package:auto_test_web/pages/login/login_page.dart';
-import 'package:auto_test_web/pages/main/main_page.dart';
+import 'package:auto_test_web/pages/main/main_page_demo.dart';
 import 'package:flutter/material.dart';
 
 class Routers {
@@ -10,7 +10,7 @@ class Routers {
 
   static final Map<String, WidgetBuilder> routers = {
     pageLogin: (ctx) => LoginPage(),
-    pageMain: (ctx) => const MainPage(),
+    pageMain: (ctx) => MainPageDemo(),
     pageAdmin: (ctx) => const AdminMainPage(),
   };
 }

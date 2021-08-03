@@ -40,6 +40,7 @@ dependencies:
   provider: ^5.0.0
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
+  file_picker: ^3.0.4
 
 dev_dependencies:
   flutter_test:

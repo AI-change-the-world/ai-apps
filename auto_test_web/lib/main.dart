@@ -37,6 +37,12 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => MenuController(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => ListTabsController(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => CenterWidgetController(),
+          ),
         ],
         child: MainPageDemo(),
       ),

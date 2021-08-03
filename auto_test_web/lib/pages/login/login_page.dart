@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "自零伊始，从一而终",
+                      "自零伊始，从壹而终",
                       style: TextStyle(fontFamily: "MaShanZheng", fontSize: 20),
                     ),
                     const SizedBox(height: 40),
