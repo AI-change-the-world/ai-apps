@@ -41,6 +41,9 @@ dependencies:
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
   file_picker: ^3.0.4
+  flutter_bloc: ^7.0.0 #状态管理框架
+  equatable: ^2.0.0 #增强组件相等性判断
+  rxdart: ^0.26.0
 
 dev_dependencies:
   flutter_test:
