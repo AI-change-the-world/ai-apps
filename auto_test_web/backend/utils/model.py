@@ -28,6 +28,8 @@ class ExecLog(BaseModel):
     admin_id = IntegerField(null=True)
     end_time = CharField(null=True)
     fail_times = IntegerField(null=True)
+    projrct_id = IntegerField(null=True)
+    result_path = CharField(null=True)
     start_time = CharField(null=True)
     success_times = IntegerField(null=True)
     test_times = IntegerField(null=True)

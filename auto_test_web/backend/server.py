@@ -3,11 +3,14 @@ import logging
 import os
 from logging import INFO, getLogger
 
+
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from service.user_service import createUserService, loginService, setUserService
+from service.project_service import createProjectService, queryProjects, runProjectService
+from service.user_service import (createUserService, loginService, queryAllUserService,
+                                  setUserService)
 
 current_dir = os.getcwd()
 log_file = current_dir + os.sep + "logs" + os.sep + 'log.txt'
@@ -37,10 +40,12 @@ def login():
     dic = loginService(request=request)
     return json.dumps(dic, ensure_ascii=False)
 
+
 @app.route("/createuser", methods=['POST'])
 def createUser():
     dic = createUserService(request=request)
     return json.dumps(dic, ensure_ascii=False)
+
 
 @app.route("/setuser", methods=['POST'])
 def setUser():
@@ -50,9 +55,24 @@ def setUser():
 
 @app.route("/createproject", methods=['POST'])
 def createProject():
-    return
+    dic = createProjectService(request)
+    return json.dumps(dic, ensure_ascii=False)
 
 
+@app.route("/runproject", methods=['POST'])
+def runProject():
+    dic = runProjectService(request)
+    return json.dumps(dic, ensure_ascii=False)
+
+@app.route("/getallusers", methods=['GET'])
+def getAllUsers():
+    dic = queryAllUserService(request=request)
+    return json.dumps(dic, ensure_ascii=False)
+
+@app.route("/getprojects",methods=['GET'])
+def getprojects():
+    dic = queryProjects(request=request)
+    return json.dumps(dic, ensure_ascii=False)
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=12356, debug=True)

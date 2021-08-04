@@ -4,6 +4,7 @@ from flask.wrappers import Request
 from utils import (__code_dict__, __invalid_user__, __ok__, __param_error__,
                    __server_error__, __multi_user__, __only_one_root__)
 from utils.model import User
+from playhouse.shortcuts import dict_to_model, model_to_dict
 import traceback
 
 
@@ -18,7 +19,7 @@ def loginService(request: Request) -> dict:
         username = data.get("username", None)
         password = data.get("password", None)
         if username is None or password is None:
-            dic = {
+            return {
                 "code": __param_error__,
                 "message": __code_dict__.get(__param_error__, ""),
                 "data": None
@@ -31,7 +32,8 @@ def loginService(request: Request) -> dict:
             "message": __code_dict__.get(__ok__, ""),
             "data": {
                 "is_logged": user.is_login,
-                "is_root": user.is_root
+                "is_root": user.is_root,
+                "user_id": user.user_id
             }
         }
         user.last_login_ip = ip
@@ -124,8 +126,8 @@ def setUserService(request: Request) -> dict:
         }
     except User.DoesNotExist:
         dic = {
-            "code": __server_error__,
-            "message": __code_dict__.get(__server_error__, ""),
+            "code": __invalid_user__,
+            "message": __code_dict__.get(__invalid_user__, ""),
             "data": None
         }
     except:
@@ -135,4 +137,37 @@ def setUserService(request: Request) -> dict:
             "data": None
         }
 
+    return dic
+
+
+def queryAllUserService(request: Request) -> dict:
+    dic = {}
+    try:
+        start = request.values.get("start")
+        length = request.values.get("length")
+        if start is None or length is None:
+            return {
+                "code": __param_error__,
+                "message": __code_dict__.get(__param_error__, ""),
+                "data": None
+            }
+        rets = User.select().order_by(User.user_id).paginate(
+            int(start), int(length))
+        # print(len(rets))
+        lst = []
+        for ret in rets:
+            dct = model_to_dict(ret)
+            lst.append(dct)
+        dic = {
+            "code": __ok__,
+            "message": __code_dict__.get(__ok__, ""),
+            "data": lst
+        }
+    except:
+        traceback.print_exc()
+        dic = {
+            "code": __server_error__,
+            "message": __code_dict__.get(__server_error__, ""),
+            "data": None
+        }
     return dic

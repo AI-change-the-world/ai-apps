@@ -1,0 +1,1 @@
+python -m pwiz -e mysql -H 127.0.0.1 -p 3306 -u root -P testdb >model.py
