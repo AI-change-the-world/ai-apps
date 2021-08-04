@@ -16,6 +16,8 @@ const bgColor = Color(0xFF212332);
 
 const defaultPadding = 16.0;
 
+const welcomeStr = "自零伊始，於壹而终";
+
 class CommonUtils {
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);

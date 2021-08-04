@@ -17,30 +17,46 @@ class CenterWidgetState extends Equatable {
   final CenterWidgetStatus status;
   final List<String> tabNames;
   final List<Widget> screens;
+  final bool needRefresh;
+  final String currentTabName;
 
   const CenterWidgetState(
       {this.tabList = const [],
       this.centerWidget = const WelcomeWidget(),
       this.status = CenterWidgetStatus.initial,
       this.tabNames = const [],
-      this.screens = const []});
+      this.screens = const [],
+      this.needRefresh = false,
+      this.currentTabName = ""});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [status, tabList, centerWidget, tabNames, screens];
+  List<Object?> get props => [
+        status,
+        tabList,
+        centerWidget,
+        tabNames,
+        screens,
+        needRefresh,
+        currentTabName
+      ];
 
   CenterWidgetState copywith(
       List<MyTab>? tabList,
       Widget? centerWidget,
       CenterWidgetStatus? status,
       List<String>? tabNames,
-      List<Widget>? screens) {
+      List<Widget>? screens,
+      bool? needRefresh,
+      String? currentTabName) {
     return CenterWidgetState(
         centerWidget: centerWidget ?? this.centerWidget,
         tabList: tabList ?? this.tabList,
         status: status ?? this.status,
         tabNames: tabNames ?? this.tabNames,
-        screens: screens ?? this.screens);
+        screens: screens ?? this.screens,
+        needRefresh: needRefresh ?? this.needRefresh,
+        currentTabName: currentTabName ?? this.currentTabName);
   }
 
   @override

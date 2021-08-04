@@ -20,7 +20,8 @@ class WidgetInit extends CenterWidgetEvent {}
 
 class WidgetRefresh extends CenterWidgetEvent {
   final String widgetName;
-  const WidgetRefresh({required this.widgetName});
+  final bool needRefresh;
+  const WidgetRefresh({required this.widgetName, required this.needRefresh});
 }
 
 class WidgetAdd extends CenterWidgetEvent {

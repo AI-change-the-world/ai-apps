@@ -51,21 +51,17 @@ class _CenterWidgetState extends State<CenterWidget> {
                     child: Column(
                       children: [
                         if (Responsive.isDesktop(context))
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Center(
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: _centerWidgetBloc.state.tabList,
-                                // children:
-                                //     context.watch<ListTabsController>().tabs,
                               ),
                             ),
                           ),
                         _centerWidgetBloc.state.centerWidget,
-                        // context
-                        //     .read<CenterWidgetController>()
-                        //     .currentCenterWidget,
                       ],
                     )),
               ],
