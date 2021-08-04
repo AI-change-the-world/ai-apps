@@ -5,80 +5,90 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-08-02 19:10:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-02 19:11:57
+ * @LastEditTime: 2021-08-03 20:59:58
  */
 
+import 'package:auto_test_web/pages/main/bloc/center_widget_bloc.dart';
 import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class SideMenu extends StatelessWidget {
-  const SideMenu({
-    Key? key,
-  }) : super(key: key);
+class SideMenu extends StatefulWidget {
+  SideMenu({Key? key}) : super(key: key);
+
+  @override
+  _SideMenuState createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  late CenterWidgetBloc _centerWidgetBloc;
+  @override
+  void initState() {
+    super.initState();
+    _centerWidgetBloc = context.read<CenterWidgetBloc>();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Image.asset("assets/images/logo2.jpg"),
-          ),
-          DrawerListTile(
-            title: "Dashboard",
-            svgSrc: "assets/icons/menu_dashbord.svg",
-            press: () {
-              context
-                  .read<ListTabsController>()
-                  .addTab(MyTab(text: "Dashboard"));
-              context.read<CenterWidgetController>().update("Dashboard");
-            },
-          ),
-          DrawerListTile(
-            title: "Transaction",
-            svgSrc: "assets/icons/menu_tran.svg",
-            press: () {
-              context
-                  .read<ListTabsController>()
-                  .addTab(MyTab(text: "Transaction"));
-              context.read<CenterWidgetController>().update("Transaction");
-            },
-          ),
-          DrawerListTile(
-            title: "Task",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Documents",
-            svgSrc: "assets/icons/menu_doc.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Store",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Notification",
-            svgSrc: "assets/icons/menu_notification.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Profile",
-            svgSrc: "assets/icons/menu_profile.svg",
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Settings",
-            svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
-          ),
-        ],
-      ),
-    );
+    return BlocBuilder<CenterWidgetBloc, CenterWidgetState>(
+        builder: (context, state) {
+      return Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Image.asset("assets/images/logo2.jpg"),
+            ),
+            DrawerListTile(
+              title: "Dashboard",
+              svgSrc: "assets/icons/menu_dashbord.svg",
+              press: () {
+                _centerWidgetBloc.add(const WidgetAdd(widgetName: "Dashboard"));
+              },
+            ),
+            DrawerListTile(
+              title: "Transaction",
+              svgSrc: "assets/icons/menu_tran.svg",
+              press: () {
+                _centerWidgetBloc
+                    .add(const WidgetAdd(widgetName: "Transaction"));
+              },
+            ),
+            DrawerListTile(
+              title: "Task",
+              svgSrc: "assets/icons/menu_task.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Documents",
+              svgSrc: "assets/icons/menu_doc.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Store",
+              svgSrc: "assets/icons/menu_store.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Notification",
+              svgSrc: "assets/icons/menu_notification.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Profile",
+              svgSrc: "assets/icons/menu_profile.svg",
+              press: () {},
+            ),
+            DrawerListTile(
+              title: "Settings",
+              svgSrc: "assets/icons/menu_setting.svg",
+              press: () {},
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -118,46 +128,51 @@ class MyTab extends StatefulWidget {
 
   @override
   _MyTabState createState() => _MyTabState();
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
 }
 
 class _MyTabState extends State<MyTab> {
+  late CenterWidgetBloc _centerWidgetBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _centerWidgetBloc = context.read<CenterWidgetBloc>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // debugPrint(widget.text);
-        setState(() {
-          context.read<CenterWidgetController>().update(widget.text);
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.only(left: 10, right: 10),
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        height: 50,
-        decoration: const BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+    return BlocBuilder<CenterWidgetBloc, CenterWidgetState>(
+        builder: (context, state) {
+      return GestureDetector(
+        onTap: () {
+          // debugPrint(widget.text);
+          _centerWidgetBloc.add(WidgetAdd(widgetName: widget.text));
+        },
+        child: Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          height: 50,
+          decoration: const BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          ),
+          // width: 100,
+          child: Row(
+            children: [
+              Text(widget.text),
+              if (widget.text != "首页")
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    _centerWidgetBloc
+                        .add(WidgetDelete(widgetName: widget.text));
+                  },
+                ),
+            ],
+          ),
         ),
-        // width: 100,
-        child: Row(
-          children: [
-            Text(widget.text),
-            if (widget.text != "首页")
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  context.read<ListTabsController>().removeTab(widget);
-                  context.read<CenterWidgetController>().update("首页");
-                },
-              ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }
