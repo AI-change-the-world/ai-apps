@@ -124,6 +124,30 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
                               _jsonStrController.text = "";
                             },
                       child: const Text("清空")),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: const Text("预设的Json模板"),
+                                actions: [
+                                  CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("确定")),
+                                ],
+                                content: Column(
+                                  children: [],
+                                ),
+                              );
+                            });
+                      },
+                      child: const Text("查看Json模板")),
                 ],
               ),
               const SizedBox(

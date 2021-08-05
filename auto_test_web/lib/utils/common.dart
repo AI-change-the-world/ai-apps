@@ -18,11 +18,17 @@ const defaultPadding = 16.0;
 
 const welcomeStr = "自零伊始，於壹而终";
 
+const templeteJson = <String, dynamic>{
+  "url": "一个完整有效的url",
+  "params": {"param1": "类型", "param2": "类型", "...": "类型"},
+  "json": {"param1": "类型", "param2": "类型", "...": "类型"}
+};
+
 class CommonUtils {
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
-  static double _width = mediaQuery.size.width;
-  static double _height = mediaQuery.size.height;
+  static final double _width = mediaQuery.size.width;
+  static final double _height = mediaQuery.size.height;
 
   static screenW() {
     return _width;
