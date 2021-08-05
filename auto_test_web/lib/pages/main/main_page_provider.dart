@@ -84,7 +84,7 @@ class MainCenterWidget extends StatelessWidget {
       case "首页":
         body = const WelcomeWidget();
         break;
-      case "Dashboard":
+      case "创建一个新项目":
         body = NewProjectWidget();
         break;
       default:

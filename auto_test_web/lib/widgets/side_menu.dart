@@ -9,14 +9,13 @@
  */
 
 import 'package:auto_test_web/pages/main/bloc/center_widget_bloc.dart';
-import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class SideMenu extends StatefulWidget {
-  SideMenu({Key? key}) : super(key: key);
+  const SideMenu({Key? key}) : super(key: key);
 
   @override
   _SideMenuState createState() => _SideMenuState();
@@ -41,10 +40,10 @@ class _SideMenuState extends State<SideMenu> {
               child: Image.asset("assets/images/logo2.jpg"),
             ),
             DrawerListTile(
-              title: "Dashboard",
+              title: "创建一个新项目",
               svgSrc: "assets/icons/menu_dashbord.svg",
               press: () {
-                _centerWidgetBloc.add(const WidgetAdd(widgetName: "Dashboard"));
+                _centerWidgetBloc.add(const WidgetAdd(widgetName: "创建一个新项目"));
               },
             ),
             DrawerListTile(
@@ -116,7 +115,7 @@ class DrawerListTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(color: Colors.white54),
+        style: const TextStyle(color: Colors.white54),
       ),
     );
   }

@@ -1,10 +1,16 @@
 import 'dart:convert';
 
+import 'package:auto_test_web/models/CommonRes.dart';
 import 'package:auto_test_web/pages/main/bloc/center_widget_bloc.dart';
+import 'package:auto_test_web/utils/apis.dart';
 import 'package:auto_test_web/utils/common.dart';
+import 'package:auto_test_web/utils/dio_utils.dart';
+import 'package:auto_test_web/utils/toast_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewProjectWidget extends StatefulWidget {
   NewProjectWidget({Key? key}) : super(key: key);
@@ -21,6 +27,10 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
   late CenterWidgetBloc _centerWidgetBloc;
 
   bool execAble = false;
+
+  Apis apis = Apis();
+  DioUtil dio = DioUtil();
+  bool _posting = false;
 
   @override
   void initState() {
@@ -165,7 +175,41 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
               ),
 
               ElevatedButton(
-                  onPressed: !execAble ? null : () {}, child: const Text("提交")),
+                  onPressed: !execAble
+                      ? null
+                      : () async {
+                          _centerWidgetBloc
+                              .add(const LoadingEvent(isLoading: true));
+                          try {
+                            var _jsonStr = _jsonStrController.text;
+                            var _json = jsonDecode(_jsonStr);
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            var _userId = prefs.getInt("userid");
+                            Map<String, dynamic> _map = {
+                              "json": _json,
+                              "user_id": _userId
+                            };
+                            String url = apis.newProjectPre;
+                            Response response = await dio.post(url, data: _map);
+                            print(response.toString());
+                            CommenResponse commenResponse =
+                                CommenResponse.fromJson(
+                                    jsonDecode(response.toString()));
+                            if (commenResponse.code != 10) {
+                              showToastMessage(
+                                  commenResponse.message.toString(), context);
+                            } else {
+                              showToastMessage("上传成功", context);
+                            }
+                          } catch (e) {
+                            showToastMessage("Json解析错误，无法上传", context);
+                          }
+
+                          _centerWidgetBloc
+                              .add(const LoadingEvent(isLoading: false));
+                        },
+                  child: const Text("提交")),
             ],
           ),
         ),

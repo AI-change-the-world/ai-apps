@@ -14,30 +14,50 @@ import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:auto_test_web/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => MenuController(),
+          ),
+        ],
+        child: MainPageDemo(),
+      ),
+    );
+  }
+}
 
 class MainPageDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) {
-          return CenterWidgetBloc()..add(WidgetInit());
-        },
-        child: Scaffold(
-          drawer: SideMenu(),
-          key: context.read<MenuController>().scaffoldKey,
-          body: SafeArea(
-              child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context)) SideMenu(),
-              Expanded(
-                flex: 5,
-                child: CenterWidget(),
-              )
-            ],
-          )),
-        ));
+      create: (context) {
+        return CenterWidgetBloc()..add(WidgetInit());
+      },
+      child: Scaffold(
+        drawer: SideMenu(),
+        key: context.read<MenuController>().scaffoldKey,
+        body: SafeArea(
+            child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context)) SideMenu(),
+            Expanded(
+              flex: 5,
+              child: CenterWidget(),
+            )
+          ],
+        )),
+      ),
+    );
   }
 }

@@ -7,8 +7,10 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2021-08-03 20:22:31
  */
+import 'package:auto_test_web/pages/login/login_page.dart';
 import 'package:auto_test_web/pages/main/main_page_demo.dart';
 import 'package:auto_test_web/pages/main/main_page_provider.dart';
+import 'package:auto_test_web/routers.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: Routers.routers,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Admin Panel',
       theme: ThemeData.dark().copyWith(
@@ -31,20 +34,21 @@ class MyApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => MenuController(),
-          ),
-          // ChangeNotifierProvider(
-          //   create: (context) => ListTabsController(),
-          // ),
-          // ChangeNotifierProvider(
-          //   create: (context) => CenterWidgetController(),
-          // ),
-        ],
-        child: MainPageDemo(),
-      ),
+      // home: MultiProvider(
+      //   providers: [
+      //     ChangeNotifierProvider(
+      //       create: (context) => MenuController(),
+      //     ),
+      //     // ChangeNotifierProvider(
+      //     //   create: (context) => ListTabsController(),
+      //     // ),
+      //     // ChangeNotifierProvider(
+      //     //   create: (context) => CenterWidgetController(),
+      //     // ),
+      //   ],
+      //   child: MainPageDemo(),
+      // ),
+      initialRoute: Routers.pageLogin,
     );
   }
 }

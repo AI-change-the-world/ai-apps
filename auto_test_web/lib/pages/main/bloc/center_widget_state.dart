@@ -9,7 +9,7 @@
  */
 part of 'center_widget_bloc.dart';
 
-enum CenterWidgetStatus { initial, refresh, add, delete, notChanged }
+enum CenterWidgetStatus { initial, refresh, add, delete, notChanged, loading }
 
 class CenterWidgetState extends Equatable {
   final List<MyTab> tabList;
@@ -19,6 +19,7 @@ class CenterWidgetState extends Equatable {
   final List<Widget> screens;
   final bool needRefresh;
   final String currentTabName;
+  final bool isLoading;
 
   const CenterWidgetState(
       {this.tabList = const [],
@@ -27,7 +28,8 @@ class CenterWidgetState extends Equatable {
       this.tabNames = const [],
       this.screens = const [],
       this.needRefresh = false,
-      this.currentTabName = ""});
+      this.currentTabName = "",
+      this.isLoading = false});
 
   @override
   // TODO: implement props
@@ -48,7 +50,8 @@ class CenterWidgetState extends Equatable {
       List<String>? tabNames,
       List<Widget>? screens,
       bool? needRefresh,
-      String? currentTabName) {
+      String? currentTabName,
+      bool? isLoading) {
     return CenterWidgetState(
         centerWidget: centerWidget ?? this.centerWidget,
         tabList: tabList ?? this.tabList,
@@ -56,7 +59,8 @@ class CenterWidgetState extends Equatable {
         tabNames: tabNames ?? this.tabNames,
         screens: screens ?? this.screens,
         needRefresh: needRefresh ?? this.needRefresh,
-        currentTabName: currentTabName ?? this.currentTabName);
+        currentTabName: currentTabName ?? this.currentTabName,
+        isLoading: isLoading ?? this.isLoading);
   }
 
   @override

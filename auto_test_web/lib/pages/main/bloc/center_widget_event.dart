@@ -33,3 +33,8 @@ class WidgetDelete extends CenterWidgetEvent {
   final String widgetName;
   const WidgetDelete({required this.widgetName});
 }
+
+class LoadingEvent extends CenterWidgetEvent {
+  final bool isLoading;
+  const LoadingEvent({required this.isLoading});
+}

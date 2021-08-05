@@ -3,6 +3,10 @@ import 'package:auto_test_web/pages/login/login_page.dart';
 import 'package:auto_test_web/pages/main/main_page_demo.dart';
 import 'package:flutter/material.dart';
 
+class Global {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+}
+
 class Routers {
   static const pageLogin = "pageLogin";
   static const pageMain = "pageMain";
@@ -10,7 +14,7 @@ class Routers {
 
   static final Map<String, WidgetBuilder> routers = {
     pageLogin: (ctx) => LoginPage(),
-    pageMain: (ctx) => MainPageDemo(),
+    pageMain: (ctx) => const MainPage(),
     pageAdmin: (ctx) => const AdminMainPage(),
   };
 }
