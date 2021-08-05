@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:auto_test_web/routers.dart';
+import 'package:auto_test_web/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "自零伊始，从壹而终",
+                      welcomeStr,
                       style: TextStyle(fontFamily: "MaShanZheng", fontSize: 20),
                     ),
                     const SizedBox(height: 40),

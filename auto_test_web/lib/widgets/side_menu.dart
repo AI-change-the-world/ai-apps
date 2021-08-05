@@ -160,7 +160,12 @@ class _MyTabState extends State<MyTab> {
           // width: 100,
           child: Row(
             children: [
-              Text(widget.text),
+              Text(
+                widget.text,
+                style: _centerWidgetBloc.state.currentTabName == widget.text
+                    ? const TextStyle(color: Colors.red)
+                    : null,
+              ),
               if (widget.text != "首页")
                 IconButton(
                   icon: const Icon(Icons.delete),

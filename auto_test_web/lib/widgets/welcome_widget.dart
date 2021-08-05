@@ -17,9 +17,9 @@ class WelcomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 0.7 * CommonUtils.screenH(),
+      height: 0.7 * MediaQuery.of(context).size.height,
       child: const Center(
-        child: Text("自零伊始，从壹而终"),
+        child: Text(welcomeStr),
       ),
     );
   }

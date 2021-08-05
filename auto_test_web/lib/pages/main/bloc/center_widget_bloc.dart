@@ -49,7 +49,7 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
     TransitionFunction<CenterWidgetEvent, CenterWidgetState> transitionFn,
   ) {
     return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
+      events.debounceTime(const Duration(milliseconds: 100)),
       transitionFn,
     );
   }
@@ -61,15 +61,21 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
     List<Widget> screens = [];
     screens.add(center);
     return state.copywith(
-        tabs, center, CenterWidgetStatus.initial, ["首页"], screens);
+        tabs, center, CenterWidgetStatus.initial, ["首页"], screens, false, "首页");
   }
 
   Future<CenterWidgetState> _addToState(
       CenterWidgetState state, WidgetAdd event) async {
     if (state.tabNames.contains(event.widgetName)) {
       int id = state.tabNames.indexOf(event.widgetName);
-      return state.copywith(state.tabList, state.screens[id],
-          CenterWidgetStatus.refresh, state.tabNames, state.screens);
+      return state.copywith(
+          state.tabList,
+          state.screens[id],
+          CenterWidgetStatus.refresh,
+          state.tabNames,
+          state.screens,
+          false,
+          event.widgetName);
     } else {
       Widget newWidget = MainCenterWidget(
         widgetName: event.widgetName,
@@ -81,7 +87,9 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
           newWidget,
           CenterWidgetStatus.add,
           List.of(state.tabNames)..add(event.widgetName),
-          List.of(state.screens)..add(newWidget));
+          List.of(state.screens)..add(newWidget),
+          false,
+          event.widgetName);
     }
   }
 
@@ -93,6 +101,8 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
         state.screens[0],
         CenterWidgetStatus.add,
         List.of(state.tabNames)..removeAt(id),
-        List.of(state.screens)..removeAt(id));
+        List.of(state.screens)..removeAt(id),
+        false,
+        "首页");
   }
 }
