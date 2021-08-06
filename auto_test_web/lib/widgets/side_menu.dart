@@ -47,11 +47,10 @@ class _SideMenuState extends State<SideMenu> {
               },
             ),
             DrawerListTile(
-              title: "Transaction",
+              title: "获取所有项目",
               svgSrc: "assets/icons/menu_tran.svg",
               press: () {
-                _centerWidgetBloc
-                    .add(const WidgetAdd(widgetName: "Transaction"));
+                _centerWidgetBloc.add(const WidgetAdd(widgetName: "获取所有项目"));
               },
             ),
             DrawerListTile(

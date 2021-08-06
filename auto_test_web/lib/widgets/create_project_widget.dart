@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_test_web/models/CommonRes.dart';
 import 'package:auto_test_web/pages/main/bloc/center_widget_bloc.dart';
+import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:auto_test_web/utils/apis.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:auto_test_web/utils/dio_utils.dart';
@@ -178,8 +179,7 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
                   onPressed: !execAble
                       ? null
                       : () async {
-                          _centerWidgetBloc
-                              .add(const LoadingEvent(isLoading: true));
+                          context.read<LoadingController>().changeState(true);
                           try {
                             var _jsonStr = _jsonStrController.text;
                             var _json = jsonDecode(_jsonStr);
@@ -188,11 +188,12 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
                             var _userId = prefs.getInt("userid");
                             Map<String, dynamic> _map = {
                               "json": _json,
-                              "user_id": _userId
+                              "user_id": _userId,
+                              "project_name": _projectTextController.text
                             };
                             String url = apis.newProjectPre;
                             Response response = await dio.post(url, data: _map);
-                            print(response.toString());
+                            // print(response.toString());
                             CommenResponse commenResponse =
                                 CommenResponse.fromJson(
                                     jsonDecode(response.toString()));
@@ -206,8 +207,11 @@ class _NewProjectWidgetState extends State<NewProjectWidget> {
                             showToastMessage("Json解析错误，无法上传", context);
                           }
 
-                          _centerWidgetBloc
-                              .add(const LoadingEvent(isLoading: false));
+                          await Future.delayed(Duration.zero).then((value) {
+                            context
+                                .read<LoadingController>()
+                                .changeState(false);
+                          });
                         },
                   child: const Text("提交")),
             ],

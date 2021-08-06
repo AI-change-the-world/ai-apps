@@ -8,12 +8,13 @@
  * @LastEditTime: 2021-08-03 20:32:25
  */
 import 'package:auto_test_web/pages/main/bloc/center_widget_bloc.dart';
+import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:auto_test_web/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class CenterWidget extends StatefulWidget {
   const CenterWidget({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class _CenterWidgetState extends State<CenterWidget> {
     return BlocBuilder<CenterWidgetBloc, CenterWidgetState>(
         builder: (context, state) {
       return LoadingOverlay(
-        isLoading: _centerWidgetBloc.state.isLoading,
+        isLoading: context.watch<LoadingController>().isLoading,
         child: SafeArea(
           child: Column(
             children: [

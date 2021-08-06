@@ -25,6 +25,7 @@ def createProjectService(request: Request) -> dict:
         else:
             f = request.files['json']
         user_id = data.get("user_id", None)
+        project_name = data.get("project_name", "")
 
         if _json is None and f is None:
             return {
@@ -45,7 +46,8 @@ def createProjectService(request: Request) -> dict:
 
         p = Project(create_time=current_time,
                     file_path=upload_path,
-                    user_id=user_id)
+                    user_id=user_id,
+                    project_name=project_name)
         p.save()
         dic = {
             "code": __ok__,
@@ -137,6 +139,9 @@ def queryProjects(request: Request) -> dict:
                 "data": None
             }
 
+        retsAll = Project.select().where(Project.user_id == user_id).order_by(
+            Project.project_id)
+
         user = User.get(User.user_id == user_id)
         if user.is_root == 1:
             rets = Project.select().order_by(Project.project_id).paginate(
@@ -147,7 +152,7 @@ def queryProjects(request: Request) -> dict:
                 Project.project_id).paginate(int(start), int(length))
         print(len(rets))
         lst = []
-        if len(rets)>0:
+        if len(rets) > 0:
             for ret in rets:
                 ret.create_time = str(ret.create_time)
                 dct = model_to_dict(ret)
@@ -155,7 +160,10 @@ def queryProjects(request: Request) -> dict:
         dic = {
             "code": __ok__,
             "message": __code_dict__.get(__ok__, ""),
-            "data": lst
+            "data": {
+                "list": lst,
+                "total": len(retsAll)
+            }
         }
 
     except User.DoesNotExist:

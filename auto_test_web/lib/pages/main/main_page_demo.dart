@@ -14,7 +14,6 @@ import 'package:auto_test_web/pages/main/main_page_provider.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:auto_test_web/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +27,9 @@ class MainPage extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => MenuController(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => LoadingController(),
           ),
         ],
         child: MainPageDemo(),

@@ -13,7 +13,7 @@ class LoginInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    if (options.path.contains("user_id")) {
+    if (options.path.contains("user_id=")) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var _userId = prefs.getInt("userid");
       // print("===================");
