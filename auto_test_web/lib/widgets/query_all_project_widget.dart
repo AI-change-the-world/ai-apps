@@ -103,9 +103,10 @@ class _AllProjectsWidgetState extends State<AllProjectsWidget> {
                                 }
                               });
                             }),
-                        const DataColumn(label: Text("项目创建时间")),
                         const DataColumn(label: Text("项目名")),
+                        const DataColumn(label: Text("项目创建时间")),
                         const DataColumn(label: Text("执行")),
+                        const DataColumn(label: Text("查看项目执行状态")),
                       ],
                       source:
                           ProjectDataTableSource(_list, _totalProjectNumber),
@@ -194,7 +195,11 @@ class ProjectDataTableSource extends DataTableSource {
             onPressed: () {
               debugPrint("Go");
             },
-          ))
+          )),
+          DataCell(IconButton(
+            icon: const Icon(Icons.file_copy),
+            onPressed: () {},
+          )),
         ]);
       }
     }
