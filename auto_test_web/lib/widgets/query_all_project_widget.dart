@@ -8,10 +8,15 @@ import 'package:auto_test_web/utils/apis.dart';
 import 'package:auto_test_web/utils/common.dart';
 import 'package:auto_test_web/utils/dio_utils.dart';
 import 'package:auto_test_web/utils/toast_utils.dart';
+import 'package:auto_test_web/widgets/project_detail_widget.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+Apis apis = Apis();
+DioUtil dio = DioUtil();
 
 class AllProjectsWidget extends StatefulWidget {
   AllProjectsWidget({Key? key}) : super(key: key);
@@ -24,8 +29,6 @@ class _AllProjectsWidgetState extends State<AllProjectsWidget> {
   // ignore: prefer_typing_uninitialized_variables
   var _queruAllProjects;
   late CenterWidgetBloc _centerWidgetBloc;
-  Apis apis = Apis();
-  DioUtil dio = DioUtil();
 
   // ignore: prefer_final_fields
   List<ProjectModel> _list = [];
@@ -57,60 +60,62 @@ class _AllProjectsWidgetState extends State<AllProjectsWidget> {
               if (null != snapshot.data) {
                 // debugPrint(snapshot.data.toString());
 
-                return Container(
-                  constraints: BoxConstraints(
-                      minHeight: 0.7 * MediaQuery.of(context).size.height,
-                      minWidth: 0.5 * MediaQuery.of(context).size.width),
-                  child: SingleChildScrollView(
-                    child: PaginatedDataTable(
-                      sortAscending: _sortAscending,
-                      sortColumnIndex: 0,
-                      availableRowsPerPage: const [5, 10],
-                      rowsPerPage: _rowPerPage,
-                      onRowsPerPageChanged: (v) {
-                        setState(() {
-                          if (null != v) {
-                            debugPrint(_list.length.toString());
-                            _rowPerPage = v;
-                          }
-                        });
-                      },
-                      onPageChanged: (page) async {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: PaginatedDataTable(
+                    sortAscending: _sortAscending,
+                    sortColumnIndex: 0,
+                    availableRowsPerPage: const [5, 10],
+                    rowsPerPage: _rowPerPage,
+                    onRowsPerPageChanged: (v) async {
+                      if (null != v) {
+                        debugPrint(_list.length.toString());
                         context.read<LoadingController>().changeState(true);
-                        if (page >= _list.length &&
-                            _totalProjectNumber > page) {
-                          _start += 1;
-                          await queryProjects(_start, _rowPerPage);
-                          setState(() {});
-                        }
+                        _rowPerPage = v;
+                        _list.clear();
+                        _start = 1;
+                        await queryProjects(_start, _rowPerPage);
                         await Future.delayed(Duration.zero).then((value) {
                           context.read<LoadingController>().changeState(false);
                         });
-                      },
-                      header: const Text("你的所有项目"),
-                      columns: [
-                        DataColumn(
-                            label: const Text("项目ID"),
-                            onSort: (index, sortAscending) {
-                              setState(() {
-                                _sortAscending = sortAscending;
-                                if (sortAscending) {
-                                  _list.sort((a, b) =>
-                                      a.projectId!.compareTo(b.projectId!));
-                                } else {
-                                  _list.sort((a, b) =>
-                                      b.projectId!.compareTo(a.projectId!));
-                                }
-                              });
-                            }),
-                        const DataColumn(label: Text("项目名")),
+                      }
+                      setState(() {});
+                    },
+                    onPageChanged: (page) async {
+                      context.read<LoadingController>().changeState(true);
+                      if (page >= _list.length && _totalProjectNumber > page) {
+                        _start = _start + 1;
+                        await queryProjects(_start, _rowPerPage);
+                        setState(() {});
+                      }
+                      await Future.delayed(Duration.zero).then((value) {
+                        context.read<LoadingController>().changeState(false);
+                      });
+                    },
+                    header: const Text("你的所有项目"),
+                    columns: [
+                      DataColumn(
+                          label: const Text("项目ID"),
+                          onSort: (index, sortAscending) {
+                            setState(() {
+                              _sortAscending = sortAscending;
+                              if (sortAscending) {
+                                _list.sort((a, b) =>
+                                    a.projectId!.compareTo(b.projectId!));
+                              } else {
+                                _list.sort((a, b) =>
+                                    b.projectId!.compareTo(a.projectId!));
+                              }
+                            });
+                          }),
+                      const DataColumn(label: Text("项目名")),
+                      if (Responsive.isDesktop(context))
                         const DataColumn(label: Text("项目创建时间")),
-                        const DataColumn(label: Text("执行")),
-                        const DataColumn(label: Text("查看项目执行状态")),
-                      ],
-                      source:
-                          ProjectDataTableSource(_list, _totalProjectNumber),
-                    ),
+                      const DataColumn(label: Text("执行")),
+                      const DataColumn(label: Text("查看项目执行状态")),
+                    ],
+                    source: ProjectDataTableSource(_list, _totalProjectNumber,
+                        context: context),
                   ),
                 );
               } else {
@@ -164,8 +169,9 @@ class _AllProjectsWidgetState extends State<AllProjectsWidget> {
 }
 
 class ProjectDataTableSource extends DataTableSource {
-  ProjectDataTableSource(this.data, this.numbers);
+  ProjectDataTableSource(this.data, this.numbers, {required this.context});
   int _selectCount = 0;
+  BuildContext context;
   int numbers; //当前选中的行数
 
   final List<ProjectModel>? data;
@@ -186,19 +192,58 @@ class ProjectDataTableSource extends DataTableSource {
         return DataRow.byIndex(index: index, cells: [
           DataCell(Text('${data![index].projectId}')),
           DataCell(Text(data![index].projectName ?? "无")),
-          DataCell(Text(data![index].createTime ?? "无")),
+          if (Responsive.isDesktop(context))
+            DataCell(Text(data![index].createTime ?? "无")),
           DataCell(IconButton(
             icon: const Icon(
               Icons.arrow_right,
               color: Colors.green,
             ),
-            onPressed: () {
+            onPressed: () async {
               debugPrint("Go");
+              String url = apis.startProjectPre;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              var _userId = prefs.getInt("userid");
+              _userId ??= -1;
+              ProjectStartModel projectStartModel = ProjectStartModel();
+              projectStartModel.userId = _userId;
+              projectStartModel.projectId = data![index].projectId;
+              Map _map = projectStartModel.toJson();
+              Response response = await dio.post(url, data: _map);
+              // print(response);
+              if (null != response) {
+                CommenResponse commenResponse =
+                    CommenResponse.fromJson(jsonDecode(response.toString()));
+                showToastMessage(commenResponse.message ?? "失败", context);
+              } else {
+                showToastMessage("失败", context);
+              }
             },
           )),
           DataCell(IconButton(
             icon: const Icon(Icons.file_copy),
-            onPressed: () {},
+            onPressed: () async {
+              int? projectId = data![index].projectId;
+              if (null != projectId) {
+                showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: const Text("项目详细信息"),
+                        content: ProjectDetailedWidget(
+                          projectId: projectId,
+                        ),
+                        actions: [
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("确定"))
+                        ],
+                      );
+                    });
+              }
+            },
           )),
         ]);
       }

@@ -16,6 +16,7 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -23,27 +24,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: Routers.routers,
       debugShowCheckedModeBanner: false,
-      title: 'I0 Testing Platform',
+      title: 'I0 Testing Platform' + versionCode,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: bgColor,
-        // textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-        //     .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      // home: MultiProvider(
-      //   providers: [
-      //     ChangeNotifierProvider(
-      //       create: (context) => MenuController(),
-      //     ),
-      //     // ChangeNotifierProvider(
-      //     //   create: (context) => ListTabsController(),
-      //     // ),
-      //     // ChangeNotifierProvider(
-      //     //   create: (context) => CenterWidgetController(),
-      //     // ),
-      //   ],
-      //   child: MainPageDemo(),
-      // ),
       initialRoute: Routers.pageLogin,
     );
   }

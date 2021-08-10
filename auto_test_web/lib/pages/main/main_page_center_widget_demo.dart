@@ -44,31 +44,20 @@ class _CenterWidgetState extends State<CenterWidget> {
         child: SafeArea(
           child: Column(
             children: [
-              Header(),
-              SizedBox(height: defaultPadding),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                      flex: 5,
-                      child: Column(
-                        children: [
-                          if (Responsive.isDesktop(context))
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: _centerWidgetBloc.state.tabList,
-                                ),
-                              ),
-                            ),
-                          _centerWidgetBloc.state.centerWidget,
-                        ],
-                      )),
-                ],
-              ),
+              const Header(),
+              const SizedBox(height: defaultPadding),
+              if (Responsive.isDesktop(context))
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: _centerWidgetBloc.state.tabList,
+                    ),
+                  ),
+                ),
+              _centerWidgetBloc.state.centerWidget,
             ],
           ),
         ),

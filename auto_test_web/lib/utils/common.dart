@@ -18,10 +18,11 @@ const defaultPadding = 16.0;
 
 const welcomeStr = "自零伊始，於壹而终";
 
+const versionCode = " v.alpha-1";
+
 const templeteJson = <String, dynamic>{
-  "url": "一个完整有效的url",
-  "params": {"param1": "类型", "param2": "类型", "...": "类型"},
-  "json": {"param1": "类型", "param2": "类型", "...": "类型"}
+  "params": {"param1": "类型", "param2": "类型", "...": "如果不是预设类型，则默认认为是不可变数据"},
+  "json": {"param1": "类型", "param2": "类型", "...": "如果不是预设类型，则默认认为是不可变数据"}
 };
 
 class CommonUtils {

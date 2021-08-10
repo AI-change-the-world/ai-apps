@@ -46,19 +46,27 @@ class MainPageDemo extends StatelessWidget {
         return CenterWidgetBloc()..add(WidgetInit());
       },
       child: Scaffold(
-        drawer: SideMenu(),
+        drawer: const SideMenu(),
         key: context.read<MenuController>().scaffoldKey,
         body: SafeArea(
+          child: SingleChildScrollView(
+              child: ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height < 500
+                    ? 700
+                    : MediaQuery.of(context).size.height * 1.5),
             child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context)) SideMenu(),
-            Expanded(
-              flex: 5,
-              child: CenterWidget(),
-            )
-          ],
-        )),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (Responsive.isDesktop(context)) const SideMenu(),
+                const Expanded(
+                  flex: 5,
+                  child: CenterWidget(),
+                )
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }

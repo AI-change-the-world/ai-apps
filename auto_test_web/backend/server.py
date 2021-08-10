@@ -8,7 +8,7 @@ from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from service.project_service import createProjectService, queryProjects, runProjectService
+from service.project_service import createProjectService, getProjectExecuationStatus, queryProjects, runProjectService
 from service.user_service import (createUserService, loginService, queryAllUserService,
                                   setUserService)
 
@@ -70,8 +70,13 @@ def getAllUsers():
     return json.dumps(dic, ensure_ascii=False)
 
 @app.route("/getprojects",methods=['GET'])
-def getprojects():
+def getProjects():
     dic = queryProjects(request=request)
+    return json.dumps(dic, ensure_ascii=False)
+
+@app.route("/getprojectstatus",methods=['GET'])
+def getProjectStatus():
+    dic = getProjectExecuationStatus(request=request)
     return json.dumps(dic, ensure_ascii=False)
 
 if __name__ == "__main__":

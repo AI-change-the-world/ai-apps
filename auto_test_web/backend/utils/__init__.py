@@ -17,6 +17,9 @@ __invalid_json__ = 42
 __invalid_project__ = 43
 __project_done__ = 44
 __project_create_ok__ = 40
+__invalid_project_ststus__ = 45
+__unnessary_project__ = 46
+__invalid_project_url__ = 47
 
 __code_dict__ = {
     __ok__: "正常",
@@ -35,5 +38,8 @@ __code_dict__ = {
     __invalid_json__:"json 不正确",
     __invalid_project__:"项目不存在",
     __project_done__:"项目已完成",
-    __project_create_ok__:"已创建任务，正在后台执行"
+    __project_create_ok__:"已创建任务，正在后台执行",
+    __invalid_project_ststus__:"项目运行状态不明",
+    __unnessary_project__:"不可重复创建项目",
+    __invalid_project_url__:"project的url为空"
 }
