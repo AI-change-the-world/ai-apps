@@ -1,28 +1,13 @@
 import json
-import logging
+
 import os
-from logging import INFO, getLogger
 
-
-from concurrent_log_handler import ConcurrentRotatingFileHandler
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from service.project_service import createProjectService, getProjectExecuationStatus, queryProjects, runProjectService
-from service.user_service import (createUserService, loginService, queryAllUserService,
-                                  setUserService)
-
-current_dir = os.getcwd()
-log_file = current_dir + os.sep + "logs" + os.sep + 'log.txt'
-
-logger = getLogger(__name__)
-formatter_log = logging.Formatter(
-    '%(asctime)s - %(filename)s [line: %(lineno)d] [%(levelname)s] ----- %(message)s'
-)
-rotateHandler = ConcurrentRotatingFileHandler(log_file, "a", 512 * 1024, 5)
-rotateHandler.setFormatter(formatter_log)
-logger.addHandler(rotateHandler)
-logger.setLevel(INFO)
+from service.user_service import (createUserService, loginService,
+                                  queryAllUserService, setUserService)
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -64,20 +49,56 @@ def runProject():
     dic = runProjectService(request)
     return json.dumps(dic, ensure_ascii=False)
 
+
 @app.route("/getallusers", methods=['GET'])
 def getAllUsers():
     dic = queryAllUserService(request=request)
     return json.dumps(dic, ensure_ascii=False)
 
-@app.route("/getprojects",methods=['GET'])
+
+@app.route("/getprojects", methods=['GET'])
 def getProjects():
     dic = queryProjects(request=request)
     return json.dumps(dic, ensure_ascii=False)
 
-@app.route("/getprojectstatus",methods=['GET'])
+
+@app.route("/getprojectstatus", methods=['GET'])
 def getProjectStatus():
     dic = getProjectExecuationStatus(request=request)
     return json.dumps(dic, ensure_ascii=False)
 
+
+@app.route("/test", methods=['post'])
+def testPost():
+    try:
+        if request.values.get("start") == str(2) and request.values.get(
+                "length") == str(10):
+            _json = json.loads(request.data)
+            if _json.get("name", None) == "张三":
+                return json.dumps({
+                    "message": "ok",
+                    "code": 200
+                },
+                                  ensure_ascii=False)
+            else:
+                return json.dumps({
+                    "message": "json error",
+                    "code": 201
+                },
+                                  ensure_ascii=False)
+        else:
+            return json.dumps({
+                "message": "param error",
+                "code": 202
+            },
+                              ensure_ascii=False)
+    except:
+        return json.dumps({
+            "message": "error",
+            "code": 203
+        },
+                          ensure_ascii=False)
+
+
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=12356, debug=True)
+    app.run("0.0.0.0", port=12356, debug=False)

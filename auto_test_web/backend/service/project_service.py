@@ -2,13 +2,15 @@ import json
 import os
 import time
 import traceback
+from utils.exec_project import execProject
 
 from flask.wrappers import Request
 from playhouse.shortcuts import model_to_dict
 from utils import (__code_dict__, __invalid_json__, __invalid_project__,
                    __invalid_project_ststus__, __invalid_user__, __ok__,
                    __param_error__, __project_create_ok__, __project_done__,
-                   __server_error__, __unnessary_project__,__invalid_project_url__)
+                   __server_error__, __unnessary_project__,
+                   __invalid_project_url__)
 from utils.model import ExecLog, Project, User
 
 basepath = os.getcwd()
@@ -27,7 +29,7 @@ def createProjectService(request: Request) -> dict:
             f = request.files['json']
         user_id = data.get("user_id", None)
         project_name = data.get("project_name", "")
-        project_url = data.get("project_url","")
+        project_url = data.get("project_url", "")
 
         if _json is None and f is None:
             return {
@@ -50,7 +52,7 @@ def createProjectService(request: Request) -> dict:
                     file_path=upload_path,
                     user_id=user_id,
                     project_name=project_name,
-                    project_url = project_url)
+                    project_url=project_url)
         p.save()
         dic = {
             "code": __ok__,
@@ -94,11 +96,12 @@ def runProjectService(request: Request) -> dict:
                         Project.project_id == project_id)
         if p.project_url == "" or p.project_url is None:
             return {
-                    "code": __invalid_project_url__,
-                    "message": __code_dict__.get(__invalid_project_url__, ""),
-                    "data": None
-                }
+                "code": __invalid_project_url__,
+                "message": __code_dict__.get(__invalid_project_url__, ""),
+                "data": None
+            }
         jsonFilePath = p.file_path  # 这里开始新的线程做测试 。。。。。。
+
         execes = ExecLog.select().where(ExecLog.admin_id == user_id,
                                         ExecLog.projrct_id == project_id)
         if (len(execes)) > 0:
@@ -114,13 +117,18 @@ def runProjectService(request: Request) -> dict:
                     "message": __code_dict__.get(__unnessary_project__, ""),
                     "data": None
                 }
-            
+
         e = ExecLog(
             start_time=current_time,
             admin_id=user_id,
             projrct_id=project_id,
         )
         e.save()
+
+        execProject(path=jsonFilePath,
+                    url=p.project_url,
+                    projectId=project_id,
+                    userId=user_id)
         dic = {
             "code": __project_create_ok__,
             "message": __code_dict__.get(__project_create_ok__, ""),

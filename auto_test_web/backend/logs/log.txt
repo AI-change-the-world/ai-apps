@@ -1,0 +1,10 @@
+2021-08-10 15:35:57,927 - exec_project.py [line: 83] [CRITICAL] ----- query not found
+2021-08-10 15:37:34,229 - exec_project.py [line: 83] [CRITICAL] ----- query not found
+2021-08-10 15:40:41,557 - exec_project.py [line: 93] [CRITICAL] ----- query not found
+2021-08-10 15:42:14,056 - exec_project.py [line: 97] [CRITICAL] ----- Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2021-08-10 15:45:59,391 - exec_project.py [line: 97] [CRITICAL] ----- the JSON object must be str, bytes or bytearray, not dict
+2021-08-10 16:00:03,619 - exec_project.py [line: 123] [CRITICAL] ----- 'list' object has no attribute 'keys'
+2021-08-10 16:03:54,237 - exec_project.py [line: 127] [CRITICAL] ----- 'allow_unicode' is an invalid keyword argument for open()
+2021-08-10 16:24:37,537 - exec_project.py [line: 137] [CRITICAL] ----- argument of type 'NoneType' is not iterable
+2021-08-10 16:31:59,202 - exec_project.py [line: 137] [CRITICAL] ----- [WinError 3] 系统找不到指定的路径。: 'D:\\github_repo\\ai-apps\\auto_test_web\\backend\\result\\27'
+2021-08-10 16:35:21,024 - exec_project.py [line: 140] [CRITICAL] ----- [WinError 3] 系统找不到指定的路径。: 'D:\\github_repo\\ai-apps\\auto_test_web\\backend\\result\\27'

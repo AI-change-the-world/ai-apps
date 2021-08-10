@@ -22,7 +22,9 @@ const versionCode = " v.alpha-1";
 
 const templeteJson = <String, dynamic>{
   "params": {"param1": "类型", "param2": "类型", "...": "如果不是预设类型，则默认认为是不可变数据"},
-  "json": {"param1": "类型", "param2": "类型", "...": "如果不是预设类型，则默认认为是不可变数据"}
+  "json": {"param1": "类型", "param2": "类型", "...": "如果不是预设类型，则默认认为是不可变数据"},
+  "boundries": {"param___eq": "value", "...": "三个下划线是分割符，前面是参数名，后面是关系，value是值"},
+  "method": "value"
 };
 
 class CommonUtils {
