@@ -101,6 +101,7 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
       try {
         String content = file.readAsStringSync();
         final _document = XmlDocument.parse(content);
+        // print(_document);
         final objects = _document.findAllElements("object");
         int index = 0;
         for (var i in objects) {

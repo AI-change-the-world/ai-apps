@@ -9,7 +9,6 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/main_page.dart';
-import 'file:///d:/github_repo/ai-apps/mobilelabelimg/test/test_abspath_page.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
 // import 'package:mobilelabelimg/tests/drag_scale.dart';
 // import 'package:mobilelabelimg/tests/scale_demo.dart';

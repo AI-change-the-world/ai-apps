@@ -78,8 +78,10 @@ class _RectState extends State<Rect> {
     int leftTopX = this.topLeftKey.currentState!.offset.dx.toInt();
     int leftTopY = this.topLeftKey.currentState!.offset.dy.toInt();
 
-    int rightBottomX = this.bottomRightKey.currentState!.offset.dx.toInt();
-    int rightBottomY = this.bottomRightKey.currentState!.offset.dy.toInt();
+    int rightBottomX =
+        this.bottomRightKey.currentState!.offset.dx.toInt() + circleSize.ceil();
+    int rightBottomY =
+        this.bottomRightKey.currentState!.offset.dy.toInt() + circleSize.ceil();
 
     return [leftTopX, leftTopY, rightBottomX, rightBottomY];
   }

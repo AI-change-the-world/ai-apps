@@ -64,19 +64,17 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     return BlocBuilder<WorkboardBloc, WorkboardState>(
         builder: (context, state) {
       return Scaffold(
-        body: SafeArea(
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.fill,
-              image: FileImage(File(imgPath!)),
-            )),
-            // color: Colors.greenAccent,
-            width: double.infinity,
-            height: double.infinity,
-            child: Stack(
-              children: _workboardBloc.state.param.rectBoxes,
-            ),
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            fit: BoxFit.fill,
+            image: FileImage(File(imgPath!)),
+          )),
+          // color: Colors.greenAccent,
+          width: double.infinity,
+          height: double.infinity,
+          child: Stack(
+            children: _workboardBloc.state.param.rectBoxes,
           ),
         ),
         floatingActionButton: Container(
