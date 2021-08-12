@@ -10,6 +10,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/main_page.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
+import 'package:mobilelabelimg/widgets/polygon.dart';
+import 'package:mobilelabelimg/workboard/views/labelme_workboard_demo.dart';
 // import 'package:mobilelabelimg/tests/drag_scale.dart';
 // import 'package:mobilelabelimg/tests/scale_demo.dart';
 // import 'package:mobilelabelimg/widgets/rect.dart';
@@ -19,7 +21,7 @@ void main() {
   runApp(new MaterialApp(
     routes: Routers.routers,
     debugShowCheckedModeBanner: false,
-    home: MainPage(),
-    // home: MyApp(),
+    // home: MainPage(),
+    home: Polygon(),
   ));
 }
