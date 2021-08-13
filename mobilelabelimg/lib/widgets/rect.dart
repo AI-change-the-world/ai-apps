@@ -12,12 +12,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
+import 'package:mobilelabelimg/utils/common.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 
 part './points.dart';
-
-const circleSize = 30.0;
-const defaultRectSize = 300.0;
 
 class RectBox extends StatelessWidget {
   int id;

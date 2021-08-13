@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import "dart:ui" as _ui;
 
+const circleSize = 30.0;
+const defaultRectSize = 300.0;
+
 class CommonUtil {
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobilelabelimg/entity/PolygonEntity.dart';
+import 'package:mobilelabelimg/widgets/polygon_points.dart';
 import 'package:provider/provider.dart';
-part './polygon_provider.dart';
-
-const circleSize = 30.0;
+import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+import 'package:mobilelabelimg/utils/common.dart';
 
 class LinePainter extends CustomPainter {
   final List<PolygonPoint> points;
@@ -26,25 +27,35 @@ class LinePainter extends CustomPainter {
           Offset(keys[i].currentState!.defaultLeft + 0.5 * circleSize,
               keys[i].currentState!.defaultTop + 0.5 * circleSize),
           line);
-      if (i == points.length - 1 &&
-          (keys.first.currentState!.defaultLeft -
-                      keys.last.currentState!.defaultLeft)
-                  .abs() <
-              circleSize &&
-          (keys.first.currentState!.defaultTop -
-                      keys.last.currentState!.defaultTop)
-                  .abs() <
-              circleSize) {
-        print("该收网了");
-        canvas.drawLine(
-            Offset(keys.last.currentState!.defaultLeft + 0.5 * circleSize,
-                keys.last.currentState!.defaultTop + 0.5 * circleSize),
-            Offset(keys.first.currentState!.defaultLeft + 0.5 * circleSize,
-                keys.first.currentState!.defaultTop + 0.5 * circleSize),
-            line);
-        print(points.last);
-        print(points.first);
-      }
+
+      canvas.drawLine(
+          Offset(keys.last.currentState!.defaultLeft + 0.5 * circleSize,
+              keys.last.currentState!.defaultTop + 0.5 * circleSize),
+          Offset(keys.first.currentState!.defaultLeft + 0.5 * circleSize,
+              keys.first.currentState!.defaultTop + 0.5 * circleSize),
+          line);
+
+      /// dont know why this section does not work
+      ///
+      // if (i == points.length - 1 &&
+      //     (keys.first.currentState!.defaultLeft -
+      //                 keys.last.currentState!.defaultLeft)
+      //             .abs() <
+      //         circleSize &&
+      //     (keys.first.currentState!.defaultTop -
+      //                 keys.last.currentState!.defaultTop)
+      //             .abs() <
+      //         circleSize) {
+      //   print("该收网了");
+      //   canvas.drawLine(
+      //       Offset(keys.last.currentState!.defaultLeft + 0.5 * circleSize,
+      //           keys.last.currentState!.defaultTop + 0.5 * circleSize),
+      //       Offset(keys.first.currentState!.defaultLeft + 0.5 * circleSize,
+      //           keys.first.currentState!.defaultTop + 0.5 * circleSize),
+      //       line);
+      //   print(points.last);
+      //   print(points.first);
+      // }
     }
   }
 
@@ -52,92 +63,6 @@ class LinePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     // TODO: implement shouldRepaint
     return true;
-  }
-}
-
-class PolygonPoint extends StatefulWidget {
-  PolygonPoint({Key? key, required this.poffset, required this.index})
-      : super(key: key);
-  Offset poffset;
-  int index;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    // TODO: implement toString
-    return index.toString();
-  }
-
-  @override
-  PolygonPointState createState() => PolygonPointState();
-}
-
-class PolygonPointState extends State<PolygonPoint> {
-  late Offset offset;
-
-  late double defaultLeft;
-  late double defaultTop;
-
-  late double fatherLeft;
-  late double fatherTop;
-
-  @override
-  void initState() {
-    super.initState();
-    offset = widget.poffset;
-    defaultLeft = offset.dx;
-    defaultTop = offset.dy;
-    fatherLeft = 0;
-    fatherTop = 0;
-  }
-
-  moveTO(Offset offset_) {
-    setState(() {
-      // offset = offset_;
-      defaultLeft = offset_.dx;
-      defaultTop = offset_.dy;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-        left: defaultLeft + fatherLeft,
-        top: defaultTop + fatherTop,
-        child: Draggable(
-            onDraggableCanceled: (Velocity velocity, Offset _offset) {
-              moveTO(_offset);
-            },
-            child: Container(
-                width: circleSize,
-                height: circleSize,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(150),
-                  border: new Border.all(color: Colors.blue, width: 0.5),
-                )),
-            feedback: Container(
-                width: circleSize,
-                height: circleSize,
-                decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(150),
-                    border: new Border.all(
-                        color: Colors.blueAccent, width: 0.5)))));
-  }
-}
-
-class Polygon extends StatelessWidget {
-  const Polygon({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-        child: Scaffold(
-          body: PolygonDemo(),
-        ),
-        providers: [
-          ChangeNotifierProvider(create: (_) => DrawingProvicer()),
-        ]);
   }
 }
 
@@ -149,8 +74,15 @@ class PolygonDemo extends StatefulWidget {
 }
 
 class _PolygonDemoState extends State<PolygonDemo> {
-  List<PolygonPoint> pList = [];
-  List<GlobalKey<PolygonPointState>> keyList = [];
+  late PolygonEntity polygonEntity =
+      PolygonEntity(keyList: [], pList: [], className: "", index: 0);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // context.read<AddOrRemovePolygonProvider>().add(polygonEntity);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,16 +96,39 @@ class _PolygonDemoState extends State<PolygonDemo> {
           PolygonPoint point = PolygonPoint(
             key: key,
             poffset: Offset(x, y),
-            index: pList.length + 1,
+            index: polygonEntity.pList.length + 1,
           );
 
+          context.read<MovePolygonProvider>().add(key);
+
           setState(() {
-            keyList.add(key);
-            pList.add(point);
-            if (pList.length > 2) {
-              if ((x - keyList[0].currentState!.defaultLeft).abs() <
+            polygonEntity.keyList.add(key);
+            polygonEntity.pList.add(point);
+
+            // print("=========================================");
+            // print(x);
+            // print(y);
+            // print(context
+            //     .read<AddOrRemovePolygonProvider>()
+            //     .poList[0]
+            //     .pList
+            //     .last
+            //     .poffset
+            //     .dx);
+            // print(context
+            //     .read<AddOrRemovePolygonProvider>()
+            //     .poList[0]
+            //     .pList
+            //     .last
+            //     .poffset
+            //     .dy);
+            // print("=========================================");
+            if (polygonEntity.pList.length > 2) {
+              if ((x - polygonEntity.keyList[0].currentState!.defaultLeft)
+                          .abs() <
                       circleSize &&
-                  (y - keyList[0].currentState!.defaultTop).abs() <
+                  (y - polygonEntity.keyList[0].currentState!.defaultTop)
+                          .abs() <
                       circleSize) {
                 context
                     .read<DrawingProvicer>()
@@ -185,12 +140,13 @@ class _PolygonDemoState extends State<PolygonDemo> {
         // print(details.localPosition);
       },
       child: CustomPaint(
-        foregroundPainter: LinePainter(keys: keyList, points: pList),
+        foregroundPainter: LinePainter(
+            keys: polygonEntity.keyList, points: polygonEntity.pList),
         child: Container(
           width: double.infinity,
           height: double.infinity,
           child: Stack(
-            children: pList,
+            children: polygonEntity.pList,
           ),
         ),
       ),

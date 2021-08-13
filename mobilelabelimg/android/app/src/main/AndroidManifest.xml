@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="labelImg移动版"
+        android:label="移动端标注工具"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
