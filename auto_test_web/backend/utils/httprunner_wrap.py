@@ -134,6 +134,7 @@ def wrapper_test():
 
 def wrapper(yamls:list,htmlPath):
     capture_message("start to run")
+    pytest_files_made_cache_mapping.clear()
     yamls.append(htmlPath)
     extra_args  = ensure_cli_args(yamls)
 
