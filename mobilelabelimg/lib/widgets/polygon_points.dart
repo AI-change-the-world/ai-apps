@@ -64,6 +64,13 @@ class PolygonPointState extends State<PolygonPoint> {
               if (context.read<DrawingProvicer>().status ==
                       DrawingStatus.notDrawing &&
                   widget.isFirst) {
+                int _index = context
+                    .read<MovePolygonProvider>()
+                    .keys
+                    .indexOf(widget.key as GlobalKey<PolygonPointState>);
+
+                print(_index);
+
                 double _x = _left - _offset.dx;
                 double _y = _top - _offset.dy;
                 moveTO(_offset);
