@@ -41,6 +41,10 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
     if (event is WidgetDelete) {
       yield await _deleteToState(state, event);
     }
+
+    if (event is LoadingEvent) {
+      yield await _loadingToState(state, event);
+    }
   }
 
   @override
@@ -60,8 +64,8 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
     Widget center = const WelcomeWidget();
     List<Widget> screens = [];
     screens.add(center);
-    return state.copywith(
-        tabs, center, CenterWidgetStatus.initial, ["首页"], screens, false, "首页");
+    return state.copywith(tabs, center, CenterWidgetStatus.initial, ["首页"],
+        screens, false, "首页", false);
   }
 
   Future<CenterWidgetState> _addToState(
@@ -75,7 +79,8 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
           state.tabNames,
           state.screens,
           false,
-          event.widgetName);
+          event.widgetName,
+          false);
     } else {
       Widget newWidget = MainCenterWidget(
         widgetName: event.widgetName,
@@ -89,7 +94,8 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
           List.of(state.tabNames)..add(event.widgetName),
           List.of(state.screens)..add(newWidget),
           false,
-          event.widgetName);
+          event.widgetName,
+          false);
     }
   }
 
@@ -103,6 +109,21 @@ class CenterWidgetBloc extends Bloc<CenterWidgetEvent, CenterWidgetState> {
         List.of(state.tabNames)..removeAt(id),
         List.of(state.screens)..removeAt(id),
         false,
-        "首页");
+        "首页",
+        false);
+  }
+
+  Future<CenterWidgetState> _loadingToState(
+      CenterWidgetState state, LoadingEvent event) async {
+    // int id = state.tabNames.indexOf(event.widgetName);
+    return state.copywith(
+        state.tabList,
+        state.centerWidget,
+        CenterWidgetStatus.loading,
+        state.tabNames,
+        state.screens,
+        false,
+        state.currentTabName,
+        event.isLoading);
   }
 }

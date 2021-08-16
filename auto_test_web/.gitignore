@@ -47,4 +47,6 @@ app.*.map.json
 
 
 /backend/uploads
+/backend/results
+/backend/tests
 

@@ -17,27 +17,57 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => MenuController(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => LoadingController(),
+          ),
+        ],
+        child: MainPageDemo(),
+      ),
+    );
+  }
+}
+
 class MainPageDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) {
-          return CenterWidgetBloc()..add(WidgetInit());
-        },
-        child: Scaffold(
-          drawer: SideMenu(),
-          key: context.read<MenuController>().scaffoldKey,
-          body: SafeArea(
-              child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context)) SideMenu(),
-              Expanded(
-                flex: 5,
-                child: CenterWidget(),
-              )
-            ],
+      create: (context) {
+        return CenterWidgetBloc()..add(WidgetInit());
+      },
+      child: Scaffold(
+        drawer: const SideMenu(),
+        key: context.read<MenuController>().scaffoldKey,
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height < 500
+                    ? 700
+                    : MediaQuery.of(context).size.height * 1.5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (Responsive.isDesktop(context)) const SideMenu(),
+                const Expanded(
+                  flex: 5,
+                  child: CenterWidget(),
+                )
+              ],
+            ),
           )),
-        ));
+        ),
+      ),
+    );
   }
 }

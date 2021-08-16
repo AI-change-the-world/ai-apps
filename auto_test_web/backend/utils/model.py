@@ -43,7 +43,9 @@ class Project(BaseModel):
     create_time = DateField()
     file_path = CharField()
     project_id = AutoField()
+    project_name = CharField(constraints=[SQL("DEFAULT ''")], null=True)
     user_id = IntegerField(index=True)
+    project_url = CharField(null=True)
 
     class Meta:
         table_name = 'project'

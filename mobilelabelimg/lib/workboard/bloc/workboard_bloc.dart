@@ -65,8 +65,8 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
 
   Future<WorkboardState> _addToState(
       WorkboardState state, RectAdded event) async {
-    ImageRectBox imageRectBox =
-        ImageRectBox(imageName: "", rectBoxes: state.param.rectBoxes);
+    ImageRectBox imageRectBox = ImageRectBox(
+        imageName: state.param.imageName, rectBoxes: state.param.rectBoxes);
     imageRectBox.rectBoxes.add(RectBox(
       id: event.id,
       // imgName: "",
@@ -101,6 +101,7 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
       try {
         String content = file.readAsStringSync();
         final _document = XmlDocument.parse(content);
+        // print(_document);
         final objects = _document.findAllElements("object");
         int index = 0;
         for (var i in objects) {

@@ -8,15 +8,10 @@
  * @LastEditTime: 2021-08-02 19:01:57
  */
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:auto_test_web/utils/common.dart';
-import 'package:auto_test_web/utils/platform_utils.dart';
 import 'package:auto_test_web/widgets/create_project_widget.dart';
+import 'package:auto_test_web/widgets/query_all_project_widget.dart';
 import 'package:auto_test_web/widgets/side_menu.dart';
 import 'package:auto_test_web/widgets/welcome_widget.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,12 +27,22 @@ class MenuController extends ChangeNotifier {
   }
 }
 
+class LoadingController extends ChangeNotifier {
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  void changeState(bool b) {
+    _isLoading = b;
+    notifyListeners();
+  }
+}
+
 class ListTabsController extends ChangeNotifier {
-  List<Widget> _tabs = [
+  final List<Widget> _tabs = [
     MyTab(text: "首页"),
   ];
   List<Widget> get tabs => _tabs;
-  List<String> _tabNames = ["首页"];
+  final List<String> _tabNames = ["首页"];
   String _activateStr = "首页";
   String get activateStr => _activateStr;
 
@@ -72,6 +77,7 @@ class CenterWidgetController extends ChangeNotifier {
   }
 }
 
+// ignore: must_be_immutable
 class MainCenterWidget extends StatelessWidget {
   String widgetName;
   MainCenterWidget({Key? key, required this.widgetName}) : super(key: key);
@@ -84,8 +90,11 @@ class MainCenterWidget extends StatelessWidget {
       case "首页":
         body = const WelcomeWidget();
         break;
-      case "Dashboard":
+      case "创建一个新项目":
         body = NewProjectWidget();
+        break;
+      case "获取所有项目":
+        body = AllProjectsWidget();
         break;
       default:
         body = const Center(

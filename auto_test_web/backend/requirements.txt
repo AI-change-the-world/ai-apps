@@ -1,0 +1,4 @@
+concurrent_log_handler==0.9.16
+Flask==1.0.2
+Flask_Cors==3.0.9
+peewee==3.14.4

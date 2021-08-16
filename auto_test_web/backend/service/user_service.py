@@ -2,7 +2,7 @@ import json
 import time
 from flask.wrappers import Request
 from utils import (__code_dict__, __invalid_user__, __ok__, __param_error__,
-                   __server_error__, __multi_user__, __only_one_root__)
+                   __server_error__, __multi_user__, __only_one_root__,__has_logged__)
 from utils.model import User
 from playhouse.shortcuts import dict_to_model, model_to_dict
 import traceback
@@ -27,15 +27,26 @@ def loginService(request: Request) -> dict:
         user = User.get(User.user_name == username, User.password == password)
         # user = User.select().where(User.user_name == username, User.password == password)
         # print(type(user))
-        dic = {
-            "code": __ok__,
-            "message": __code_dict__.get(__ok__, ""),
-            "data": {
-                "is_logged": user.is_login,
-                "is_root": user.is_root,
-                "user_id": user.user_id
+        if user.is_login == 1:
+            dic = {
+                "code": __ok__,
+                "message": __code_dict__.get(__ok__, ""),
+                "data": {
+                    "is_logged": user.is_login,
+                    "is_root": user.is_root,
+                    "user_id": user.user_id
+                }
             }
-        }
+        else:
+            dic = {
+                "code": __has_logged__,
+                "message": __code_dict__.get(__has_logged__, ""),
+                "data": {
+                    "is_logged": user.is_login,
+                    "is_root": user.is_root,
+                    "user_id": user.user_id
+                }
+            }
         user.last_login_ip = ip
         user.last_login_time = current_time
         user.save()

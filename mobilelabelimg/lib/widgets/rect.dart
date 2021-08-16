@@ -12,12 +12,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
+import 'package:mobilelabelimg/utils/common.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 
 part './points.dart';
-
-const circleSize = 30.0;
-const defaultRectSize = 300.0;
 
 class RectBox extends StatelessWidget {
   int id;
@@ -61,7 +59,7 @@ class _RectState extends State<Rect> {
   late double width;
 
   double defaultLeft = 0;
-  double defaultTop = 0;
+  double defaultTop = titleHeight;
 
   final TextEditingController controller = TextEditingController();
 
@@ -78,8 +76,10 @@ class _RectState extends State<Rect> {
     int leftTopX = this.topLeftKey.currentState!.offset.dx.toInt();
     int leftTopY = this.topLeftKey.currentState!.offset.dy.toInt();
 
-    int rightBottomX = this.bottomRightKey.currentState!.offset.dx.toInt();
-    int rightBottomY = this.bottomRightKey.currentState!.offset.dy.toInt();
+    int rightBottomX =
+        this.bottomRightKey.currentState!.offset.dx.toInt() + circleSize.ceil();
+    int rightBottomY =
+        this.bottomRightKey.currentState!.offset.dy.toInt() + circleSize.ceil();
 
     return [leftTopX, leftTopY, rightBottomX, rightBottomY];
   }
