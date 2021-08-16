@@ -1,10 +1,8 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:mobilelabelimg/widgets/polygon_provider.dart';
-// import 'package:mobilelabelimg/utils/common.dart';
-
-part of './polygon.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+import 'package:mobilelabelimg/utils/common.dart';
 
 // ignore: must_be_immutable
 class PolygonPoint extends StatefulWidget {
@@ -138,6 +136,10 @@ class PolygonPointState extends State<PolygonPoint> {
                         var indexs = getAllFirstPoint();
 
                         int __ind = indexs.indexOf(_index);
+
+                        context
+                            .read<AddOrRemovePolygonProvider>()
+                            .remove(__ind);
                       }
                     },
                     onDoubleTap: () async {
@@ -173,15 +175,14 @@ class PolygonPointState extends State<PolygonPoint> {
                                   child: Text("确定"),
                                   onPressed: () {
                                     Navigator.of(context).pop(controller.text);
-
-                                    context
-                                        .read<AddOrRemovePolygonProvider>()
-                                        .setName(__ind, controller.text);
                                   },
                                 )
                               ],
                             );
                           });
+                      context
+                          .read<AddOrRemovePolygonProvider>()
+                          .setName(__ind, controller.text);
                     },
                     child: Container(
                         width: circleSize,

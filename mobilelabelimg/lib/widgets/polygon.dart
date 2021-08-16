@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/widgets/drawer_button_list.dart';
+import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+import 'package:mobilelabelimg/widgets/polygon_points.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:mobilelabelimg/utils/common.dart';
-
-part './polygon_points.dart';
-part './polygon_provider.dart';
 
 class LinePainter extends CustomPainter {
   // final List<PolygonPoint> points;

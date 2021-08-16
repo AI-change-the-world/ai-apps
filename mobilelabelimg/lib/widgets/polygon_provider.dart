@@ -1,8 +1,15 @@
-// import 'package:flutter/material.dart';
-// import 'package:mobilelabelimg/entity/PolygonEntity.dart';
-// import 'package:mobilelabelimg/widgets/polygon_points.dart';
-
-part of './polygon.dart';
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2021-08-16 19:01:24
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2021-08-16 19:30:00
+ */
+import 'package:flutter/material.dart';
+import 'package:mobilelabelimg/entity/PolygonEntity.dart';
+import 'package:mobilelabelimg/widgets/polygon_points.dart';
 
 enum DrawingStatus { drawing, notDrawing }
 
@@ -60,6 +67,8 @@ class AddOrRemovePolygonProvider with ChangeNotifier {
   List<PolygonEntity> get poList => _poList;
 
   void remove(int index) {
+    _poList[index].keyList.clear();
+    _poList[index].pList.clear();
     _poList.removeAt(index);
     notifyListeners();
   }
