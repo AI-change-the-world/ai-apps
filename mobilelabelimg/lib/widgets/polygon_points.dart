@@ -1,8 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:mobilelabelimg/widgets/polygon_provider.dart';
-import 'package:mobilelabelimg/utils/common.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+// import 'package:mobilelabelimg/utils/common.dart';
+
+part of './polygon.dart';
 
 // ignore: must_be_immutable
 class PolygonPoint extends StatefulWidget {
@@ -15,8 +17,6 @@ class PolygonPoint extends StatefulWidget {
   Offset poffset;
   int index;
   bool isFirst;
-
-  // bool get isValid => index != -1;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -52,6 +52,19 @@ class PolygonPointState extends State<PolygonPoint> {
     });
   }
 
+  List<int> getAllFirstPoint() {
+    List<int> indexs = [];
+
+    for (int _i = 0;
+        _i < context.read<MovePolygonProvider>().points.length;
+        _i++) {
+      if (context.read<MovePolygonProvider>().points[_i].isFirst) {
+        indexs.add(_i);
+      }
+    }
+    return indexs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -69,12 +82,27 @@ class PolygonPointState extends State<PolygonPoint> {
                     .keys
                     .indexOf(widget.key as GlobalKey<PolygonPointState>);
 
-                print(_index);
+                var indexs = getAllFirstPoint();
+
+                int __ind = indexs.indexOf(_index);
+                late List<GlobalKey> _subKeys;
+
+                if (__ind == indexs.length - 1) {
+                  _subKeys =
+                      context.read<MovePolygonProvider>().keys.sublist(_index);
+                } else {
+                  _subKeys = context
+                      .read<MovePolygonProvider>()
+                      .keys
+                      .sublist(_index, indexs[__ind + 1]);
+                }
 
                 double _x = _left - _offset.dx;
                 double _y = _top - _offset.dy;
                 moveTO(_offset);
-                context.read<MovePolygonProvider>().move(_x, _y);
+                context
+                    .read<MovePolygonProvider>()
+                    .move(_x, _y, subkeys: _subKeys);
               }
               moveTO(_offset);
             },
@@ -100,10 +128,37 @@ class PolygonPointState extends State<PolygonPoint> {
                               ],
                             );
                           });
+
+                      if (result == 1) {
+                        int _index = context
+                            .read<MovePolygonProvider>()
+                            .keys
+                            .indexOf(
+                                widget.key as GlobalKey<PolygonPointState>);
+                        var indexs = getAllFirstPoint();
+
+                        int __ind = indexs.indexOf(_index);
+                      }
                     },
                     onDoubleTap: () async {
-                      // print("这里要添加类型");
-                      var result = await showCupertinoDialog(
+                      int _index = context
+                          .read<MovePolygonProvider>()
+                          .keys
+                          .indexOf(widget.key as GlobalKey<PolygonPointState>);
+                      var indexs = getAllFirstPoint();
+
+                      int __ind = indexs.indexOf(_index);
+                      if (context
+                              .read<AddOrRemovePolygonProvider>()
+                              .poList[__ind]
+                              .className !=
+                          "") {
+                        controller.text = context
+                            .read<AddOrRemovePolygonProvider>()
+                            .poList[__ind]
+                            .className;
+                      }
+                      await showCupertinoDialog(
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
@@ -118,6 +173,10 @@ class PolygonPointState extends State<PolygonPoint> {
                                   child: Text("确定"),
                                   onPressed: () {
                                     Navigator.of(context).pop(controller.text);
+
+                                    context
+                                        .read<AddOrRemovePolygonProvider>()
+                                        .setName(__ind, controller.text);
                                   },
                                 )
                               ],

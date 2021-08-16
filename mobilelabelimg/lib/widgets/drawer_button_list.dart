@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
 import 'package:mobilelabelimg/utils/common.dart';
-import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
