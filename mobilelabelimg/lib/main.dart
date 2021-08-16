@@ -20,7 +20,7 @@ void main() {
   runApp(new MaterialApp(
     routes: Routers.routers,
     debugShowCheckedModeBanner: false,
-    home: MainPage(),
-    // home: PolygonWorkboard(),
+    // home: MainPage(),
+    home: PolygonWorkboard(),
   ));
 }

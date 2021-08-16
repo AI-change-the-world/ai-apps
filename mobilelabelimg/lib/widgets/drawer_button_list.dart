@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
 import 'package:mobilelabelimg/utils/common.dart';
+import 'package:mobilelabelimg/widgets/polygon_provider.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -73,141 +75,179 @@ class ToolsListWidget extends StatefulWidget {
 }
 
 class _ToolsListWidgetState extends State<ToolsListWidget> {
-  late WorkboardBloc _workboardBloc;
+  var _workboardBloc;
   late int currentId;
   String? xmlSavedPath;
 
   @override
   void initState() {
     super.initState();
-    _workboardBloc = context.read<WorkboardBloc>();
-    if (_workboardBloc.state.param.rectBoxes.isEmpty) {
-      currentId = -1;
-    } else {
-      currentId = _workboardBloc.state.param.rectBoxes.last.id;
+    if (widget.type == 0) {
+      _workboardBloc = context.read<WorkboardBloc>();
+      if (_workboardBloc.state.param.rectBoxes.isEmpty) {
+        currentId = -1;
+      } else {
+        currentId = _workboardBloc.state.param.rectBoxes.last.id;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkboardBloc, WorkboardState>(
-        builder: (context, state) {
-      return Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Text(_workboardBloc.state.param.imageName),
-            ),
-            DrawerListTile(
-              title: "添加一个新的标注",
-              svgSrc: "assets/icons/menu_dashbord.svg",
-              press: () {
-                currentId += 1;
-                _workboardBloc.add(RectAdded(id: currentId));
-              },
-            ),
-            DrawerListTile(
-                title: "保存标注",
-                svgSrc: "assets/icons/menu_tran.svg",
-                press: () async {
-                  Annotation annotation = Annotation();
+    return widget.type == 0
+        ? BlocBuilder<WorkboardBloc, WorkboardState>(builder: (context, state) {
+            return Drawer(
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    child: Text(_workboardBloc.state.param.imageName),
+                  ),
+                  DrawerListTile(
+                    title: "添加一个新的标注",
+                    svgSrc: "assets/icons/menu_dashbord.svg",
+                    press: () {
+                      currentId += 1;
+                      _workboardBloc.add(RectAdded(id: currentId));
+                    },
+                  ),
+                  DrawerListTile(
+                      title: "保存标注",
+                      svgSrc: "assets/icons/menu_tran.svg",
+                      press: () async {
+                        Annotation annotation = Annotation();
 
-                  String _name, _ext;
-                  _name = widget.imgPath.split("/").last.split(".").first;
-                  _ext = widget.imgPath.split("/").last.split(".").last;
+                        String _name, _ext;
+                        _name = widget.imgPath.split("/").last.split(".").first;
+                        _ext = widget.imgPath.split("/").last.split(".").last;
 
-                  annotation.filename = _name + "." + _ext;
-                  annotation.path = widget.imgPath;
-                  annotation.source = Source();
-                  annotation.size = ClassSize(
-                      width: CommonUtil.screenW().floor(),
-                      height: CommonUtil.screenH().floor());
-                  annotation.segmented = 0;
-                  annotation.object = [];
+                        annotation.filename = _name + "." + _ext;
+                        annotation.path = widget.imgPath;
+                        annotation.source = Source();
+                        annotation.size = ClassSize(
+                            width: CommonUtil.screenW().floor(),
+                            height: CommonUtil.screenH().floor());
+                        annotation.segmented = 0;
+                        annotation.object = [];
 
-                  // print(_name);
-                  // print(_ext);
-                  for (var rect in _workboardBloc.state.param.rectBoxes) {
-                    // print(rect.rectKey.currentState!.className);
-                    // print(rect.rectKey.currentState!.getRectBox());
-                    ClassObject classObject = ClassObject();
-                    classObject.name = rect.rectKey.currentState!.className;
-                    classObject.difficult = 0;
-                    Bndbox bndbox = Bndbox();
-                    bndbox.xmin = rect.rectKey.currentState!.getRectBox()[0];
-                    bndbox.ymin = rect.rectKey.currentState!.getRectBox()[1];
-                    bndbox.xmax = rect.rectKey.currentState!.getRectBox()[2];
-                    bndbox.ymax = rect.rectKey.currentState!.getRectBox()[3];
-                    classObject.bndbox = bndbox;
-                    annotation.object!.add(classObject);
-                  }
-                  ImageObjs imageObjs = ImageObjs(annotation: annotation);
-                  // print(imageObjs.toXmlStr());
-                  if (await Permission.storage.request().isGranted) {
-                    getExternalStorageDirectory().then((value) async {
-                      // print(value!.path);
-                      File file = new File(value!.path + "/" + _name + ".xml");
-                      try {
-                        await file.writeAsString(imageObjs.toXmlStr());
-                        xmlSavedPath = value.path + "/" + _name + ".xml";
-                        Fluttertoast.showToast(
-                            msg: "保存成功",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      } catch (e) {
-                        print(e);
-                        Fluttertoast.showToast(
-                            msg: "写入文件失败",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      }
-                    });
-                  }
-                }),
-            DrawerListTile(
-              title: "退回到主页",
-              svgSrc: "assets/icons/menu_task.svg",
-              press: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+                        // print(_name);
+                        // print(_ext);
+                        for (var rect in _workboardBloc.state.param.rectBoxes) {
+                          // print(rect.rectKey.currentState!.className);
+                          // print(rect.rectKey.currentState!.getRectBox());
+                          ClassObject classObject = ClassObject();
+                          classObject.name =
+                              rect.rectKey.currentState!.className;
+                          classObject.difficult = 0;
+                          Bndbox bndbox = Bndbox();
+                          bndbox.xmin =
+                              rect.rectKey.currentState!.getRectBox()[0];
+                          bndbox.ymin =
+                              rect.rectKey.currentState!.getRectBox()[1];
+                          bndbox.xmax =
+                              rect.rectKey.currentState!.getRectBox()[2];
+                          bndbox.ymax =
+                              rect.rectKey.currentState!.getRectBox()[3];
+                          classObject.bndbox = bndbox;
+                          annotation.object!.add(classObject);
+                        }
+                        ImageObjs imageObjs = ImageObjs(annotation: annotation);
+                        // print(imageObjs.toXmlStr());
+                        if (await Permission.storage.request().isGranted) {
+                          getExternalStorageDirectory().then((value) async {
+                            // print(value!.path);
+                            File file =
+                                new File(value!.path + "/" + _name + ".xml");
+                            try {
+                              await file.writeAsString(imageObjs.toXmlStr());
+                              xmlSavedPath = value.path + "/" + _name + ".xml";
+                              Fluttertoast.showToast(
+                                  msg: "保存成功",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.blue,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } catch (e) {
+                              print(e);
+                              Fluttertoast.showToast(
+                                  msg: "写入文件失败",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.blue,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          });
+                        }
+                      }),
+                  DrawerListTile(
+                    title: "退回到主页",
+                    svgSrc: "assets/icons/menu_task.svg",
+                    press: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                  ),
+                  // DrawerListTile(
+                  //   title: "Documents",
+                  //   svgSrc: "assets/icons/menu_doc.svg",
+                  //   press: () {},
+                  // ),
+                  // DrawerListTile(
+                  //   title: "Store",
+                  //   svgSrc: "assets/icons/menu_store.svg",
+                  //   press: () {},
+                  // ),
+                  // DrawerListTile(
+                  //   title: "Notification",
+                  //   svgSrc: "assets/icons/menu_notification.svg",
+                  //   press: () {},
+                  // ),
+                  // DrawerListTile(
+                  //   title: "Profile",
+                  //   svgSrc: "assets/icons/menu_profile.svg",
+                  //   press: () {},
+                  // ),
+                  // DrawerListTile(
+                  //   title: "Settings",
+                  //   svgSrc: "assets/icons/menu_setting.svg",
+                  //   press: () {},
+                  // ),
+                ],
+              ),
+            );
+          })
+        : Drawer(
+            child: ListView(
+              children: [
+                DrawerListTile(
+                  title: "新建一个标注",
+                  svgSrc: "assets/icons/menu_doc.svg",
+                  press: () {
+                    context
+                        .read<DrawingProvicer>()
+                        .changeStatus(DrawingStatus.drawing);
+                    PolygonEntity polygonEntity = PolygonEntity(
+                        keyList: [], pList: [], className: "", index: 0);
+                    context
+                        .read<AddOrRemovePolygonProvider>()
+                        .add(polygonEntity);
+                  },
+                ),
+                DrawerListTile(
+                  title: "Store",
+                  svgSrc: "assets/icons/menu_store.svg",
+                  press: () {},
+                ),
+                DrawerListTile(
+                  title: "Notification",
+                  svgSrc: "assets/icons/menu_notification.svg",
+                  press: () {},
+                ),
+              ],
             ),
-            // DrawerListTile(
-            //   title: "Documents",
-            //   svgSrc: "assets/icons/menu_doc.svg",
-            //   press: () {},
-            // ),
-            // DrawerListTile(
-            //   title: "Store",
-            //   svgSrc: "assets/icons/menu_store.svg",
-            //   press: () {},
-            // ),
-            // DrawerListTile(
-            //   title: "Notification",
-            //   svgSrc: "assets/icons/menu_notification.svg",
-            //   press: () {},
-            // ),
-            // DrawerListTile(
-            //   title: "Profile",
-            //   svgSrc: "assets/icons/menu_profile.svg",
-            //   press: () {},
-            // ),
-            // DrawerListTile(
-            //   title: "Settings",
-            //   svgSrc: "assets/icons/menu_setting.svg",
-            //   press: () {},
-            // ),
-          ],
-        ),
-      );
-    });
+          );
   }
 }
 

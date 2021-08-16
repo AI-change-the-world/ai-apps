@@ -45,33 +45,6 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     _workboardBloc = context.read<WorkboardBloc>();
   }
 
-  // Widget getDraggableButton(int type) {
-  //   return Positioned(
-  //       left: defaultButtonLeft,
-  //       top: defaultButtonTop,
-  //       child: Draggable(
-  //         onDraggableCanceled: (Velocity velocity, Offset _offset) {
-  //           setState(() {
-  //             defaultButtonLeft = _offset.dx;
-  //             defaultButtonTop = _offset.dy;
-  //           });
-  //         },
-  //         feedback: Container(),
-  //         child: IconButton(
-  //           icon: Icon(
-  //             Icons.work,
-  //             color: Colors.blueAccent,
-  //             size: 60,
-  //           ),
-  //           onPressed: () {
-  //             if (!_scaffoldKey.currentState!.isDrawerOpen) {
-  //               _scaffoldKey.currentState!.openDrawer();
-  //             }
-  //           },
-  //         ),
-  //       ));
-  // }
-
   @override
   Widget build(BuildContext context) {
     String? imgPath = ModalRoute.of(context)!.settings.arguments as String;

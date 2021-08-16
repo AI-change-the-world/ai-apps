@@ -10,9 +10,13 @@ class PolygonPoint extends StatefulWidget {
     Key? key,
     required this.poffset,
     required this.index,
+    required this.isFirst,
   }) : super(key: key);
   Offset poffset;
   int index;
+  bool isFirst;
+
+  // bool get isValid => index != -1;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -59,7 +63,7 @@ class PolygonPointState extends State<PolygonPoint> {
               double _top = defaultTop;
               if (context.read<DrawingProvicer>().status ==
                       DrawingStatus.notDrawing &&
-                  widget.index == 1) {
+                  widget.isFirst) {
                 double _x = _left - _offset.dx;
                 double _y = _top - _offset.dy;
                 moveTO(_offset);
@@ -67,7 +71,7 @@ class PolygonPointState extends State<PolygonPoint> {
               }
               moveTO(_offset);
             },
-            child: widget.index == 1
+            child: widget.isFirst
                 ? GestureDetector(
                     onLongPress: () async {
                       var result = await showCupertinoDialog(
@@ -137,7 +141,7 @@ class PolygonPointState extends State<PolygonPoint> {
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(150),
                     border: new Border.all(
-                        color: widget.index == 1
+                        color: widget.isFirst
                             ? Colors.redAccent
                             : Colors.blueAccent,
                         width: 0.5)))));

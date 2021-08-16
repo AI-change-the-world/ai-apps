@@ -15,7 +15,7 @@ class PolygonWorkboard extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => DrawingProvicer()),
           ChangeNotifierProvider(create: (_) => MovePolygonProvider()),
-          // ChangeNotifierProvider(create: (_) => AddOrRemovePolygonProvider()),
+          ChangeNotifierProvider(create: (_) => AddOrRemovePolygonProvider()),
         ]);
   }
 }

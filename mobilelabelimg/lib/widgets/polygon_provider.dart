@@ -5,7 +5,7 @@ import 'package:mobilelabelimg/widgets/polygon_points.dart';
 enum DrawingStatus { drawing, notDrawing }
 
 class DrawingProvicer with ChangeNotifier {
-  DrawingStatus _status = DrawingStatus.drawing;
+  DrawingStatus _status = DrawingStatus.notDrawing;
   DrawingStatus get status => _status;
   void changeStatus(DrawingStatus status) {
     _status = status;
