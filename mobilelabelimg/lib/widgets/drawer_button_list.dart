@@ -5,7 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
 import 'package:mobilelabelimg/utils/common.dart';
-import 'package:mobilelabelimg/widgets/polygon_provider.dart';
+import 'package:mobilelabelimg/widgets/polygon.dart';
+import 'package:mobilelabelimg/workboard/bloc/polygon_workboard_bloc.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -38,12 +39,6 @@ class DraggableButtonState extends State<DraggableButton> {
               defaultButtonTop = details.globalPosition.dy - 0.5 * buttonSize;
             });
           },
-          // onDraggableCanceled: (Velocity velocity, Offset _offset) {
-          //   setState(() {
-          //     defaultButtonLeft = _offset.dx;
-          //     defaultButtonTop = _offset.dy;
-          //   });
-          // },
           feedback: Container(),
           child: IconButton(
             icon: Icon(
@@ -79,6 +74,8 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
   late int currentId;
   String? xmlSavedPath;
 
+  // late PolygonWorkboardBloc _polygonWorkboardBloc;
+
   @override
   void initState() {
     super.initState();
@@ -89,6 +86,8 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
       } else {
         currentId = _workboardBloc.state.param.rectBoxes.last.id;
       }
+    } else {
+      _workboardBloc = context.read<PolygonWorkboardBloc>();
     }
   }
 
@@ -218,36 +217,41 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
               ),
             );
           })
-        : Drawer(
-            child: ListView(
-              children: [
-                DrawerListTile(
-                  title: "新建一个标注",
-                  svgSrc: "assets/icons/menu_doc.svg",
-                  press: () {
-                    context
-                        .read<DrawingProvicer>()
-                        .changeStatus(DrawingStatus.drawing);
-                    PolygonEntity polygonEntity = PolygonEntity(
-                        keyList: [], pList: [], className: "", index: 0);
-                    context
-                        .read<AddOrRemovePolygonProvider>()
-                        .add(polygonEntity);
-                  },
-                ),
-                DrawerListTile(
-                  title: "Store",
-                  svgSrc: "assets/icons/menu_store.svg",
-                  press: () {},
-                ),
-                DrawerListTile(
-                  title: "Notification",
-                  svgSrc: "assets/icons/menu_notification.svg",
-                  press: () {},
-                ),
-              ],
-            ),
-          );
+        : BlocBuilder<PolygonWorkboardBloc, PolygonWorkboardState>(
+            builder: (context, state) {
+            return Drawer(
+              child: ListView(
+                children: [
+                  DrawerListTile(
+                    title: "新建一个标注",
+                    svgSrc: "assets/icons/menu_doc.svg",
+                    press: () {
+                      context
+                          .read<DrawingProvicer>()
+                          .changeStatus(DrawingStatus.drawing);
+                      PolygonEntity polygonEntity = PolygonEntity(
+                          keyList: [], pList: [], className: "", index: 0);
+                      // context
+                      //     .read<AddOrRemovePolygonProvider>()
+                      //     .add(polygonEntity);
+                      (_workboardBloc as PolygonWorkboardBloc)
+                          .add(PolygonEntityAddEvent(p: polygonEntity));
+                    },
+                  ),
+                  DrawerListTile(
+                    title: "Store",
+                    svgSrc: "assets/icons/menu_store.svg",
+                    press: () {},
+                  ),
+                  DrawerListTile(
+                    title: "Notification",
+                    svgSrc: "assets/icons/menu_notification.svg",
+                    press: () {},
+                  ),
+                ],
+              ),
+            );
+          });
   }
 }
 

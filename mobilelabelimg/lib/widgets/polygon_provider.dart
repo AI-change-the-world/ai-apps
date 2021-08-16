@@ -5,11 +5,13 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-08-16 19:01:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-16 19:30:00
+ * @LastEditTime: 2021-08-16 22:38:01
  */
-import 'package:flutter/material.dart';
-import 'package:mobilelabelimg/entity/PolygonEntity.dart';
-import 'package:mobilelabelimg/widgets/polygon_points.dart';
+// import 'package:flutter/material.dart';
+// import 'package:mobilelabelimg/entity/PolygonEntity.dart';
+// import 'package:mobilelabelimg/widgets/polygon_points.dart';
+
+part of './polygon.dart';
 
 enum DrawingStatus { drawing, notDrawing }
 
