@@ -3,6 +3,10 @@ import "dart:ui" as _ui;
 
 const circleSize = 30.0;
 const defaultRectSize = 300.0;
+const titleHeight = 0.0;
+const buttonSize = 60.0;
+
+const appname = "移动端标注工具";
 
 class CommonUtil {
   /// 获取屏幕大小

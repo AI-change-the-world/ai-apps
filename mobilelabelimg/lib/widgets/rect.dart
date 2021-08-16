@@ -59,7 +59,7 @@ class _RectState extends State<Rect> {
   late double width;
 
   double defaultLeft = 0;
-  double defaultTop = 0;
+  double defaultTop = titleHeight;
 
   final TextEditingController controller = TextEditingController();
 

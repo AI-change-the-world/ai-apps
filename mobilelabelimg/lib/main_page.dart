@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilelabelimg/utils/common.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("labelImg 移动版"),
+        title: Text(appname),
       ),
       body: Container(
         child: Center(
