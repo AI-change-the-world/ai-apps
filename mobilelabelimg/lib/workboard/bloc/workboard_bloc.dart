@@ -44,16 +44,16 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     }
   }
 
-  @override
-  Stream<Transition<WorkboardEvent, WorkboardState>> transformEvents(
-    Stream<WorkboardEvent> events,
-    TransitionFunction<WorkboardEvent, WorkboardState> transitionFn,
-  ) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
-    );
-  }
+  // @override
+  // Stream<Transition<WorkboardEvent, WorkboardState>> transformEvents(
+  //   Stream<WorkboardEvent> events,
+  //   TransitionFunction<WorkboardEvent, WorkboardState> transitionFn,
+  // ) {
+  //   return super.transformEvents(
+  //     events.debounceTime(const Duration(milliseconds: 500)),
+  //     transitionFn,
+  //   );
+  // }
 
   Future<WorkboardState> _fetchedToState(WorkboardState state) async {
     final List<RectBox> rectboxes = [];
@@ -66,7 +66,9 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
   Future<WorkboardState> _addToState(
       WorkboardState state, RectAdded event) async {
     ImageRectBox imageRectBox = ImageRectBox(
-        imageName: state.param.imageName, rectBoxes: state.param.rectBoxes);
+        imageName: state.param.imageName,
+        rectBoxes: state.param.rectBoxes,
+        imagePath: state.param.imagePath);
     imageRectBox.rectBoxes.add(RectBox(
       id: event.id,
       // imgName: "",
@@ -77,7 +79,10 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
 
   Future<WorkboardState> _removeToState(
       WorkboardState state, RectRemove event) async {
-    ImageRectBox imageRectBox = ImageRectBox(imageName: "", rectBoxes: []);
+    ImageRectBox imageRectBox = ImageRectBox(
+        imageName: state.param.imageName,
+        rectBoxes: [],
+        imagePath: state.param.imagePath);
     var rectBoxes =
         state.param.rectBoxes.where((element) => element.id != event.id);
     imageRectBox.rectBoxes.addAll(rectBoxes);
@@ -93,7 +98,8 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     _name = event.filename.split("/").last.split(".").first;
     _ext = event.filename.split("/").last.split(".").last;
     String path = _name + "." + "xml";
-    ImageRectBox imageRectBox = ImageRectBox(imageName: path, rectBoxes: []);
+    ImageRectBox imageRectBox =
+        ImageRectBox(imageName: path, rectBoxes: [], imagePath: event.filename);
     // imageRectBox.imageName = path;
     if (await Permission.storage.request().isGranted) {
       var value = await getExternalStorageDirectory();

@@ -155,10 +155,6 @@ class PolygonPointState extends State<PolygonPoint> {
                           context
                               .read<DrawingProvicer>()
                               .changeStatus(DrawingStatus.notDrawing);
-
-                          // context
-                          //     .read<AddOrRemovePolygonProvider>()
-                          //     .remove(__ind);
                         }
                       },
                       onDoubleTap: () async {
@@ -199,9 +195,11 @@ class PolygonPointState extends State<PolygonPoint> {
                               );
                             });
 
-                        // context
-                        //     .read<AddOrRemovePolygonProvider>()
-                        //     .setName(__ind, controller.text);
+                        _polygonWorkboardBloc.add(PolygonEntityChangeNameEvent(
+                            name: controller.text, index: __ind));
+
+                        // print(_polygonWorkboardBloc
+                        //     .state.listPolygonEntity[__ind].className);
                       },
                       child: Container(
                           width: circleSize,

@@ -5,11 +5,13 @@ enum WorkboardStatus { initial, add, delete, refresh }
 class ImageRectBox extends Equatable {
   final List<RectBox> rectBoxes;
   final String imageName;
-  const ImageRectBox({this.imageName = "", this.rectBoxes = const []});
+  final String imagePath;
+  const ImageRectBox(
+      {this.imageName = "", this.rectBoxes = const [], this.imagePath = ""});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [imageName, rectBoxes];
+  List<Object?> get props => [imageName, rectBoxes, imagePath];
 }
 
 class WorkboardState extends Equatable {

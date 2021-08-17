@@ -40,3 +40,9 @@ class WidgetsRemoveEvent extends PolygonWorkboardEvent {
   final int index;
   const WidgetsRemoveEvent({required this.index});
 }
+
+class PolygonEntityChangeNameEvent extends PolygonWorkboardEvent {
+  final String name;
+  final int index;
+  const PolygonEntityChangeNameEvent({required this.name, required this.index});
+}

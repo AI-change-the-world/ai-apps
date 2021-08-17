@@ -32,7 +32,6 @@ class SingleAnnotationWorkBoard extends StatefulWidget {
 class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
   // List<Widget> rects = [];
   late WorkboardBloc _workboardBloc;
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // String? xmlSavedPath;
@@ -56,16 +55,19 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
         key: _scaffoldKey,
         drawer: ToolsListWidget(
           type: 0,
-          imgPath: imgPath,
+          imgPath: _workboardBloc.state.param.imagePath,
         ),
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                fit: BoxFit.fill,
-                image: FileImage(File(imgPath)),
-              )),
+              decoration: _workboardBloc.state.param.imagePath != ""
+                  ? BoxDecoration(
+                      image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image:
+                          FileImage(File(_workboardBloc.state.param.imagePath)),
+                    ))
+                  : null,
               // color: Colors.greenAccent,
               width: double.infinity,
               height: double.infinity,
@@ -83,51 +85,51 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
         //   child: Row(
         //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         //     children: [
-        //       FloatingActionButton(
-        // onPressed: () {
-        //   showCupertinoDialog(
-        //       context: context,
-        //       builder: (context) {
-        //         return CupertinoAlertDialog(
-        //           actions: [
-        //             CupertinoActionSheetAction(
-        //                 onPressed: () {
-        //                   Navigator.of(context).pop();
-        //                 },
-        //                 child: Text("取消"))
-        //           ],
-        //           content: Material(
-        //             child: Container(
-        //               padding: EdgeInsets.all(10),
-        //               width: 320,
-        //               child: Wrap(
-        //                 spacing: 3,
-        //                 children: [
-        //                   ElevatedButton(
-        //                     onPressed: () {
-        //                       Navigator.of(context)
-        //                           .popUntil((route) => route.isFirst);
-        //                     },
-        //                     child: Column(
-        //                       mainAxisAlignment:
-        //                           MainAxisAlignment.center,
-        //                       children: [
-        //                         Icon(Icons.chevron_left,
-        //                             color: Colors.white),
-        //                         Text(
-        //                           "退出",
-        //                           style: TextStyle(color: Colors.black),
-        //                         ),
-        //                       ],
+        // FloatingActionButton(
+        //   onPressed: () {
+        //     showCupertinoDialog(
+        //         context: context,
+        //         builder: (context) {
+        //           return CupertinoAlertDialog(
+        //             actions: [
+        //               CupertinoActionSheetAction(
+        //                   onPressed: () {
+        //                     Navigator.of(context).pop();
+        //                   },
+        //                   child: Text("取消"))
+        //             ],
+        //             content: Material(
+        //               child: Container(
+        //                 padding: EdgeInsets.all(10),
+        //                 width: 320,
+        //                 child: Wrap(
+        //                   spacing: 3,
+        //                   children: [
+        //                     ElevatedButton(
+        //                       onPressed: () {
+        //                         Navigator.of(context)
+        //                             .popUntil((route) => route.isFirst);
+        //                       },
+        //                       child: Column(
+        //                         mainAxisAlignment:
+        //                             MainAxisAlignment.center,
+        //                         children: [
+        //                           Icon(Icons.chevron_left,
+        //                               color: Colors.white),
+        //                           Text(
+        //                             "退出",
+        //                             style: TextStyle(color: Colors.black),
+        //                           ),
+        //                         ],
+        //                       ),
+        //                       style: ElevatedButton.styleFrom(
+        //                         minimumSize: Size(_size, _size),
+        //                         shape: CircleBorder(),
+        //                         padding: EdgeInsets.all(20),
+        //                         primary: Colors.blue, // <-- Button color
+        //                         onPrimary: Colors.red, // <-- Splash color
+        //                       ),
         //                     ),
-        //                     style: ElevatedButton.styleFrom(
-        //                       minimumSize: Size(_size, _size),
-        //                       shape: CircleBorder(),
-        //                       padding: EdgeInsets.all(20),
-        //                       primary: Colors.blue, // <-- Button color
-        //                       onPrimary: Colors.red, // <-- Splash color
-        //                     ),
-        //                   ),
         // ElevatedButton(
         //   onPressed: () async {
         //     var result = await showCupertinoDialog(
@@ -294,37 +296,37 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
         //     onPrimary: Colors.red, // <-- Splash color
         //   ),
         // ),
-        //                     ElevatedButton(
-        //                       onPressed: () {
-        //                         Fluttertoast.showToast(
-        //                             msg: "当前模式下不支持下一张",
-        //                             toastLength: Toast.LENGTH_SHORT,
-        //                             gravity: ToastGravity.CENTER,
-        //                             timeInSecForIosWeb: 2,
-        //                             backgroundColor: Colors.blue,
-        //                             textColor: Colors.white,
-        //                             fontSize: 16.0);
-        //                       },
-        //                       child: Column(
-        //                         mainAxisAlignment:
-        //                             MainAxisAlignment.center,
-        //                         children: [
-        //                           Icon(Icons.skip_next,
-        //                               color: Colors.white),
-        //                           Text(
-        //                             "next",
-        //                             style: TextStyle(color: Colors.black),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                       style: ElevatedButton.styleFrom(
-        //                         shape: CircleBorder(),
-        //                         minimumSize: Size(_size, _size),
-        //                         padding: EdgeInsets.all(20),
-        //                         primary: Colors.blue, // <-- Button color
-        //                         onPrimary: Colors.red, // <-- Splash color
-        //                       ),
-        //                     ),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     Fluttertoast.showToast(
+        //         msg: "当前模式下不支持下一张",
+        //         toastLength: Toast.LENGTH_SHORT,
+        //         gravity: ToastGravity.CENTER,
+        //         timeInSecForIosWeb: 2,
+        //         backgroundColor: Colors.blue,
+        //         textColor: Colors.white,
+        //         fontSize: 16.0);
+        // },
+        //   child: Column(
+        //     mainAxisAlignment:
+        //         MainAxisAlignment.center,
+        //     children: [
+        //       Icon(Icons.skip_next,
+        //           color: Colors.white),
+        //       Text(
+        //         "next",
+        //         style: TextStyle(color: Colors.black),
+        //       ),
+        //     ],
+        //   ),
+        //   style: ElevatedButton.styleFrom(
+        //     shape: CircleBorder(),
+        //     minimumSize: Size(_size, _size),
+        //     padding: EdgeInsets.all(20),
+        //     primary: Colors.blue, // <-- Button color
+        //     onPrimary: Colors.red, // <-- Splash color
+        //   ),
+        // ),
         //                     ElevatedButton(
         //                       onPressed: () async {
         //                         if (await Permission.storage
@@ -462,21 +464,20 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
         //               fontSize: 16.0);
         //         }
 
-        // File testReadFile =
-        //     File(value.path + "/" + _name + ".xml");
-        // try {
-        //   String content = testReadFile.readAsStringSync();
-        //   print(content);
-        // } catch (e) {
-        //   print(e);
-        // }
+        //         File testReadFile =
+        //             File(value.path + "/" + _name + ".xml");
+        //         try {
+        //           String content = testReadFile.readAsStringSync();
+        //           print(content);
+        //         } catch (e) {
+        //           print(e);
+        //         }
         //       });
         //     }
         //   },
         //   child: Icon(Icons.save),
         // ),
         // ],
-        // ),
         // ),
       );
     });

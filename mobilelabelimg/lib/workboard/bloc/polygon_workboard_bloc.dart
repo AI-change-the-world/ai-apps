@@ -47,20 +47,16 @@ class PolygonWorkboardBloc
     if (event is PolygonEntityRemoveEvent) {
       yield await _removePolygon(state, event);
     }
+
+    if (event is PolygonEntityChangeNameEvent) {
+      yield await _changeName(state, event);
+    }
   }
 
   Future<PolygonWorkboardState> _fetchedToState(
       PolygonWorkboardState state, InitialEvent event) async {
     List<Widget> widgets = [];
-    // final GlobalKey<ScaffoldState> _scaffoldKey2 = GlobalKey<ScaffoldState>();
-    // DraggableButton draggableButton = DraggableButton(
-    //   scaffoldKey: event.scaffoldKey,
-    //   type: 1,
-    // );
-    // widgets.add(draggableButton);
-
     List<PolygonEntity> listPolygonEntity = [];
-
     return state.copyWith(
         PolygonWorkboardStatus.initial, widgets, listPolygonEntity);
   }
@@ -98,7 +94,7 @@ class PolygonWorkboardBloc
       _widgets.removeRange(start, end);
     } else {
       int start = indexes[event.index];
-      _widgets.removeRange(start, state.widgets.length);
+      _widgets.removeRange(start, state.widgets.length - 1);
     }
     return state.copyWith(
         PolygonWorkboardStatus.delete, _widgets, state.listPolygonEntity);
@@ -110,5 +106,11 @@ class PolygonWorkboardBloc
     ps.removeAt(event.index);
 
     return state.copyWith(PolygonWorkboardStatus.delete, state.widgets, ps);
+  }
+
+  Future<PolygonWorkboardState> _changeName(
+      PolygonWorkboardState state, PolygonEntityChangeNameEvent event) async {
+    state.listPolygonEntity[event.index].className = event.name;
+    return state;
   }
 }

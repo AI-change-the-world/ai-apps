@@ -171,39 +171,7 @@ class _PolygonDemoState extends State<PolygonDemo> {
                       .add(key);
                   _polygonWorkboardBloc.state.listPolygonEntity.last.pList
                       .add(point);
-                  // context
-                  //     .read<AddOrRemovePolygonProvider>()
-                  //     .poList
-                  //     .last
-                  //     .keyList
-                  //     .add(key);
-                  // context
-                  //     .read<AddOrRemovePolygonProvider>()
-                  //     .poList
-                  //     .last
-                  //     .pList
-                  //     .add(point);
-                  // _polygonWorkboardBloc.state.widgets.add(point);
                   _polygonWorkboardBloc.add(WidgetAddEvent(w: point));
-
-                  // print("=========================================");
-                  // print(x);
-                  // print(y);
-                  // print(context
-                  //     .read<AddOrRemovePolygonProvider>()
-                  //     .poList[0]
-                  //     .pList
-                  //     .last
-                  //     .poffset
-                  //     .dx);
-                  // print(context
-                  //     .read<AddOrRemovePolygonProvider>()
-                  //     .poList[0]
-                  //     .pList
-                  //     .last
-                  //     .poffset
-                  //     .dy);
-                  // print("=========================================");
                   if (_polygonWorkboardBloc
                           .state.listPolygonEntity.last.pList.length >
                       2) {
@@ -279,13 +247,6 @@ class _PolygonDemoState extends State<PolygonDemo> {
           ));
     });
   }
-
-  // Widget buildGetToolButtons() {
-  //   return Positioned(
-  //       child: Row(
-  //     children: [TextButton(onPressed: () {}, child: child)],
-  //   ));
-  // }
 }
 
 class PolygonDemoPage extends StatelessWidget {

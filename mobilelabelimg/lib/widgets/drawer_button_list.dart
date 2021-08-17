@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
@@ -107,6 +108,7 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                     press: () {
                       currentId += 1;
                       _workboardBloc.add(RectAdded(id: currentId));
+                      Navigator.pop(context);
                     },
                   ),
                   DrawerListTile(
@@ -180,10 +182,45 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                             }
                           });
                         }
+                        Navigator.pop(context);
                       }),
+
+                  DrawerListTile(
+                    title: "切换图片",
+                    svgSrc: "assets/icons/menu_task.svg",
+                    press: () async {
+                      if (await Permission.storage.request().isGranted) {
+                        FilePickerResult? image = await FilePicker.platform
+                            .pickFiles(type: FileType.image);
+                        if (null != image) {
+                          File file = File(image.files.single.path!);
+                          String _imagePath = file.path;
+                          _workboardBloc.add(RectIntial());
+                          // (_workboardBloc as WorkboardBloc).state.param.imagePath =
+                          _workboardBloc
+                              .add(GetSingleImageRects(filename: _imagePath));
+
+                          // setState(() {
+                          // imgPath = _imagePath;
+                          // });
+                          Navigator.of(context).pop();
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "需要同意权限才能使用功能",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                      Navigator.pop(context);
+                    },
+                  ),
                   DrawerListTile(
                     title: "退回到主页",
-                    svgSrc: "assets/icons/menu_task.svg",
+                    svgSrc: "assets/icons/menu_setting.svg",
                     press: () {
                       Navigator.of(context).popUntil((route) => route.isFirst);
                     },

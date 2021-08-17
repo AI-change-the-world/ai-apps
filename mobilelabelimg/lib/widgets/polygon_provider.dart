@@ -64,6 +64,7 @@ class MovePolygonProvider with ChangeNotifier {
   }
 }
 
+/// Deprecated
 class AddOrRemovePolygonProvider with ChangeNotifier {
   List<PolygonEntity> _poList = [];
   List<PolygonEntity> get poList => _poList;
