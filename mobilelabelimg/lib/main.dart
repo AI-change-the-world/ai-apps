@@ -21,7 +21,7 @@ void main() {
   runApp(new MaterialApp(
     routes: Routers.routers,
     debugShowCheckedModeBanner: false,
-    home: MainPage(),
-    // home: MainPageV1(),
+    // home: MainPage(),
+    home: MainPageV1(),
   ));
 }
