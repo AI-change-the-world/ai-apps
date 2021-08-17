@@ -42,11 +42,14 @@ dependencies:
   ftpconnect: ^1.0.0
   provider: ^5.0.0
   flutter_svg: ^0.22.0
-
+  url_launcher: ^6.0.9
+  # super_tooltip: ^1.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # flutter_lints: ^1.0.4
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -62,6 +65,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/icons/
+      - assets/app_icons/
+      - assets/demo_img.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
