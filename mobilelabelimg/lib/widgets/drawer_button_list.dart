@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
+import 'package:mobilelabelimg/entity/labelmeObj.dart';
 import 'package:mobilelabelimg/utils/common.dart';
 import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:mobilelabelimg/workboard/bloc/polygon_workboard_bloc.dart';
@@ -112,7 +116,7 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                     },
                   ),
                   DrawerListTile(
-                      title: "保存标注",
+                      title: "保存标注(xml)",
                       svgSrc: "assets/icons/menu_tran.svg",
                       press: () async {
                         Annotation annotation = Annotation();
@@ -268,22 +272,67 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                           .changeStatus(DrawingStatus.drawing);
                       PolygonEntity polygonEntity = PolygonEntity(
                           keyList: [], pList: [], className: "", index: 0);
-                      // context
-                      //     .read<AddOrRemovePolygonProvider>()
-                      //     .add(polygonEntity);
                       (_workboardBloc as PolygonWorkboardBloc)
                           .add(PolygonEntityAddEvent(p: polygonEntity));
+                      Navigator.pop(context);
                     },
                   ),
                   DrawerListTile(
-                    title: "Store",
+                    title: "保存标注信息(Json)",
                     svgSrc: "assets/icons/menu_store.svg",
-                    press: () {},
+                    press: () async {
+                      /// for test
+                      ByteData bytes =
+                          await rootBundle.load('assets/demo_img.png');
+                      var buffer = bytes.buffer;
+                      String m = base64.encode(Uint8List.view(buffer));
+                      LabelmeObject labelmeObject = LabelmeObject();
+                      String imgPath = (_workboardBloc as PolygonWorkboardBloc)
+                          .state
+                          .imgPath;
+                      labelmeObject.imageData = m;
+                      labelmeObject.imageHeight = CommonUtil.screenH().ceil();
+                      labelmeObject.imageWidth = CommonUtil.screenW().ceil();
+                      labelmeObject.flags = {};
+                      labelmeObject.version = labelmeVersion;
+                      List<Shapes> shapes = [];
+                      for (var i in (_workboardBloc as PolygonWorkboardBloc)
+                          .state
+                          .listPolygonEntity) {
+                        Shapes _shapes = Shapes();
+                        _shapes.flags = {};
+                        _shapes.label = i.className;
+                        _shapes.groupId = "0";
+                        _shapes.shapeType = labelmeShapeType;
+                        List<PPoint> _ppoints = [];
+
+                        for (var p in i.pList) {
+                          int _left = p.poffset.dx.ceil();
+                          int _top = p.poffset.dy.ceil();
+                          _ppoints.add(PPoint(ppoints: [_left, _top]));
+                        }
+                        _shapes.points = _ppoints;
+                        shapes.add(_shapes);
+                      }
+                      labelmeObject.shapes = shapes;
+
+                      print(labelmeObject.toJson());
+                      Navigator.pop(context);
+                    },
                   ),
                   DrawerListTile(
-                    title: "Notification",
+                    title: "切换图片",
+                    svgSrc: "assets/icons/menu_profile.svg",
+                    press: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  DrawerListTile(
+                    title: "退回到主页",
                     svgSrc: "assets/icons/menu_notification.svg",
-                    press: () {},
+                    press: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
                   ),
                 ],
               ),

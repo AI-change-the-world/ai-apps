@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-08-16 19:34:22
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-16 21:59:49
+ * @LastEditTime: 2021-08-17 19:59:41
  */
 part of 'polygon_workboard_bloc.dart';
 
@@ -45,4 +45,9 @@ class PolygonEntityChangeNameEvent extends PolygonWorkboardEvent {
   final String name;
   final int index;
   const PolygonEntityChangeNameEvent({required this.name, required this.index});
+}
+
+class SetImgPathEvent extends PolygonWorkboardEvent {
+  final String imgpath;
+  const SetImgPathEvent({required this.imgpath});
 }

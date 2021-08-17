@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-08-16 19:34:22
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-16 20:45:09
+ * @LastEditTime: 2021-08-17 19:57:39
  */
 part of 'polygon_workboard_bloc.dart';
 
@@ -15,14 +15,16 @@ class PolygonWorkboardState extends Equatable {
   final PolygonWorkboardStatus status;
   final List<Widget> widgets;
   final List<PolygonEntity> listPolygonEntity;
+  final String imgPath;
 
   const PolygonWorkboardState(
       {this.status = PolygonWorkboardStatus.initial,
       this.widgets = const [],
-      this.listPolygonEntity = const []});
+      this.listPolygonEntity = const [],
+      this.imgPath = ""});
 
   @override
-  List<Object> get props => [status, widgets, listPolygonEntity];
+  List<Object> get props => [status, widgets, listPolygonEntity, imgPath];
 
   @override
   bool operator ==(Object other) {
@@ -40,11 +42,15 @@ class PolygonWorkboardState extends Equatable {
   // TODO: implement hashCode
   int get hashCode => super.hashCode;
 
-  PolygonWorkboardState copyWith(PolygonWorkboardStatus? status,
-      List<Widget>? widgets, List<PolygonEntity>? listPolygonEntity) {
+  PolygonWorkboardState copyWith(
+      PolygonWorkboardStatus? status,
+      List<Widget>? widgets,
+      List<PolygonEntity>? listPolygonEntity,
+      String? imgPath) {
     return PolygonWorkboardState(
         status: status ?? this.status,
         widgets: widgets ?? this.widgets,
-        listPolygonEntity: listPolygonEntity ?? this.listPolygonEntity);
+        listPolygonEntity: listPolygonEntity ?? this.listPolygonEntity,
+        imgPath: imgPath ?? this.imgPath);
   }
 }

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-08-16 19:34:22
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-16 22:37:10
+ * @LastEditTime: 2021-08-17 20:05:36
  */
 import 'dart:async';
 
@@ -51,6 +51,10 @@ class PolygonWorkboardBloc
     if (event is PolygonEntityChangeNameEvent) {
       yield await _changeName(state, event);
     }
+
+    if (event is SetImgPathEvent) {
+      yield await _setImgPath(state, event);
+    }
   }
 
   Future<PolygonWorkboardState> _fetchedToState(
@@ -58,15 +62,15 @@ class PolygonWorkboardBloc
     List<Widget> widgets = [];
     List<PolygonEntity> listPolygonEntity = [];
     return state.copyWith(
-        PolygonWorkboardStatus.initial, widgets, listPolygonEntity);
+        PolygonWorkboardStatus.initial, widgets, listPolygonEntity, '');
   }
 
   Future<PolygonWorkboardState> _addWidget(
       PolygonWorkboardState state, WidgetAddEvent event) async {
     List<Widget> widgets = state.widgets;
     widgets.add(event.w);
-    return state.copyWith(
-        PolygonWorkboardStatus.add, widgets, state.listPolygonEntity);
+    return state.copyWith(PolygonWorkboardStatus.add, widgets,
+        state.listPolygonEntity, state.imgPath);
   }
 
   Future<PolygonWorkboardState> _addPolyEntity(
@@ -75,7 +79,8 @@ class PolygonWorkboardBloc
         PolygonEntity(keyList: [], pList: [], className: "", index: 0);
     List<PolygonEntity> ps = state.listPolygonEntity;
     ps.add(polygonEntity);
-    return state.copyWith(PolygonWorkboardStatus.add, state.widgets, ps);
+    return state.copyWith(
+        PolygonWorkboardStatus.add, state.widgets, ps, state.imgPath);
   }
 
   Future<PolygonWorkboardState> _removeWidget(
@@ -96,8 +101,8 @@ class PolygonWorkboardBloc
       int start = indexes[event.index];
       _widgets.removeRange(start, state.widgets.length - 1);
     }
-    return state.copyWith(
-        PolygonWorkboardStatus.delete, _widgets, state.listPolygonEntity);
+    return state.copyWith(PolygonWorkboardStatus.delete, _widgets,
+        state.listPolygonEntity, state.imgPath);
   }
 
   Future<PolygonWorkboardState> _removePolygon(
@@ -105,12 +110,20 @@ class PolygonWorkboardBloc
     List<PolygonEntity> ps = state.listPolygonEntity;
     ps.removeAt(event.index);
 
-    return state.copyWith(PolygonWorkboardStatus.delete, state.widgets, ps);
+    return state.copyWith(
+        PolygonWorkboardStatus.delete, state.widgets, ps, state.imgPath);
   }
 
   Future<PolygonWorkboardState> _changeName(
       PolygonWorkboardState state, PolygonEntityChangeNameEvent event) async {
     state.listPolygonEntity[event.index].className = event.name;
     return state;
+  }
+
+  Future<PolygonWorkboardState> _setImgPath(
+      PolygonWorkboardState state, SetImgPathEvent event) async {
+    // state.imgPath = event.imgpath;
+    return state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
+        state.listPolygonEntity, event.imgpath);
   }
 }

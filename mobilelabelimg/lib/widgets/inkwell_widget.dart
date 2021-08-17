@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2021-08-17 19:07:04
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2021-08-17 19:23:47
+ */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/utils/common.dart';
 
@@ -23,6 +32,7 @@ class InkWellWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 15.0,
       child: InkWell(
         onTap: onWidgetPressed,
         child: Container(

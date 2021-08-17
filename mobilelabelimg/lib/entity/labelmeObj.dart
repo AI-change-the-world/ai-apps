@@ -1,6 +1,6 @@
 class LabelmeObject {
   /// flags is always {}
-  // Flags? flags;
+  Map? flags;
   String? imageData;
   int? imageHeight;
   String? imagePath;
@@ -63,7 +63,7 @@ class LabelmeObject {
 
 class Shapes {
   /// flags is always {}
-  // Flags flags;
+  Map? flags;
   String? groupId;
   String? label;
   List<PPoint>? points;
