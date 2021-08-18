@@ -54,5 +54,7 @@ class SetImgPathEvent extends PolygonWorkboardEvent {
 
 class GetSingleImagePolygonEvent extends PolygonWorkboardEvent {
   final String filename;
-  const GetSingleImagePolygonEvent({required this.filename});
+  final BuildContext context;
+  const GetSingleImagePolygonEvent(
+      {required this.filename, required this.context});
 }

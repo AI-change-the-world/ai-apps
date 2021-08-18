@@ -91,12 +91,12 @@ class PolygonPointState extends State<PolygonPoint> {
 
                   int __ind = indexs.indexOf(_index);
 
-                  print("=============================");
-                  print(context.read<MovePolygonProvider>().keys.length);
-                  print(_index);
-                  print(indexs);
-                  print(__ind);
-                  print("=============================");
+                  // print("=============================");
+                  // print(context.read<MovePolygonProvider>().keys.length);
+                  // print(_index);
+                  // print(indexs);
+                  // print(__ind);
+                  // print("=============================");
 
                   late List<GlobalKey> _subKeys;
 

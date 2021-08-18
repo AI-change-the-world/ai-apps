@@ -125,8 +125,8 @@ class _PolygonDemoState extends State<PolygonDemo> {
       type: 1,
     );
     _polygonWorkboardBloc.add(WidgetAddEvent(w: draggableButton));
-    _polygonWorkboardBloc
-        .add(GetSingleImagePolygonEvent(filename: widget.imgPath));
+    _polygonWorkboardBloc.add(
+        GetSingleImagePolygonEvent(filename: widget.imgPath, context: context));
     // for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
     //   debugPrint("这里要开始执行provider操作");
     //   context.read<MovePolygonProvider>().addAll(i.keyList, i.pList);
