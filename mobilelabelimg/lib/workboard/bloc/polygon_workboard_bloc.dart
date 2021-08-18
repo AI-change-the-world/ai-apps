@@ -17,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
 import 'package:mobilelabelimg/entity/labelmeObj.dart';
-import 'package:provider/provider.dart';
-import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:mobilelabelimg/widgets/polygon_points.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -99,6 +97,12 @@ class PolygonWorkboardBloc
     //     PolygonEntity(keyList: [], pList: [], className: "", index: 0);
     List<PolygonEntity> ps = state.listPolygonEntity;
     ps.add(event.p);
+    // List<Widget> widgets = state.widgets;
+    // widgets.add(PolygonPoint(
+    //   poffset: Offset(-1, -1),
+    //   index: -1,
+    //   isFirst: false,
+    // ));
     return state.copyWith(
         PolygonWorkboardStatus.add, state.widgets, ps, state.imgPath);
   }

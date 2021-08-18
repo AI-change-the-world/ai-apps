@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilelabelimg/utils/routers.dart';
 import 'package:mobilelabelimg/widgets/inkwell_widget.dart';
-import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LabelmeOpenningPage extends StatefulWidget {
@@ -47,12 +47,9 @@ class _LabelmeOpenningPageState extends State<LabelmeOpenningPage> {
                       // print(file.path);
                       // print("==========================================");
                       _imgpath = file.path;
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return PolygonDemoPage(
-                          imgPath: _imgpath,
-                        );
-                      }));
+
+                      Navigator.of(context).pushNamed(Routers.pagePolygonPage,
+                          arguments: _imgpath);
                     } else {
                       Fluttertoast.showToast(
                           msg: "文件未选择",

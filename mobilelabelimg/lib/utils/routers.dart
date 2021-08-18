@@ -9,6 +9,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/main_page_v1.dart';
+import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:mobilelabelimg/workboard/views/labelimg_opening_view.dart';
 import 'package:mobilelabelimg/workboard/views/labelme_opening_view.dart';
 import 'package:mobilelabelimg/workboard/views/multi_images_workboard.dart';
@@ -20,7 +21,7 @@ class Routers {
   static final pageMultiAnnotationWorkboard = "pageMultiAnnotationWorkboard";
   static final pageMain = "pageMain";
   static final pageLabelimgMain = "pageLabelimgMain";
-  // static final pagePolygonPage = "pagePolygonPage";
+  static final pagePolygonPage = "pagePolygonPage";
   static final pageLabelmeMain = "pageLabelmeMain";
 
   static final Map<String, WidgetBuilder> routers = {
@@ -28,7 +29,7 @@ class Routers {
     pageMultiAnnotationWorkboard: (ctx) => MultiImageAnnotationPage(),
     pageMain: (ctx) => MainPageV1(),
     pageLabelimgMain: (ctx) => LabelImgOpenningPage(),
-    // pagePolygonPage: (ctx) => PolygonDemoPage(imgPath: '',),
+    pagePolygonPage: (ctx) => PolygonDemoPage(),
     pageLabelmeMain: (ctx) => LabelmeOpenningPage(),
   };
 }

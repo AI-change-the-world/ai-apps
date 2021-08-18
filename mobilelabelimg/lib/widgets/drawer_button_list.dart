@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/entity/imageObjs.dart';
@@ -277,6 +275,13 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                                   1);
                           (_workboardBloc as PolygonWorkboardBloc)
                               .add(PolygonEntityAddEvent(p: polygonEntity));
+                          // (_workboardBloc as PolygonWorkboardBloc)
+                          //     .add(WidgetAddEvent(
+                          //         w: PolygonPoint(
+                          //   poffset: Offset(-1, -1),
+                          //   index: -1,
+                          //   isFirst: false,
+                          // )));
                         } else {
                           Fluttertoast.showToast(
                               msg: "存在一个未使用的polygon",
