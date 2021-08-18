@@ -24,6 +24,7 @@ class DrawingProvicer with ChangeNotifier {
   }
 }
 
+/// Deprecated
 class MovePolygonProvider with ChangeNotifier {
   List<GlobalKey<PolygonPointState>> _keys = [];
   List<GlobalKey<PolygonPointState>> get keys => _keys;

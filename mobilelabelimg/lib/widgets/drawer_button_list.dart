@@ -188,7 +188,6 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                         }
                         Navigator.pop(context);
                       }),
-
                   DrawerListTile(
                     title: "切换图片",
                     svgSrc: "assets/icons/menu_task.svg",
@@ -229,31 +228,6 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                       Navigator.of(context).popUntil((route) => route.isFirst);
                     },
                   ),
-                  // DrawerListTile(
-                  //   title: "Documents",
-                  //   svgSrc: "assets/icons/menu_doc.svg",
-                  //   press: () {},
-                  // ),
-                  // DrawerListTile(
-                  //   title: "Store",
-                  //   svgSrc: "assets/icons/menu_store.svg",
-                  //   press: () {},
-                  // ),
-                  // DrawerListTile(
-                  //   title: "Notification",
-                  //   svgSrc: "assets/icons/menu_notification.svg",
-                  //   press: () {},
-                  // ),
-                  // DrawerListTile(
-                  //   title: "Profile",
-                  //   svgSrc: "assets/icons/menu_profile.svg",
-                  //   press: () {},
-                  // ),
-                  // DrawerListTile(
-                  //   title: "Settings",
-                  //   svgSrc: "assets/icons/menu_setting.svg",
-                  //   press: () {},
-                  // ),
                 ],
               ),
             );
@@ -293,7 +267,14 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                                 .pList
                                 .isNotEmpty)) {
                           PolygonEntity polygonEntity = PolygonEntity(
-                              keyList: [], pList: [], className: "", index: 0);
+                              keyList: [],
+                              pList: [],
+                              className: "",
+                              index: (_workboardBloc as PolygonWorkboardBloc)
+                                      .state
+                                      .listPolygonEntity
+                                      .length +
+                                  1);
                           (_workboardBloc as PolygonWorkboardBloc)
                               .add(PolygonEntityAddEvent(p: polygonEntity));
                         } else {
@@ -315,15 +296,15 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                     title: "保存标注信息(Json)",
                     svgSrc: "assets/icons/menu_store.svg",
                     press: () async {
-                      /// for test
-                      ByteData bytes =
-                          await rootBundle.load('assets/demo_img.png');
-                      var buffer = bytes.buffer;
-                      String m = base64.encode(Uint8List.view(buffer));
                       LabelmeObject labelmeObject = LabelmeObject();
                       String imgPath = (_workboardBloc as PolygonWorkboardBloc)
                           .state
                           .imgPath;
+
+                      File _f = File(imgPath);
+                      List<int> bytes = await _f.readAsBytes();
+                      String m = base64.encode(bytes);
+
                       labelmeObject.imageData = m;
                       labelmeObject.imageHeight = CommonUtil.screenH().ceil();
                       labelmeObject.imageWidth = CommonUtil.screenW().ceil();
@@ -338,12 +319,12 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                         _shapes.label = i.className;
                         _shapes.groupId = "0";
                         _shapes.shapeType = labelmeShapeType;
-                        List<PPoint> _ppoints = [];
+                        List _ppoints = [];
 
-                        for (var p in i.pList) {
-                          int _left = p.poffset.dx.ceil();
-                          int _top = p.poffset.dy.ceil();
-                          _ppoints.add(PPoint(ppoints: [_left, _top]));
+                        for (var p in i.keyList) {
+                          int _left = p.currentState!.defaultLeft.ceil();
+                          int _top = p.currentState!.defaultTop.ceil();
+                          _ppoints.add([_left, _top]);
                         }
                         _shapes.points = _ppoints;
                         shapes.add(_shapes);

@@ -65,6 +65,10 @@ class PolygonWorkboardBloc
     if (event is GetSingleImagePolygonEvent) {
       yield await _getSingleFilePolygon(state, event);
     }
+
+    if (event is PointMoveEvent) {
+      yield await _moveEvent(state, event);
+    }
   }
 
   Future<PolygonWorkboardState> _fetchedToState(
@@ -78,17 +82,23 @@ class PolygonWorkboardBloc
   Future<PolygonWorkboardState> _addWidget(
       PolygonWorkboardState state, WidgetAddEvent event) async {
     List<Widget> widgets = state.widgets;
+
     widgets.add(event.w);
-    return state.copyWith(PolygonWorkboardStatus.add, widgets,
-        state.listPolygonEntity, state.imgPath);
+
+    return state.copyWith(
+      PolygonWorkboardStatus.add,
+      widgets,
+      state.listPolygonEntity,
+      state.imgPath,
+    );
   }
 
   Future<PolygonWorkboardState> _addPolyEntity(
       PolygonWorkboardState state, PolygonEntityAddEvent event) async {
-    PolygonEntity polygonEntity =
-        PolygonEntity(keyList: [], pList: [], className: "", index: 0);
+    // PolygonEntity polygonEntity =
+    //     PolygonEntity(keyList: [], pList: [], className: "", index: 0);
     List<PolygonEntity> ps = state.listPolygonEntity;
-    ps.add(polygonEntity);
+    ps.add(event.p);
     return state.copyWith(
         PolygonWorkboardStatus.add, state.widgets, ps, state.imgPath);
   }
@@ -154,6 +164,7 @@ class PolygonWorkboardBloc
       try {
         String content = file.readAsStringSync();
         var _obj = json.decode(content);
+        // print(_obj.toString());
         final LabelmeObject labelmeObject = LabelmeObject.fromJson(_obj);
         List<Shapes> _shapes = labelmeObject.shapes!;
         for (var i in _shapes) {
@@ -163,8 +174,8 @@ class PolygonWorkboardBloc
               index: _shapes.indexOf(i),
               className: i.label!);
           for (int j = 0; j < i.points!.length; j++) {
-            double _dx = i.points![j].ppoints![0] * 1.0;
-            double _dy = i.points![j].ppoints![1] * 1.0;
+            double _dx = i.points![j][0] * 1.0;
+            double _dy = i.points![j][1] * 1.0;
             GlobalKey<PolygonPointState> key = GlobalKey();
             PolygonPoint point = PolygonPoint(
                 key: key,
@@ -172,7 +183,7 @@ class PolygonWorkboardBloc
                 index: j + 1,
                 isFirst: j == 0);
             if (_shapes.indexOf(i) > 0 && j == 0) {
-              print("我这里不需要插入一个占位point但是插入了。");
+              // print("我这里不需要插入一个占位point但是插入了。");
               state.widgets.add(PolygonPoint(
                 poffset: Offset(-1, -1),
                 index: -1,
@@ -182,12 +193,16 @@ class PolygonWorkboardBloc
             state.widgets.add(point);
             polygonEntity.keyList.add(key);
             polygonEntity.pList.add(point);
-            event.context.read<MovePolygonProvider>().add(key, point);
           }
+          state.widgets.add(PolygonPoint(
+            poffset: Offset(-1, -1),
+            index: -1,
+            isFirst: false,
+          ));
           listPolygonEntity.add(polygonEntity);
         }
-      } catch (e) {
-        print(e);
+      } catch (e, stack) {
+        print(stack.toString());
       }
       return state.copyWith(PolygonWorkboardStatus.initial, state.widgets,
           listPolygonEntity, _filepath);
@@ -195,5 +210,49 @@ class PolygonWorkboardBloc
       return state.copyWith(
           PolygonWorkboardStatus.initial, state.widgets, [], "");
     }
+  }
+
+  Future<PolygonWorkboardState> _moveEvent(
+      PolygonWorkboardState state, PointMoveEvent event) async {
+    // List<GlobalKey<PolygonPointState>> _keys = [];
+    // List<PolygonPoint> _points = [];
+    // for (var i in state.listPolygonEntity) {
+    //   _keys.addAll(i.keyList);
+    //   _points.addAll(i.pList);
+    // }
+
+    PolygonEntity polygonEntity = state.listPolygonEntity[event.index];
+
+    // for (var i in polygonEntity.keyList) {
+    //   i.currentState!.moveTO(Offset(i.currentState!.defaultLeft - event.x,
+    //       i.currentState!.defaultTop - event.y));
+    // }
+
+    for (int i = 1; i < polygonEntity.keyList.length; i++) {
+      polygonEntity.keyList[i].currentState!.moveTO(Offset(
+          polygonEntity.keyList[i].currentState!.defaultLeft - event.x,
+          polygonEntity.keyList[i].currentState!.defaultTop - event.y));
+    }
+
+    state.listPolygonEntity[event.index] = polygonEntity;
+
+    // if (event.subkeys == []) {
+    //   if (_keys.length >= 2) {
+    //     for (int i = 1; i < _keys.length; i++) {
+    //       _keys[i].currentState!.moveTO(Offset(
+    //           _keys[i].currentState!.defaultLeft - event.x,
+    //           _keys[i].currentState!.defaultTop - event.y));
+    //     }
+    //   }
+    // } else {
+    //   for (int i = 1; i < event.subkeys.length; i++) {
+    //     event.subkeys[i].currentState!.moveTO(Offset(
+    //         event.subkeys[i].currentState!.defaultLeft - event.x,
+    //         event.subkeys[i].currentState!.defaultTop - event.y));
+    //   }
+    // }
+
+    return state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
+        state.listPolygonEntity, state.imgPath);
   }
 }

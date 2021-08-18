@@ -125,35 +125,12 @@ class _PolygonDemoState extends State<PolygonDemo> {
       type: 1,
     );
     _polygonWorkboardBloc.add(WidgetAddEvent(w: draggableButton));
-    _polygonWorkboardBloc.add(
-        GetSingleImagePolygonEvent(filename: widget.imgPath, context: context));
-    // for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
-    //   debugPrint("这里要开始执行provider操作");
-    //   context.read<MovePolygonProvider>().addAll(i.keyList, i.pList);
-    // }
-    // await Future.delayed(Duration.zero)
-    //     .then((value) =>
-    //         _polygonWorkboardBloc.add(WidgetAddEvent(w: draggableButton)))
-    //     .then((value) => _polygonWorkboardBloc
-    //         .add(GetSingleImagePolygonEvent(filename: widget.imgPath)))
-    //     .then((value) {
-    //   print("*************************************************");
-    //   print(_polygonWorkboardBloc.state.listPolygonEntity.length);
-    //   for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
-    //     print("这里要开始执行provider操作");
-    //     context.read<MovePolygonProvider>().addAll(i.keyList, i.pList);
-    //   }
-    //   print(context.read<MovePolygonProvider>().keys.length);
-    //   print("*************************************************");
-    // });
+    _polygonWorkboardBloc
+        .add(GetSingleImagePolygonEvent(filename: widget.imgPath));
   }
 
   @override
   Widget build(BuildContext context) {
-    // String? imgPath = ModalRoute.of(context)!.settings.arguments as String;
-
-    /// 这里还要初始化polygon MovePolygonProvider
-
     return BlocBuilder<PolygonWorkboardBloc, PolygonWorkboardState>(
         builder: (context, state) {
       return FutureBuilder(
@@ -197,7 +174,7 @@ class _PolygonDemoState extends State<PolygonDemo> {
                           isFirst: isFirst,
                         );
 
-                        context.read<MovePolygonProvider>().add(key, point);
+                        // context.read<MovePolygonProvider>().add(key, point);
 
                         // setState(() {
                         _polygonWorkboardBloc
@@ -310,7 +287,7 @@ class PolygonDemoPage extends StatelessWidget {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => DrawingProvicer()),
-            ChangeNotifierProvider(create: (_) => MovePolygonProvider()),
+            // ChangeNotifierProvider(create: (_) => MovePolygonProvider()),
           ],
           child: Scaffold(
             body: PolygonDemo(
