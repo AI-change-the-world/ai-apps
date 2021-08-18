@@ -50,8 +50,8 @@ class _MainPageV1State extends State<MainPageV1> {
                   child: Image.asset("assets/app_icons/labelimg.png"),
                 ),
                 title: Text("labelImg 是一个多用于目标识别的标注工具"),
-                subtitle: Text(
-                    "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
+                // subtitle: Text(
+                //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
                 trailing: TextButton(
                   child: Text("跳转仓库"),
                   onPressed: () async {
@@ -73,8 +73,8 @@ class _MainPageV1State extends State<MainPageV1> {
                   child: Image.asset("assets/app_icons/labelme.png"),
                 ),
                 title: Text("labelme 是一个多用于图像分割的标注工具"),
-                subtitle:
-                    Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
+                // subtitle:
+                //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
                 trailing: TextButton(
                   child: Text("跳转仓库"),
                   onPressed: () async {

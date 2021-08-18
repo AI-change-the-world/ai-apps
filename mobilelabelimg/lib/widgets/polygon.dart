@@ -215,14 +215,16 @@ class _PolygonDemoState extends State<PolygonDemo> {
             },
             child: CustomPaint(
               // key: ,
-              foregroundPainter:
-                  (_polygonWorkboardBloc.state.listPolygonEntity.isEmpty ||
-                          _polygonWorkboardBloc
-                              .state.listPolygonEntity.last.keyList.isNotEmpty)
-                      ? LinePainter(
-                          listPolygonEntity:
-                              _polygonWorkboardBloc.state.listPolygonEntity)
-                      : null,
+              foregroundPainter: LinePainter(
+                  listPolygonEntity:
+                      _polygonWorkboardBloc.state.listPolygonEntity),
+              // (_polygonWorkboardBloc.state.listPolygonEntity.isEmpty ||
+              //         _polygonWorkboardBloc
+              //             .state.listPolygonEntity.last.keyList.isNotEmpty)
+              //     ? LinePainter(
+              //         listPolygonEntity:
+              //             _polygonWorkboardBloc.state.listPolygonEntity)
+              //     : null,
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
