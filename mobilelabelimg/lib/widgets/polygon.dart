@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:mobilelabelimg/widgets/drawer_button_list.dart';
 import 'package:mobilelabelimg/widgets/polygon_points.dart';
@@ -23,6 +26,14 @@ class LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // print("============================================");
+    // print(listPolygonEntity.length);
+    // if (listPolygonEntity.isNotEmpty) {
+    //   print(listPolygonEntity.last.keyList.length);
+    //   print(listPolygonEntity.last.keyList.last.currentState == null);
+    // }
+    // print("============================================");
+
     if (listPolygonEntity.isNotEmpty) {
       for (PolygonEntity polygonEntity in listPolygonEntity) {
         if (polygonEntity.pList.length < 2) return;
@@ -87,175 +98,226 @@ class LinePainter extends CustomPainter {
 }
 
 class PolygonDemo extends StatefulWidget {
-  PolygonDemo({Key? key}) : super(key: key);
+  PolygonDemo({Key? key, required this.imgPath}) : super(key: key);
+  final String imgPath;
 
   @override
   _PolygonDemoState createState() => _PolygonDemoState();
 }
 
 class _PolygonDemoState extends State<PolygonDemo> {
-  // PolygonEntity polygonEntity =
-  //     PolygonEntity(keyList: [], pList: [], className: "", index: 0);
   final GlobalKey<ScaffoldState> _scaffoldKey2 = GlobalKey<ScaffoldState>();
   late PolygonWorkboardBloc _polygonWorkboardBloc;
 
-  // late List<PolygonEntity> listPolygonEntity = [];
-  // List<Widget> listPolyPoints = [];
-
-  // int currentPolygonIndex = 0;
+  var _initFuture;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _polygonWorkboardBloc = context.read<PolygonWorkboardBloc>();
+    _initFuture = initPage();
+  }
 
-    // listPolygonEntity.add(polygonEntity);
-
+  Future<void> initPage() async {
     DraggableButton draggableButton = DraggableButton(
       scaffoldKey: _scaffoldKey2,
       type: 1,
     );
     _polygonWorkboardBloc.add(WidgetAddEvent(w: draggableButton));
-    // listPolyPoints.add(draggableButton);
-
-    // context.read<AddOrRemovePolygonProvider>().add(polygonEntity);
+    _polygonWorkboardBloc
+        .add(GetSingleImagePolygonEvent(filename: widget.imgPath));
+    // for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
+    //   debugPrint("这里要开始执行provider操作");
+    //   context.read<MovePolygonProvider>().addAll(i.keyList, i.pList);
+    // }
+    // await Future.delayed(Duration.zero)
+    //     .then((value) =>
+    //         _polygonWorkboardBloc.add(WidgetAddEvent(w: draggableButton)))
+    //     .then((value) => _polygonWorkboardBloc
+    //         .add(GetSingleImagePolygonEvent(filename: widget.imgPath)))
+    //     .then((value) {
+    //   print("*************************************************");
+    //   print(_polygonWorkboardBloc.state.listPolygonEntity.length);
+    //   for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
+    //     print("这里要开始执行provider操作");
+    //     context.read<MovePolygonProvider>().addAll(i.keyList, i.pList);
+    //   }
+    //   print(context.read<MovePolygonProvider>().keys.length);
+    //   print("*************************************************");
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    // String? imgPath = ModalRoute.of(context)!.settings.arguments as String;
+
+    /// 这里还要初始化polygon MovePolygonProvider
+
     return BlocBuilder<PolygonWorkboardBloc, PolygonWorkboardState>(
         builder: (context, state) {
-      return Scaffold(
-          drawer: ToolsListWidget(
-            imgPath: "",
-            type: 1,
-          ),
-          key: _scaffoldKey2,
-          body: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTapUp: (TapUpDetails details) {
-              if (context.read<DrawingProvicer>().status ==
-                  DrawingStatus.drawing) {
-                var x = details.globalPosition.dx;
-                var y = details.globalPosition.dy;
-                bool isFirst = false;
-                if (_polygonWorkboardBloc.state.widgets.length == 1 ||
-                    (_polygonWorkboardBloc.state.widgets.last.runtimeType ==
-                            PolygonPoint &&
-                        (_polygonWorkboardBloc.state.widgets.last
-                                    as PolygonPoint)
-                                .index ==
-                            -1)) isFirst = true;
-                GlobalKey<PolygonPointState> key = GlobalKey();
-                PolygonPoint point = PolygonPoint(
-                  key: key,
-                  poffset: Offset(x, y),
-                  // index: context
-                  //         .read<AddOrRemovePolygonProvider>()
-                  //         .poList
-                  //         .last
-                  //         .pList
-                  //         .length +
-                  //     1,
-                  index: _polygonWorkboardBloc
-                          .state.listPolygonEntity.last.pList.length +
-                      1,
-                  isFirst: isFirst,
-                );
+      return FutureBuilder(
+          future: _initFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Scaffold(
+                  drawer: ToolsListWidget(
+                    imgPath: _polygonWorkboardBloc.state.imgPath,
+                    type: 1,
+                  ),
+                  key: _scaffoldKey2,
+                  body: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTapUp: (TapUpDetails details) {
+                      if (context.read<DrawingProvicer>().status ==
+                          DrawingStatus.drawing) {
+                        // print("======================================");
+                        // print(_polygonWorkboardBloc.state.widgets.length);
+                        // print(_polygonWorkboardBloc.state.listPolygonEntity.length);
+                        // print("======================================");
 
-                context.read<MovePolygonProvider>().add(key, point);
+                        var x = details.globalPosition.dx;
+                        var y = details.globalPosition.dy;
+                        bool isFirst = false;
+                        if (_polygonWorkboardBloc.state.widgets.length == 1 ||
+                            (_polygonWorkboardBloc
+                                        .state.widgets.last.runtimeType ==
+                                    PolygonPoint &&
+                                (_polygonWorkboardBloc.state.widgets.last
+                                            as PolygonPoint)
+                                        .index ==
+                                    -1)) isFirst = true;
+                        GlobalKey<PolygonPointState> key = GlobalKey();
+                        PolygonPoint point = PolygonPoint(
+                          key: key,
+                          poffset: Offset(x, y),
+                          index: _polygonWorkboardBloc
+                                  .state.listPolygonEntity.last.pList.length +
+                              1,
+                          isFirst: isFirst,
+                        );
 
-                setState(() {
-                  _polygonWorkboardBloc.state.listPolygonEntity.last.keyList
-                      .add(key);
-                  _polygonWorkboardBloc.state.listPolygonEntity.last.pList
-                      .add(point);
-                  _polygonWorkboardBloc.add(WidgetAddEvent(w: point));
-                  if (_polygonWorkboardBloc
-                          .state.listPolygonEntity.last.pList.length >
-                      2) {
-                    if ((x -
-                                    _polygonWorkboardBloc
-                                        .state
-                                        .listPolygonEntity
-                                        .last
-                                        .keyList[0]
-                                        .currentState!
-                                        .defaultLeft)
-                                .abs() <
-                            circleSize &&
-                        (y -
-                                    _polygonWorkboardBloc
-                                        .state
-                                        .listPolygonEntity
-                                        .last
-                                        .keyList[0]
-                                        .currentState!
-                                        .defaultTop)
-                                .abs() <
-                            circleSize) {
-                      context
-                          .read<DrawingProvicer>()
-                          .changeStatus(DrawingStatus.notDrawing);
+                        context.read<MovePolygonProvider>().add(key, point);
 
-                      // currentPolygonIndex += 1;
+                        // setState(() {
+                        _polygonWorkboardBloc
+                            .state.listPolygonEntity.last.keyList
+                            .add(key);
+                        _polygonWorkboardBloc.state.listPolygonEntity.last.pList
+                            .add(point);
+                        _polygonWorkboardBloc.add(WidgetAddEvent(w: point));
+                        if (_polygonWorkboardBloc
+                                .state.listPolygonEntity.last.pList.length >
+                            2) {
+                          if ((x -
+                                          _polygonWorkboardBloc
+                                              .state
+                                              .listPolygonEntity
+                                              .last
+                                              .keyList[0]
+                                              .currentState!
+                                              .defaultLeft)
+                                      .abs() <
+                                  circleSize &&
+                              (y -
+                                          _polygonWorkboardBloc
+                                              .state
+                                              .listPolygonEntity
+                                              .last
+                                              .keyList[0]
+                                              .currentState!
+                                              .defaultTop)
+                                      .abs() <
+                                  circleSize) {
+                            context
+                                .read<DrawingProvicer>()
+                                .changeStatus(DrawingStatus.notDrawing);
 
-                      _polygonWorkboardBloc.add(WidgetAddEvent(
-                          w: PolygonPoint(
-                        poffset: Offset(-1, -1),
-                        index: -1,
-                        isFirst: false,
-                      )));
-
-                      // listPolyPoints.add(PolygonPoint(
-                      //   poffset: Offset(-1, -1),
-                      //   index: -1,
-                      //   isFirst: false,
-                      // ));
-                    }
-                  }
-                });
-              }
-              // print(details.localPosition);
-            },
-            child: CustomPaint(
-              // key: ,
-              foregroundPainter: LinePainter(
-                  listPolygonEntity:
-                      _polygonWorkboardBloc.state.listPolygonEntity),
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("assets/demo_img.png")),
-                ),
-                child: Stack(
-                    // children: polygonEntity.pList,
-                    children: List.of(_polygonWorkboardBloc.state.widgets)
-                      ..removeWhere((element) {
-                        if (element.runtimeType == PolygonPoint) {
-                          return (element as PolygonPoint).index == -1;
-                        } else {
-                          return false;
+                            _polygonWorkboardBloc.add(WidgetAddEvent(
+                                w: PolygonPoint(
+                              poffset: Offset(-1, -1),
+                              index: -1,
+                              isFirst: false,
+                            )));
+                          }
                         }
-                      })),
-              ),
-            ),
-          ));
+                        // });
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "当前为修改模式，请新建一个标注继续",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.orange,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                      // print(details.localPosition);
+                    },
+                    child: CustomPaint(
+                      // key: ,
+                      foregroundPainter: (_polygonWorkboardBloc
+                                  .state.listPolygonEntity.isEmpty ||
+                              _polygonWorkboardBloc.state.listPolygonEntity.last
+                                  .keyList.isNotEmpty)
+                          ? LinePainter(
+                              listPolygonEntity:
+                                  _polygonWorkboardBloc.state.listPolygonEntity)
+                          : null,
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: _polygonWorkboardBloc.state.imgPath != ""
+                            ? BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: FileImage(File(
+                                        _polygonWorkboardBloc.state.imgPath))),
+                              )
+                            : null,
+                        child: Stack(
+                            // children: polygonEntity.pList,
+                            children:
+                                List.of(_polygonWorkboardBloc.state.widgets)
+                                  ..removeWhere((element) {
+                                    if (element.runtimeType == PolygonPoint) {
+                                      return (element as PolygonPoint).index ==
+                                          -1;
+                                    } else {
+                                      return false;
+                                    }
+                                  })),
+                      ),
+                    ),
+                  ));
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          });
     });
   }
 }
 
 class PolygonDemoPage extends StatelessWidget {
-  const PolygonDemoPage({Key? key}) : super(key: key);
+  final String imgPath;
+  const PolygonDemoPage({Key? key, required this.imgPath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        child: PolygonDemo(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => DrawingProvicer()),
+            ChangeNotifierProvider(create: (_) => MovePolygonProvider()),
+          ],
+          child: Scaffold(
+            body: PolygonDemo(
+              imgPath: imgPath,
+            ),
+          ),
+        ),
         create: (BuildContext context) {
           return PolygonWorkboardBloc()..add(InitialEvent());
         });

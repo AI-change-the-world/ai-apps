@@ -65,6 +65,7 @@ class _MainPageV1State extends State<MainPageV1> {
               InkWellWidget(
                 onWidgetPressed: () {
                   print("跳转");
+                  Navigator.of(context).pushNamed(Routers.pageLabelmeMain);
                 },
                 leading: Container(
                   width: 50,
@@ -94,7 +95,7 @@ class _MainPageV1State extends State<MainPageV1> {
                   child: Image.asset("assets/app_icons/me.jpg"),
                 ),
                 title: Text("关于我"),
-                subtitle: Text("此图标为黑暗之魂3防火女"),
+                // subtitle: Text("此头像为黑暗之魂3防火女"),
               ),
               SizedBox(
                 height: 25,

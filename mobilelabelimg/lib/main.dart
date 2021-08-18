@@ -9,7 +9,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
-import 'package:mobilelabelimg/workboard/views/polygon_workboard.dart';
+
 // import 'package:mobilelabelimg/tests/drag_scale.dart';
 // import 'package:mobilelabelimg/tests/scale_demo.dart';
 // import 'package:mobilelabelimg/widgets/rect.dart';
@@ -19,7 +19,7 @@ void main() {
   runApp(new MaterialApp(
     routes: Routers.routers,
     debugShowCheckedModeBanner: false,
-    home: PolygonWorkboard(),
-    // initialRoute: Routers.pageMain,
+    // home: PolygonWorkboard(),
+    initialRoute: Routers.pageMain,
   ));
 }

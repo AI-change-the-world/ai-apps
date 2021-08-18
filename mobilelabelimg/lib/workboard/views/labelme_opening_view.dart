@@ -1,29 +1,20 @@
-/*
- * @Descripttion: 
- * @version: 
- * @Author: xiaoshuyui
- * @email: guchengxi1994@qq.com
- * @Date: 2021-08-17 19:07:04
- * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-08-17 19:40:03
- */
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mobilelabelimg/utils/routers.dart';
 import 'package:mobilelabelimg/widgets/inkwell_widget.dart';
+import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class LabelImgOpenningPage extends StatefulWidget {
-  LabelImgOpenningPage({Key? key}) : super(key: key);
+class LabelmeOpenningPage extends StatefulWidget {
+  LabelmeOpenningPage({Key? key}) : super(key: key);
 
   @override
-  _LabelImgOpenningPageState createState() => _LabelImgOpenningPageState();
+  _LabelmeOpenningPageState createState() => _LabelmeOpenningPageState();
 }
 
-class _LabelImgOpenningPageState extends State<LabelImgOpenningPage> {
+class _LabelmeOpenningPageState extends State<LabelmeOpenningPage> {
   var _imgpath;
 
   @override
@@ -31,7 +22,7 @@ class _LabelImgOpenningPageState extends State<LabelImgOpenningPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("labelImg 移动版"),
+        title: Text("labelme 移动版"),
       ),
       body: SingleChildScrollView(
         child: Align(
@@ -56,9 +47,12 @@ class _LabelImgOpenningPageState extends State<LabelImgOpenningPage> {
                       // print(file.path);
                       // print("==========================================");
                       _imgpath = file.path;
-                      Navigator.of(context).pushNamed(
-                          Routers.pageAnnotationWorkboard,
-                          arguments: _imgpath);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return PolygonDemoPage(
+                          imgPath: _imgpath,
+                        );
+                      }));
                     } else {
                       Fluttertoast.showToast(
                           msg: "文件未选择",

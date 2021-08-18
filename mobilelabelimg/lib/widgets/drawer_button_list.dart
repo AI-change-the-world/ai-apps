@@ -267,13 +267,47 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                     title: "新建一个标注",
                     svgSrc: "assets/icons/menu_doc.svg",
                     press: () {
-                      context
-                          .read<DrawingProvicer>()
-                          .changeStatus(DrawingStatus.drawing);
-                      PolygonEntity polygonEntity = PolygonEntity(
-                          keyList: [], pList: [], className: "", index: 0);
-                      (_workboardBloc as PolygonWorkboardBloc)
-                          .add(PolygonEntityAddEvent(p: polygonEntity));
+                      if (context.read<DrawingProvicer>().status ==
+                          DrawingStatus.drawing) {
+                        Fluttertoast.showToast(
+                            msg: "当前绘画未完成",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        context
+                            .read<DrawingProvicer>()
+                            .changeStatus(DrawingStatus.drawing);
+
+                        if ((_workboardBloc as PolygonWorkboardBloc)
+                                .state
+                                .listPolygonEntity
+                                .isEmpty ||
+                            ((_workboardBloc as PolygonWorkboardBloc)
+                                .state
+                                .listPolygonEntity
+                                .last
+                                .pList
+                                .isNotEmpty)) {
+                          PolygonEntity polygonEntity = PolygonEntity(
+                              keyList: [], pList: [], className: "", index: 0);
+                          (_workboardBloc as PolygonWorkboardBloc)
+                              .add(PolygonEntityAddEvent(p: polygonEntity));
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "存在一个未使用的polygon",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      }
+
                       Navigator.pop(context);
                     },
                   ),
@@ -316,7 +350,43 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                       }
                       labelmeObject.shapes = shapes;
 
-                      print(labelmeObject.toJson());
+                      // print(labelmeObject.toJson());
+
+                      String _name, _ext;
+                      _name = widget.imgPath.split("/").last.split(".").first;
+                      _ext = widget.imgPath.split("/").last.split(".").last;
+
+                      if (await Permission.storage.request().isGranted) {
+                        getExternalStorageDirectory().then((value) async {
+                          // print(value!.path);
+                          File file =
+                              new File(value!.path + "/" + _name + ".json");
+                          try {
+                            await file.writeAsString(
+                                json.encode(labelmeObject.toJson()));
+                            xmlSavedPath = value.path + "/" + _name + ".xml";
+                            Fluttertoast.showToast(
+                                msg: "保存成功",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          } catch (e) {
+                            print(e);
+                            Fluttertoast.showToast(
+                                msg: "写入文件失败",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        });
+                      }
+
                       Navigator.pop(context);
                     },
                   ),

@@ -90,6 +90,14 @@ class PolygonPointState extends State<PolygonPoint> {
                   var indexs = getAllFirstPoint();
 
                   int __ind = indexs.indexOf(_index);
+
+                  print("=============================");
+                  print(context.read<MovePolygonProvider>().keys.length);
+                  print(_index);
+                  print(indexs);
+                  print(__ind);
+                  print("=============================");
+
                   late List<GlobalKey> _subKeys;
 
                   if (__ind == indexs.length - 1) {

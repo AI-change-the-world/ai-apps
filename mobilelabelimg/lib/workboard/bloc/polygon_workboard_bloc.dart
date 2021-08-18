@@ -8,14 +8,19 @@
  * @LastEditTime: 2021-08-17 20:05:36
  */
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
+import 'package:mobilelabelimg/entity/labelmeObj.dart';
 import 'package:mobilelabelimg/widgets/drawer_button_list.dart';
 import 'package:mobilelabelimg/widgets/polygon_points.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 part 'polygon_workboard_event.dart';
 part 'polygon_workboard_state.dart';
@@ -54,6 +59,10 @@ class PolygonWorkboardBloc
 
     if (event is SetImgPathEvent) {
       yield await _setImgPath(state, event);
+    }
+
+    if (event is GetSingleImagePolygonEvent) {
+      yield await _getSingleFilePolygon(state, event);
     }
   }
 
@@ -125,5 +134,64 @@ class PolygonWorkboardBloc
     // state.imgPath = event.imgpath;
     return state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
         state.listPolygonEntity, event.imgpath);
+  }
+
+  Future<PolygonWorkboardState> _getSingleFilePolygon(
+      PolygonWorkboardState state, GetSingleImagePolygonEvent event) async {
+    String _name, _ext;
+    _name = event.filename.split("/").last.split(".").first;
+    _ext = event.filename.split("/").last.split(".").last;
+    String path = _name + "." + "json";
+    String _filepath = event.filename;
+    // List<Widget> widgets = [];
+    List<PolygonEntity> listPolygonEntity = [];
+
+    if (await Permission.storage.request().isGranted) {
+      var value = await getExternalStorageDirectory();
+      File file = File(value!.path + "/" + path);
+      print(value.path + "/" + path);
+      try {
+        String content = file.readAsStringSync();
+        var _obj = json.decode(content);
+        final LabelmeObject labelmeObject = LabelmeObject.fromJson(_obj);
+        List<Shapes> _shapes = labelmeObject.shapes!;
+        for (var i in _shapes) {
+          PolygonEntity polygonEntity = PolygonEntity(
+              keyList: [],
+              pList: [],
+              index: _shapes.indexOf(i),
+              className: i.label!);
+          for (int j = 0; j < i.points!.length; j++) {
+            double _dx = i.points![j].ppoints![0] * 1.0;
+            double _dy = i.points![j].ppoints![1] * 1.0;
+            GlobalKey<PolygonPointState> key = GlobalKey();
+            PolygonPoint point = PolygonPoint(
+                key: key,
+                poffset: Offset(_dx, _dy),
+                index: j + 1,
+                isFirst: j == 0);
+            if (_shapes.indexOf(i) > 0 && j == 0) {
+              print("我这里不需要插入一个占位point但是插入了。");
+              state.widgets.add(PolygonPoint(
+                poffset: Offset(-1, -1),
+                index: -1,
+                isFirst: false,
+              ));
+            }
+            state.widgets.add(point);
+            polygonEntity.keyList.add(key);
+            polygonEntity.pList.add(point);
+          }
+          listPolygonEntity.add(polygonEntity);
+        }
+      } catch (e) {
+        print(e);
+      }
+      return state.copyWith(PolygonWorkboardStatus.initial, state.widgets,
+          listPolygonEntity, _filepath);
+    } else {
+      return state.copyWith(
+          PolygonWorkboardStatus.initial, state.widgets, [], "");
+    }
   }
 }

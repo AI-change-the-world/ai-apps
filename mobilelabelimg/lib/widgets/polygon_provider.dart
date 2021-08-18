@@ -37,6 +37,13 @@ class MovePolygonProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addAll(
+      List<GlobalKey<PolygonPointState>> keys, List<PolygonPoint> points) {
+    _keys.addAll(keys);
+    _points.addAll(points);
+    notifyListeners();
+  }
+
   void move(double x, double y, {List subkeys = const []}) {
     if (subkeys == []) {
       if (_keys.length >= 2) {
