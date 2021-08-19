@@ -10,6 +10,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/utils/common.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:mobilelabelimg/widgets/inkwell_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:super_tooltip/super_tooltip.dart';
@@ -39,49 +40,114 @@ class _MainPageV1State extends State<MainPageV1> {
               SizedBox(
                 height: 50,
               ),
-              InkWellWidget(
-                onWidgetPressed: () {
-                  print("跳转");
-                  Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
-                },
-                leading: Container(
-                  width: 50,
-                  height: 50,
-                  child: Image.asset("assets/app_icons/labelimg.png"),
+              FlipCard(
+                back: InkWellWidget(
+                  // onWidgetPressed: () {
+                  //   print("跳转");
+                  //   Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
+                  // },
+                  // leading: Container(
+                  //   width: 50,
+                  //   height: 50,
+                  //   child: Image.asset("assets/app_icons/labelimg.png"),
+                  // ),
+                  title: Text("图标源于labelImg仓库"),
+                  // subtitle: Text(
+                  //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
+                  trailing: TextButton(
+                    child: Text("跳转仓库"),
+                    onPressed: () async {
+                      await launch("https://github.com/tzutalin/labelImg");
+                    },
+                  ),
                 ),
-                title: Text("labelImg 是一个多用于目标识别的标注工具"),
-                // subtitle: Text(
-                //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
-                trailing: TextButton(
-                  child: Text("跳转仓库"),
-                  onPressed: () async {
-                    await launch("https://github.com/tzutalin/labelImg");
-                  },
+                front: InkWellWidget(
+                  // onWidgetPressed: () {
+                  //   print("跳转");
+                  //   Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
+                  // },
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    child: Image.asset("assets/app_icons/labelimg.png"),
+                  ),
+                  title: Text("labelImg 是一个多用于目标识别的标注工具"),
+                  // subtitle: Text(
+                  //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
+                  // trailing: TextButton(
+                  //   child: Text("跳转仓库"),
+                  //   onPressed: () async {
+                  //     await launch("https://github.com/tzutalin/labelImg");
+                  //   },
+                  // ),
+                  trailing: TextButton(
+                    child: Text("点此尝试"),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
+                    },
+                  ),
                 ),
               ),
               SizedBox(
                 height: 25,
               ),
-              InkWellWidget(
-                onWidgetPressed: () {
-                  print("跳转");
-                  Navigator.of(context).pushNamed(Routers.pageLabelmeMain);
-                },
-                leading: Container(
-                  width: 50,
-                  height: 50,
-                  child: Image.asset("assets/app_icons/labelme.png"),
-                ),
-                title: Text("labelme 是一个多用于图像分割的标注工具"),
-                // subtitle:
-                //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
-                trailing: TextButton(
-                  child: Text("跳转仓库"),
-                  onPressed: () async {
-                    await launch("https://github.com/wkentaro/labelme");
-                  },
-                ),
-              ),
+              FlipCard(
+                  front: InkWellWidget(
+                    // onWidgetPressed: () {
+                    //   print("跳转");
+                    //   Navigator.of(context).pushNamed(Routers.pageLabelmeMain);
+                    // },
+                    leading: Container(
+                      width: 50,
+                      height: 50,
+                      child: Image.asset("assets/app_icons/labelme.png"),
+                    ),
+                    title: Text("labelme 是一个多用于图像分割的标注工具"),
+                    // subtitle:
+                    //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
+                    // trailing: TextButton(
+                    //   child: Text("跳转仓库"),
+                    //   onPressed: () async {
+                    //     await launch("https://github.com/wkentaro/labelme");
+                    //   },
+                    // ),
+
+                    trailing: TextButton(
+                      child: Text("点此尝试"),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Routers.pageLabelmeMain);
+                      },
+                    ),
+                  ),
+                  back: InkWellWidget(
+                    // onWidgetPressed: () {
+                    //   print("跳转");
+                    //   Navigator.of(context).pushNamed(Routers.pageLabelmeMain);
+                    // },
+                    // leading: Container(
+                    //   width: 50,
+                    //   height: 50,
+                    //   child: Image.asset("assets/app_icons/labelme.png"),
+                    // ),
+                    title: Text("图标源于labelImg仓库"),
+                    // subtitle:
+                    //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
+                    trailing: TextButton(
+                      child: Text("跳转仓库"),
+                      onPressed: () async {
+                        await launch("https://github.com/wkentaro/labelme");
+                      },
+                    ),
+
+                    // trailing: TextButton(
+                    //   child: Text("点此尝试"),
+                    //   onPressed: () {
+                    //     Navigator.of(context)
+                    //         .pushNamed(Routers.pageLabelmeMain);
+                    //   },
+                    // ),
+                  )),
               SizedBox(
                 height: 25,
               ),
@@ -101,7 +167,9 @@ class _MainPageV1State extends State<MainPageV1> {
                 height: 25,
               ),
               InkWellWidget(
-                onWidgetPressed: () async {},
+                onWidgetPressed: () async {
+                  Navigator.of(context).pushNamed(Routers.policyPage);
+                },
                 leading: Container(
                   width: 50,
                   height: 50,

@@ -9,6 +9,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/main_page_v1.dart';
+import 'package:mobilelabelimg/policy_page.dart';
 import 'package:mobilelabelimg/widgets/polygon.dart';
 import 'package:mobilelabelimg/workboard/views/labelimg_opening_view.dart';
 import 'package:mobilelabelimg/workboard/views/labelme_opening_view.dart';
@@ -23,6 +24,7 @@ class Routers {
   static final pageLabelimgMain = "pageLabelimgMain";
   static final pagePolygonPage = "pagePolygonPage";
   static final pageLabelmeMain = "pageLabelmeMain";
+  static final policyPage = "policyPage";
 
   static final Map<String, WidgetBuilder> routers = {
     pageAnnotationWorkboard: (ctx) => SingleImageAnnotationPage(),
@@ -31,5 +33,6 @@ class Routers {
     pageLabelimgMain: (ctx) => LabelImgOpenningPage(),
     pagePolygonPage: (ctx) => PolygonDemoPage(),
     pageLabelmeMain: (ctx) => LabelmeOpenningPage(),
+    policyPage: (ctx) => PolicyPage(withTitle: true),
   };
 }
