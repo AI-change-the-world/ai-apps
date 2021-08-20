@@ -66,7 +66,7 @@ class Shapes {
   Map? flags;
   String? groupId;
   String? label;
-  List<PPoint>? points;
+  List<dynamic>? points;
   String? shapeType;
 
   Shapes({this.groupId, this.label, this.points, this.shapeType});
@@ -78,7 +78,7 @@ class Shapes {
     if (json['points'] != null) {
       points = [];
       json['points'].forEach((v) {
-        points!.add(new PPoint.fromJson(v));
+        points!.add(v);
       });
     }
     shapeType = json['shape_type'];
@@ -92,7 +92,7 @@ class Shapes {
     data['group_id'] = this.groupId;
     data['label'] = this.label;
     if (this.points != null) {
-      data['points'] = this.points!.map((v) => v.toJson()).toList();
+      data['points'] = this.points!.map((v) => v).toList();
     }
     data['shape_type'] = this.shapeType;
     return data;

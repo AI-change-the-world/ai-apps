@@ -29,7 +29,8 @@ class PolygonWorkboardState extends Equatable {
   @override
   bool operator ==(Object other) {
     if (this.status == PolygonWorkboardStatus.add ||
-        this.status == PolygonWorkboardStatus.refresh) {
+        this.status == PolygonWorkboardStatus.refresh ||
+        this.status == PolygonWorkboardStatus.delete) {
       return false;
     }
     return identical(this, other) ||
@@ -43,14 +44,16 @@ class PolygonWorkboardState extends Equatable {
   int get hashCode => super.hashCode;
 
   PolygonWorkboardState copyWith(
-      PolygonWorkboardStatus? status,
-      List<Widget>? widgets,
-      List<PolygonEntity>? listPolygonEntity,
-      String? imgPath) {
+    PolygonWorkboardStatus? status,
+    List<Widget>? widgets,
+    List<PolygonEntity>? listPolygonEntity,
+    String? imgPath,
+  ) {
     return PolygonWorkboardState(
-        status: status ?? this.status,
-        widgets: widgets ?? this.widgets,
-        listPolygonEntity: listPolygonEntity ?? this.listPolygonEntity,
-        imgPath: imgPath ?? this.imgPath);
+      status: status ?? this.status,
+      widgets: widgets ?? this.widgets,
+      listPolygonEntity: listPolygonEntity ?? this.listPolygonEntity,
+      imgPath: imgPath ?? this.imgPath,
+    );
   }
 }

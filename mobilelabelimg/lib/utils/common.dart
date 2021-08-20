@@ -10,6 +10,8 @@
 import 'package:flutter/material.dart';
 import "dart:ui" as _ui;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 const circleSize = 30.0;
 const defaultRectSize = 300.0;
 const titleHeight = 0.0;
@@ -31,4 +33,34 @@ class CommonUtil {
   static double screenH() {
     return _height;
   }
+
+  /// 字体样式
+  static TextStyle fontStyle = TextStyle(fontWeight: FontWeight.bold);
+
+  static TextStyle jobNameStyle =
+      TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
+}
+
+Future<bool> checkFirstLogin() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? _isFirstStartApp = prefs.getBool("isFirstStartApp");
+  if (null == _isFirstStartApp) {
+    _isFirstStartApp = true;
+  }
+  return _isFirstStartApp;
+}
+
+Future<bool> checkPolicyAgreed() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? _agreed = prefs.getBool("agreed");
+  if (null == _agreed) {
+    _agreed = false;
+  }
+  return _agreed;
+}
+
+Future setPolicyAgreed() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // bool _agreed = prefs.getBool("agreed");
+  await prefs.setBool("agreed", true);
 }

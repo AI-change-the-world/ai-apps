@@ -1,16 +1,15 @@
 # mobilelabelimg
 
-A new Flutter project.
+# 移动端标注工具，包括labelImg 以及 labelme 的基本功能
 
-## Getting Started
+## labelImg的实现方法：采用Draggable 控件，一个标注的 rect 包含四个点跟一个主体共五个可拖拽的区域。
 
-This project is a starting point for a Flutter application.
+## labelme的实现方法：说出来可能没人信，labelme实现代码比labelImg还要少，但是在1.0.0版本稍微有点不足。首先是采用canvas绘图，点也是也拖拽的，然后是点击位置生成下一个点，但是现在需要有一个起始的点，不然没办法整体移动（1.0版本不知道怎么做一个不规则的polygon可拖拽区域出来）
 
-A few resources to get you started if this is your first Flutter project:
+## 还有问题是图片不能放大缩小，倒不是没有现成的方案，但是现在的标注是通过Offset获取的，放大缩小之后Offset位置会出错
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# Change Log
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 2021年 预计完成server端解决不能放大缩小的问题
+
+## 2021.8.19 v1.0.0版本

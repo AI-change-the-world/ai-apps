@@ -43,6 +43,10 @@ dependencies:
   provider: ^5.0.0
   flutter_svg: ^0.22.0
   url_launcher: ^6.0.9
+  flip_card: ^0.5.0
+  package_info: ^2.0.0
+  shared_preferences: ^2.0.5
+  after_layout: ^1.1.0
   # super_tooltip: ^1.0.1
 
 dev_dependencies:
@@ -67,6 +71,7 @@ flutter:
       - assets/icons/
       - assets/app_icons/
       - assets/demo_img.png
+      - assets/txts/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

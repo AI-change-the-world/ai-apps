@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobilelabelimg/entity/labelmeObj.dart';
 import 'package:mobilelabelimg/workboard/bloc/polygon_workboard_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:mobilelabelimg/widgets/polygon.dart';
@@ -11,6 +12,8 @@ class PolygonPoint extends StatefulWidget {
   PolygonPoint({
     Key? key,
     required this.poffset,
+
+    /// index == -1 means a not valid point
     required this.index,
     required this.isFirst,
   }) : super(key: key);
@@ -57,15 +60,30 @@ class PolygonPointState extends State<PolygonPoint> {
 
   List<int> getAllFirstPoint() {
     List<int> indexs = [];
+    List<PolygonPoint> _points = getAllPoints();
 
-    for (int _i = 0;
-        _i < context.read<MovePolygonProvider>().points.length;
-        _i++) {
-      if (context.read<MovePolygonProvider>().points[_i].isFirst) {
+    for (int _i = 0; _i < _points.length; _i++) {
+      if (_points[_i].isFirst) {
         indexs.add(_i);
       }
     }
     return indexs;
+  }
+
+  List<GlobalKey<PolygonPointState>> getAllKeys() {
+    List<GlobalKey<PolygonPointState>> _keys = [];
+    for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
+      _keys.addAll(i.keyList);
+    }
+    return _keys;
+  }
+
+  List<PolygonPoint> getAllPoints() {
+    List<PolygonPoint> _points = [];
+    for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
+      _points.addAll(i.pList);
+    }
+    return _points;
   }
 
   @override
@@ -82,34 +100,20 @@ class PolygonPointState extends State<PolygonPoint> {
                 if (context.read<DrawingProvicer>().status ==
                         DrawingStatus.notDrawing &&
                     widget.isFirst) {
-                  int _index = context
-                      .read<MovePolygonProvider>()
-                      .keys
-                      .indexOf(widget.key as GlobalKey<PolygonPointState>);
+                  List<GlobalKey<PolygonPointState>> _keys = getAllKeys();
+
+                  int _index =
+                      _keys.indexOf(widget.key as GlobalKey<PolygonPointState>);
 
                   var indexs = getAllFirstPoint();
 
                   int __ind = indexs.indexOf(_index);
-                  late List<GlobalKey> _subKeys;
-
-                  if (__ind == indexs.length - 1) {
-                    _subKeys = context
-                        .read<MovePolygonProvider>()
-                        .keys
-                        .sublist(_index);
-                  } else {
-                    _subKeys = context
-                        .read<MovePolygonProvider>()
-                        .keys
-                        .sublist(_index, indexs[__ind + 1]);
-                  }
-
                   double _x = _left - _offset.dx;
                   double _y = _top - _offset.dy;
                   moveTO(_offset);
-                  context
-                      .read<MovePolygonProvider>()
-                      .move(_x, _y, subkeys: _subKeys);
+                  Future.delayed(Duration.zero).then((value) =>
+                      _polygonWorkboardBloc
+                          .add(PointMoveEvent(x: _x, y: _y, index: __ind)));
                 }
                 moveTO(_offset);
               },
@@ -137,11 +141,11 @@ class PolygonPointState extends State<PolygonPoint> {
                             });
 
                         if (result == 1) {
-                          int _index = context
-                              .read<MovePolygonProvider>()
-                              .keys
-                              .indexOf(
-                                  widget.key as GlobalKey<PolygonPointState>);
+                          List<GlobalKey<PolygonPointState>> _keys =
+                              getAllKeys();
+
+                          int _index = _keys.indexOf(
+                              widget.key as GlobalKey<PolygonPointState>);
                           var indexs = getAllFirstPoint();
 
                           int __ind = indexs.indexOf(_index);
@@ -158,11 +162,10 @@ class PolygonPointState extends State<PolygonPoint> {
                         }
                       },
                       onDoubleTap: () async {
-                        int _index = context
-                            .read<MovePolygonProvider>()
-                            .keys
-                            .indexOf(
-                                widget.key as GlobalKey<PolygonPointState>);
+                        var _keys = getAllKeys();
+
+                        int _index = _keys.indexOf(
+                            widget.key as GlobalKey<PolygonPointState>);
                         var indexs = getAllFirstPoint();
 
                         int __ind = indexs.indexOf(_index);
@@ -231,5 +234,36 @@ class PolygonPointState extends State<PolygonPoint> {
                               : Colors.blueAccent,
                           width: 0.5)))));
     });
+  }
+
+  /// for test
+  void showPositonChange() {
+    LabelmeObject labelmeObject = LabelmeObject();
+    labelmeObject.imageData = "";
+    labelmeObject.imageHeight = CommonUtil.screenH().ceil();
+    labelmeObject.imageWidth = CommonUtil.screenW().ceil();
+    labelmeObject.flags = {};
+    labelmeObject.version = labelmeVersion;
+    List<Shapes> shapes = [];
+    for (var i in _polygonWorkboardBloc.state.listPolygonEntity) {
+      Shapes _shapes = Shapes();
+      _shapes.flags = {};
+      _shapes.label = i.className;
+      _shapes.groupId = "0";
+      _shapes.shapeType = labelmeShapeType;
+      List _ppoints = [];
+
+      for (var p in i.keyList) {
+        int _left = p.currentState!.defaultLeft.ceil();
+        int _top = p.currentState!.defaultTop.ceil();
+        _ppoints.add([_left, _top]);
+      }
+      _shapes.points = _ppoints;
+      shapes.add(_shapes);
+    }
+    labelmeObject.shapes = shapes;
+
+    print(labelmeObject.toJson());
+    print("============================================");
   }
 }
