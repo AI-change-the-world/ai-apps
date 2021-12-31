@@ -6,8 +6,12 @@ class ImageRectBox extends Equatable {
   final List<RectBox> rectBoxes;
   final String imageName;
   final String imagePath;
+  final double currentFactor;
   const ImageRectBox(
-      {this.imageName = "", this.rectBoxes = const [], this.imagePath = ""});
+      {this.imageName = "",
+      this.rectBoxes = const [],
+      this.imagePath = "",
+      this.currentFactor = 1.0});
 
   @override
   // TODO: implement props
