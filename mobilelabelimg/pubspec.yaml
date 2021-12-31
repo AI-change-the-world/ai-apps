@@ -30,7 +30,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^7.1.0 #状态管理框架
+  flutter_bloc: ^8.0.0 #状态管理框架
   equatable: ^2.0.3 #增强组件相等性判断
   rxdart: ^0.26.0
   xml: ^5.1.2
@@ -40,13 +40,15 @@ dependencies:
   # image_picker: ^0.8.2
   file_picker: ^3.0.3
   ftpconnect: ^1.0.0
-  provider: ^5.0.0
+  provider: ^6.0.0
   flutter_svg: ^0.22.0
   url_launcher: ^6.0.9
   flip_card: ^0.5.0
   package_info: ^2.0.0
   shared_preferences: ^2.0.5
   after_layout: ^1.1.0
+  bloc_concurrency: ^0.2.0
+  stream_transform: ^2.0.0
   # super_tooltip: ^1.0.1
 
 dev_dependencies:

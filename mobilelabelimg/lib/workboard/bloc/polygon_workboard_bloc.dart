@@ -15,6 +15,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/entity/PolygonEntity.dart';
+// ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
 import 'package:mobilelabelimg/entity/labelmeObj.dart';
 import 'package:mobilelabelimg/widgets/polygon_points.dart';
@@ -26,89 +27,52 @@ part 'polygon_workboard_state.dart';
 
 class PolygonWorkboardBloc
     extends Bloc<PolygonWorkboardEvent, PolygonWorkboardState> {
-  PolygonWorkboardBloc() : super(PolygonWorkboardState());
-
-  @override
-  Stream<PolygonWorkboardState> mapEventToState(
-    PolygonWorkboardEvent event,
-  ) async* {
-    if (event is InitialEvent) {
-      yield await _fetchedToState(state, event);
-    }
-
-    if (event is WidgetAddEvent) {
-      yield await _addWidget(state, event);
-    }
-
-    if (event is PolygonEntityAddEvent) {
-      yield await _addPolyEntity(state, event);
-    }
-
-    if (event is WidgetsRemoveEvent) {
-      yield await _removeWidget(state, event);
-    }
-
-    if (event is PolygonEntityRemoveEvent) {
-      yield await _removePolygon(state, event);
-    }
-
-    if (event is PolygonEntityChangeNameEvent) {
-      yield await _changeName(state, event);
-    }
-
-    if (event is SetImgPathEvent) {
-      yield await _setImgPath(state, event);
-    }
-
-    if (event is GetSingleImagePolygonEvent) {
-      yield await _getSingleFilePolygon(state, event);
-    }
-
-    if (event is PointMoveEvent) {
-      yield await _moveEvent(state, event);
-    }
+  PolygonWorkboardBloc() : super(PolygonWorkboardState()) {
+    on<InitialEvent>(_fetchedToState);
+    on<WidgetAddEvent>(_addWidget);
+    on<PolygonEntityAddEvent>(_addPolyEntity);
+    on<WidgetsRemoveEvent>(_removeWidget);
+    on<PolygonEntityRemoveEvent>(_removePolygon);
+    on<PolygonEntityChangeNameEvent>(_changeName);
+    on<SetImgPathEvent>(_setImgPath);
+    on<GetSingleImagePolygonEvent>(_getSingleFilePolygon);
+    on<PointMoveEvent>(_moveEvent);
   }
 
-  Future<PolygonWorkboardState> _fetchedToState(
-      PolygonWorkboardState state, InitialEvent event) async {
+  Future<void> _fetchedToState(
+      InitialEvent event, Emitter<PolygonWorkboardState> emit) async {
     List<Widget> widgets = [];
     List<PolygonEntity> listPolygonEntity = [];
-    return state.copyWith(
-        PolygonWorkboardStatus.initial, widgets, listPolygonEntity, '');
+    return emit(state.copyWith(
+        PolygonWorkboardStatus.initial, widgets, listPolygonEntity, ''));
   }
 
-  Future<PolygonWorkboardState> _addWidget(
-      PolygonWorkboardState state, WidgetAddEvent event) async {
+  Future<void> _addWidget(
+      WidgetAddEvent event, Emitter<PolygonWorkboardState> emit) async {
     List<Widget> widgets = state.widgets;
 
     widgets.add(event.w);
 
-    return state.copyWith(
+    return emit(state.copyWith(
       PolygonWorkboardStatus.add,
       widgets,
       state.listPolygonEntity,
       state.imgPath,
-    );
+    ));
   }
 
-  Future<PolygonWorkboardState> _addPolyEntity(
-      PolygonWorkboardState state, PolygonEntityAddEvent event) async {
+  Future<void> _addPolyEntity(
+      PolygonEntityAddEvent event, Emitter<PolygonWorkboardState> emit) async {
     // PolygonEntity polygonEntity =
     //     PolygonEntity(keyList: [], pList: [], className: "", index: 0);
     List<PolygonEntity> ps = state.listPolygonEntity;
     ps.add(event.p);
-    // List<Widget> widgets = state.widgets;
-    // widgets.add(PolygonPoint(
-    //   poffset: Offset(-1, -1),
-    //   index: -1,
-    //   isFirst: false,
-    // ));
-    return state.copyWith(
-        PolygonWorkboardStatus.add, state.widgets, ps, state.imgPath);
+    return emit(state.copyWith(
+        PolygonWorkboardStatus.add, state.widgets, ps, state.imgPath));
   }
 
-  Future<PolygonWorkboardState> _removeWidget(
-      PolygonWorkboardState state, WidgetsRemoveEvent event) async {
+  Future<void> _removeWidget(
+      WidgetsRemoveEvent event, Emitter<PolygonWorkboardState> emit) async {
     List<int> indexes = [];
     List<Widget> _widgets = state.widgets;
     for (int i = 0; i < state.widgets.length; i++) {
@@ -125,34 +89,34 @@ class PolygonWorkboardBloc
       int start = indexes[event.index];
       _widgets.removeRange(start, state.widgets.length - 1);
     }
-    return state.copyWith(PolygonWorkboardStatus.delete, _widgets,
-        state.listPolygonEntity, state.imgPath);
+    return emit(state.copyWith(PolygonWorkboardStatus.delete, _widgets,
+        state.listPolygonEntity, state.imgPath));
   }
 
-  Future<PolygonWorkboardState> _removePolygon(
-      PolygonWorkboardState state, PolygonEntityRemoveEvent event) async {
+  Future<void> _removePolygon(PolygonEntityRemoveEvent event,
+      Emitter<PolygonWorkboardState> emit) async {
     List<PolygonEntity> ps = state.listPolygonEntity;
     ps.removeAt(event.index);
 
-    return state.copyWith(
-        PolygonWorkboardStatus.delete, state.widgets, ps, state.imgPath);
+    return emit(state.copyWith(
+        PolygonWorkboardStatus.delete, state.widgets, ps, state.imgPath));
   }
 
-  Future<PolygonWorkboardState> _changeName(
-      PolygonWorkboardState state, PolygonEntityChangeNameEvent event) async {
+  Future<void> _changeName(PolygonEntityChangeNameEvent event,
+      Emitter<PolygonWorkboardState> emit) async {
     state.listPolygonEntity[event.index].className = event.name;
-    return state;
+    return emit(state);
   }
 
-  Future<PolygonWorkboardState> _setImgPath(
-      PolygonWorkboardState state, SetImgPathEvent event) async {
+  Future<void> _setImgPath(
+      SetImgPathEvent event, Emitter<PolygonWorkboardState> emit) async {
     // state.imgPath = event.imgpath;
-    return state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
-        state.listPolygonEntity, event.imgpath);
+    return emit(state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
+        state.listPolygonEntity, event.imgpath));
   }
 
-  Future<PolygonWorkboardState> _getSingleFilePolygon(
-      PolygonWorkboardState state, GetSingleImagePolygonEvent event) async {
+  Future<void> _getSingleFilePolygon(GetSingleImagePolygonEvent event,
+      Emitter<PolygonWorkboardState> emit) async {
     String _name, _ext;
     _name = event.filename.split("/").last.split(".").first;
     _ext = event.filename.split("/").last.split(".").last;
@@ -208,29 +172,17 @@ class PolygonWorkboardBloc
       } catch (e, stack) {
         print(stack.toString());
       }
-      return state.copyWith(PolygonWorkboardStatus.initial, state.widgets,
-          listPolygonEntity, _filepath);
+      return emit(state.copyWith(PolygonWorkboardStatus.initial, state.widgets,
+          listPolygonEntity, _filepath));
     } else {
-      return state.copyWith(
-          PolygonWorkboardStatus.initial, state.widgets, [], "");
+      return emit(state.copyWith(
+          PolygonWorkboardStatus.initial, state.widgets, [], ""));
     }
   }
 
-  Future<PolygonWorkboardState> _moveEvent(
-      PolygonWorkboardState state, PointMoveEvent event) async {
-    // List<GlobalKey<PolygonPointState>> _keys = [];
-    // List<PolygonPoint> _points = [];
-    // for (var i in state.listPolygonEntity) {
-    //   _keys.addAll(i.keyList);
-    //   _points.addAll(i.pList);
-    // }
-
+  Future<void> _moveEvent(
+      PointMoveEvent event, Emitter<PolygonWorkboardState> emit) async {
     PolygonEntity polygonEntity = state.listPolygonEntity[event.index];
-
-    // for (var i in polygonEntity.keyList) {
-    //   i.currentState!.moveTO(Offset(i.currentState!.defaultLeft - event.x,
-    //       i.currentState!.defaultTop - event.y));
-    // }
 
     for (int i = 1; i < polygonEntity.keyList.length; i++) {
       polygonEntity.keyList[i].currentState!.moveTO(Offset(
@@ -240,23 +192,7 @@ class PolygonWorkboardBloc
 
     state.listPolygonEntity[event.index] = polygonEntity;
 
-    // if (event.subkeys == []) {
-    //   if (_keys.length >= 2) {
-    //     for (int i = 1; i < _keys.length; i++) {
-    //       _keys[i].currentState!.moveTO(Offset(
-    //           _keys[i].currentState!.defaultLeft - event.x,
-    //           _keys[i].currentState!.defaultTop - event.y));
-    //     }
-    //   }
-    // } else {
-    //   for (int i = 1; i < event.subkeys.length; i++) {
-    //     event.subkeys[i].currentState!.moveTO(Offset(
-    //         event.subkeys[i].currentState!.defaultLeft - event.x,
-    //         event.subkeys[i].currentState!.defaultTop - event.y));
-    //   }
-    // }
-
-    return state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
-        state.listPolygonEntity, state.imgPath);
+    return emit(state.copyWith(PolygonWorkboardStatus.refresh, state.widgets,
+        state.listPolygonEntity, state.imgPath));
   }
 }
