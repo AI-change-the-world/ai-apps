@@ -9,6 +9,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/launch_page_v1.dart';
+import 'package:mobilelabelimg/test_page.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
 
 // import 'package:mobilelabelimg/tests/drag_scale.dart';
@@ -23,5 +24,6 @@ void main() {
     // home: PolygonWorkboard(),
     // initialRoute: Routers.pageMain,
     home: LaunchPage(),
+    // home: TestPage(),
   ));
 }

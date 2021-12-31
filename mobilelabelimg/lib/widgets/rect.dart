@@ -17,6 +17,7 @@ import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
 
 part './points.dart';
 
+// ignore: must_be_immutable
 class RectBox extends StatelessWidget {
   int id;
   // 这里要初始化一个 bndbox
@@ -42,6 +43,7 @@ class RectBox extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class Rect extends StatefulWidget {
   List<GlobalKey> globalKeys;
   int id;

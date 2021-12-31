@@ -32,7 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.0.0 #状态管理框架
   equatable: ^2.0.3 #增强组件相等性判断
-  rxdart: ^0.26.0
+  # rxdart: ^0.26.0
   xml: ^5.1.2
   permission_handler: ^8.1.2 #权限
   path_provider: ^2.0.2
@@ -47,8 +47,8 @@ dependencies:
   package_info: ^2.0.0
   shared_preferences: ^2.0.5
   after_layout: ^1.1.0
-  bloc_concurrency: ^0.2.0
-  stream_transform: ^2.0.0
+  # bloc_concurrency: ^0.2.0
+  # stream_transform: ^2.0.0
   # super_tooltip: ^1.0.1
 
 dev_dependencies:

@@ -16,6 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// ignore: must_be_immutable
 class DraggableButton extends StatefulWidget {
   DraggableButton({Key? key, required this.scaffoldKey, required this.type})
       : super(key: key);
@@ -65,6 +66,7 @@ class ToolsListWidget extends StatefulWidget {
   /// type 1 labelme single image
   int type;
   String imgPath;
+
   ToolsListWidget({Key? key, required this.type, required this.imgPath})
       : super(key: key);
 
