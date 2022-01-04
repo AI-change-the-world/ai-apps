@@ -25,3 +25,8 @@ class GetSingleImageRects extends WorkboardEvent {
 }
 
 class ForceRefresh extends WorkboardEvent {}
+
+class ChangeFactorEvent extends WorkboardEvent {
+  final double factor;
+  const ChangeFactorEvent({required this.factor});
+}

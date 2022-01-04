@@ -21,6 +21,13 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     on<RectRemove>(_removeToState);
     on<GetSingleImageRects>(_getSingleImageRectsToState);
     on<ForceRefresh>(_forceRefresh);
+    on<ChangeFactorEvent>(_changeFactor);
+  }
+
+  Future<void> _changeFactor(
+      ChangeFactorEvent event, Emitter<WorkboardState> emit) async {
+    return emit(
+        state.copyWith(WorkboardStatus.refresh, state.param, event.factor));
   }
 
   Future<void> _fetchedToState(
@@ -29,7 +36,8 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
     // state.param.rectBoxes.addAll(rectboxes);
     ImageRectBox imageRectBox = ImageRectBox(imageName: "", rectBoxes: []);
     imageRectBox.rectBoxes.addAll(rectboxes);
-    return emit(state.copyWith(WorkboardStatus.initial, imageRectBox));
+    return emit(state.copyWith(
+        WorkboardStatus.initial, imageRectBox, state.currentFactor));
   }
 
   Future<void> _addToState(
@@ -43,7 +51,8 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
       // imgName: "",
     ));
     // state.param.rectBoxes.add(RectBox(id: event.id));
-    return emit(state.copyWith(WorkboardStatus.add, imageRectBox));
+    return emit(
+        state.copyWith(WorkboardStatus.add, imageRectBox, state.currentFactor));
   }
 
   Future<void> _removeToState(
@@ -56,9 +65,7 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
         state.param.rectBoxes.where((element) => element.id != event.id);
     imageRectBox.rectBoxes.addAll(rectBoxes);
     return emit(state.copyWith(
-      WorkboardStatus.delete,
-      imageRectBox,
-    ));
+        WorkboardStatus.delete, imageRectBox, state.currentFactor));
   }
 
   Future<void> _getSingleImageRectsToState(
@@ -127,14 +134,17 @@ class WorkboardBloc extends Bloc<WorkboardEvent, WorkboardState> {
         print(e);
       }
 
-      return emit(state.copyWith(WorkboardStatus.add, imageRectBox));
+      return emit(state.copyWith(
+          WorkboardStatus.add, imageRectBox, state.currentFactor));
     } else {
-      return emit(state.copyWith(WorkboardStatus.add, imageRectBox));
+      return emit(state.copyWith(
+          WorkboardStatus.add, imageRectBox, state.currentFactor));
     }
   }
 
   Future<void> _forceRefresh(
       ForceRefresh event, Emitter<WorkboardState> emit) async {
-    return emit(state.copyWith(WorkboardStatus.refresh, state.param));
+    return emit(state.copyWith(
+        WorkboardStatus.refresh, state.param, state.currentFactor));
   }
 }

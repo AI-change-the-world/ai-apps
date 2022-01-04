@@ -54,6 +54,8 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     } else {
       _maxMinController.value = Matrix4.identity() * currentFactor;
     }
+    if (currentFactor != 0.8)
+      _workboardBloc.add(ChangeFactorEvent(factor: currentFactor));
   }
 
   void larger() {
@@ -64,6 +66,8 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     } else {
       _maxMinController.value = Matrix4.identity() * currentFactor;
     }
+    if (currentFactor != 2.5)
+      _workboardBloc.add(ChangeFactorEvent(factor: currentFactor));
   }
 
   @override

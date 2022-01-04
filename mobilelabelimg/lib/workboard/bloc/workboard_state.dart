@@ -15,26 +15,29 @@ class ImageRectBox extends Equatable {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [imageName, rectBoxes, imagePath];
+  List<Object?> get props => [imageName, rectBoxes, imagePath, currentFactor];
 }
 
 class WorkboardState extends Equatable {
   final WorkboardStatus status;
   // final List<RectBox> rectBoxes;
   final ImageRectBox param;
+  final double currentFactor;
 
-  const WorkboardState({
-    this.status = WorkboardStatus.initial,
-    this.param = const ImageRectBox(),
-  });
+  const WorkboardState(
+      {this.status = WorkboardStatus.initial,
+      this.param = const ImageRectBox(),
+      this.currentFactor = 1.0});
 
   @override
   List<Object> get props => [status, param];
 
-  WorkboardState copyWith(WorkboardStatus? status, ImageRectBox? param) {
+  WorkboardState copyWith(
+      WorkboardStatus? status, ImageRectBox? param, double? currentFactor) {
     return WorkboardState(
       status: status ?? this.status,
       param: param ?? this.param,
+      currentFactor: currentFactor ?? this.currentFactor,
     );
   }
 
