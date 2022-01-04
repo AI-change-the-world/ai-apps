@@ -1,4 +1,6 @@
 ///Deprecated
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 const circleSize = 30.0;
@@ -21,7 +23,7 @@ class RectDemo extends StatelessWidget {
 }
 
 class Rect extends StatefulWidget {
-  Rect({Key? key}) : super(key: key);
+  const Rect({Key? key}) : super(key: key);
 
   @override
   _RectState createState() => _RectState();
@@ -111,7 +113,7 @@ class _PointState extends State<Point> {
   void initState() {
     super.initState();
     offset = widget.offset;
-    print(this.offset);
+    debugPrint(offset.toString());
   }
 
   moveTO(Offset offset) {
@@ -122,13 +124,13 @@ class _PointState extends State<Point> {
 
   dxMoveTo(double pos) {
     setState(() {
-      this.offset = Offset(pos, this.offset.dy);
+      offset = Offset(pos, offset.dy);
     });
   }
 
   dyMoveTo(double pos) {
     setState(() {
-      this.offset = Offset(this.offset.dx, pos);
+      offset = Offset(offset.dx, pos);
     });
   }
 
@@ -139,7 +141,7 @@ class _PointState extends State<Point> {
         top: offset.dy,
         child: Draggable(
             onDraggableCanceled: (Velocity velocity, Offset offset) {
-              this.moveTO(offset);
+              moveTO(offset);
 
               double width = (topLeftKey.currentState!.offset.dx -
                       topRightKey.currentState!.offset.dx)
@@ -178,14 +180,14 @@ class _PointState extends State<Point> {
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(150),
-                    border: new Border.all(color: widget.color, width: 0.5))),
+                    border: Border.all(color: widget.color, width: 0.5))),
             child: Container(
                 width: circleSize,
                 height: circleSize,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(150),
-                  border: new Border.all(color: widget.color, width: 0.5),
+                  border: Border.all(color: widget.color, width: 0.5),
                 ))));
   }
 }

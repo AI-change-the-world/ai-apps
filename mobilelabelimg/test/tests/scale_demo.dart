@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // }
 
 class SampleApp extends StatelessWidget {
+  const SampleApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,8 @@ class SampleApp extends StatelessWidget {
 }
 
 class AnimateApp extends StatefulWidget {
+  const AnimateApp({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _AnimateAppState();

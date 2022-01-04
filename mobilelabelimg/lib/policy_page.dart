@@ -6,6 +6,7 @@ Future<String> loadAsset({String? p}) async {
   return await rootBundle.loadString("assets/txts/policy.txt");
 }
 
+// ignore: must_be_immutable
 class PolicyPage extends StatefulWidget {
   bool withTitle;
 
@@ -37,10 +38,10 @@ class _PolicyPageState extends State<PolicyPage> {
     return Scaffold(
       appBar: widget.withTitle
           ? AppBar(
-              title: Text("隐私政策"),
+              title: const Text("隐私政策"),
               centerTitle: true,
               leading: InkWell(
-                child: Icon(Icons.chevron_left),
+                child: const Icon(Icons.chevron_left),
                 onTap: () {
                   Navigator.of(context).pop();
                 },
@@ -51,7 +52,7 @@ class _PolicyPageState extends State<PolicyPage> {
           child: SingleChildScrollView(
         child: Container(
           alignment: Alignment.center,
-          child: Container(
+          child: SizedBox(
             width: CommonUtil.screenW() * 0.9,
             child: getRenderedTxt(),
           ),
@@ -61,7 +62,7 @@ class _PolicyPageState extends State<PolicyPage> {
   }
 
   Widget getRenderedTxt() {
-    print("start rendering");
+    debugPrint("start rendering");
     return Column(
       children: _result.split('\n').map((e) {
         return renderTxt(e);
@@ -71,15 +72,13 @@ class _PolicyPageState extends State<PolicyPage> {
 
   Widget renderTxt(String s) {
     if (s.startsWith("[title]")) {
-      return Container(
-        child: Text(
-          s.replaceAll("[title]", ''),
-          style: CommonUtil.jobNameStyle,
-        ),
+      return Text(
+        s.replaceAll("[title]", ''),
+        style: CommonUtil.jobNameStyle,
       );
     } else if (s.startsWith("[subtitle]")) {
       return Container(
-          alignment: Alignment(-1, 0),
+          alignment: const Alignment(-1, 0),
           child: Text(
             s.replaceAll(
               "[subtitle]",
@@ -89,7 +88,7 @@ class _PolicyPageState extends State<PolicyPage> {
           ));
     } else {
       return Container(
-        alignment: Alignment(-1, 0),
+        alignment: const Alignment(-1, 0),
         child: Text(
           s,
         ),

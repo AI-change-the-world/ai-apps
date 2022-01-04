@@ -41,20 +41,25 @@ class _PointState extends State<Point> {
 
   void setLeft(double left) {
     setState(() {
-      this._left = left.toDouble();
+      _left = left.toDouble();
     });
   }
 
   void setTop(double top) {
     setState(() {
-      this._top = top.toDouble();
+      _top = top.toDouble();
     });
   }
 
+  // ignore: prefer_typing_uninitialized_variables
   var topLeftKey;
+  // ignore: prefer_typing_uninitialized_variables
   var topRightKey;
+  // ignore: prefer_typing_uninitialized_variables
   var bottomLeftKey;
+  // ignore: prefer_typing_uninitialized_variables
   var bottomRightKey;
+  // ignore: prefer_typing_uninitialized_variables
   var rectKey;
 
   @override
@@ -101,7 +106,7 @@ class _PointState extends State<Point> {
         child: Draggable(
             onDraggableCanceled: (Velocity velocity, Offset _offset) {
               // print(_offset);
-              currentOffset = this.offset;
+              currentOffset = offset;
               Offset topLeftOffset = topLeftKey.currentState!.offset;
               Offset topRightOffset = topRightKey.currentState!.offset;
               Offset bottomLeftOffset = bottomLeftKey.currentState!.offset;
@@ -194,14 +199,14 @@ class _PointState extends State<Point> {
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(150),
-                    border: new Border.all(color: widget.color, width: 0.5))),
+                    border: Border.all(color: widget.color, width: 0.5))),
             child: Container(
                 width: circleSize,
                 height: circleSize,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(150),
-                  border: new Border.all(color: widget.color, width: 0.5),
+                  border: Border.all(color: widget.color, width: 0.5),
                 ))));
   }
 }

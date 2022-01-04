@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 /*
  * @Descripttion: 
  * @version: 
@@ -188,7 +190,7 @@ class _RectState extends State<Rect> {
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
-                              title: Text("请输入类名"),
+                              title: const Text("请输入类名"),
                               content: Material(
                                   child: TextField(
                                 maxLength: 30,
@@ -196,7 +198,7 @@ class _RectState extends State<Rect> {
                               )),
                               actions: [
                                 CupertinoActionSheetAction(
-                                  child: Text("确定"),
+                                  child: const Text("确定"),
                                   onPressed: () {
                                     Navigator.of(context).pop(controller.text);
                                   },
@@ -211,18 +213,18 @@ class _RectState extends State<Rect> {
                           context: context,
                           builder: (context) {
                             return CupertinoAlertDialog(
-                              title: Text("是否要删除这个标注？"),
+                              title: const Text("是否要删除这个标注？"),
                               actions: [
                                 CupertinoActionSheetAction(
                                     onPressed: () {
                                       Navigator.of(context).pop(0);
                                     },
-                                    child: Text("取消")),
+                                    child: const Text("取消")),
                                 CupertinoActionSheetAction(
                                     onPressed: () {
                                       Navigator.of(context).pop(1);
                                     },
-                                    child: Text("确定"))
+                                    child: const Text("确定"))
                               ],
                             );
                           });
@@ -310,7 +312,7 @@ class _RectState extends State<Rect> {
         p = Point(
           key: key,
           color: Colors.red,
-          woffset: Offset(0, 0),
+          woffset: const Offset(0, 0),
           globalKeys: widget.globalKeys,
           rectKey: widget.key as GlobalKey<_RectState>,
         );

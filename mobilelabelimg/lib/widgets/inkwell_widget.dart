@@ -13,6 +13,7 @@ import 'package:mobilelabelimg/utils/common.dart';
 
 const _height = 150.0;
 
+// ignore: must_be_immutable
 class InkWellWidget extends StatelessWidget {
   // const InkWellWidget({Key? key}) : super(key: key);
   GestureTapCallback? onWidgetPressed;
@@ -23,12 +24,14 @@ class InkWellWidget extends StatelessWidget {
   double? height;
 
   InkWellWidget(
-      {this.onWidgetPressed,
+      {Key? key,
+      this.onWidgetPressed,
       this.leading,
       this.title,
       this.trailing,
       this.subtitle,
-      this.height});
+      this.height})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +39,12 @@ class InkWellWidget extends StatelessWidget {
       elevation: 15.0,
       child: InkWell(
         onTap: onWidgetPressed,
-        child: Container(
+        child: SizedBox(
           height: height ?? _height,
           width: 0.8 * CommonUtil.screenW(),
           child: Center(
             child: ListTile(
-              leading: Container(
+              leading: SizedBox(
                 width: 50,
                 height: 50,
                 child: leading ??

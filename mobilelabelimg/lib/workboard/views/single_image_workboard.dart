@@ -14,7 +14,7 @@ class SingleImageAnnotationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        child: SingleAnnotationWorkBoard(),
+        child: const SingleAnnotationWorkBoard(),
         create: (BuildContext context) {
           return WorkboardBloc()..add(RectIntial());
         });
@@ -22,7 +22,7 @@ class SingleImageAnnotationPage extends StatelessWidget {
 }
 
 class SingleAnnotationWorkBoard extends StatefulWidget {
-  SingleAnnotationWorkBoard({Key? key}) : super(key: key);
+  const SingleAnnotationWorkBoard({Key? key}) : super(key: key);
 
   @override
   _SingleAnnotationWorkBoardState createState() =>
@@ -54,8 +54,9 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     } else {
       _maxMinController.value = Matrix4.identity() * currentFactor;
     }
-    if (currentFactor != 0.8)
+    if (currentFactor != 0.8) {
       _workboardBloc.add(ChangeFactorEvent(factor: currentFactor));
+    }
   }
 
   void larger() {
@@ -66,8 +67,18 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
     } else {
       _maxMinController.value = Matrix4.identity() * currentFactor;
     }
-    if (currentFactor != 2.5)
+    if (currentFactor != 2.5) {
       _workboardBloc.add(ChangeFactorEvent(factor: currentFactor));
+    }
+
+    // print(_workboardBloc
+    //     .state.param.rectBoxes[0].topLeftKey.currentState!.offset);
+    // print(_workboardBloc
+    //     .state.param.rectBoxes[0].topRightKey.currentState!.offset);
+    // print(_workboardBloc
+    //     .state.param.rectBoxes[0].bottomLeftKey.currentState!.offset);
+    // print(_workboardBloc
+    //     .state.param.rectBoxes[0].bottomRightKey.currentState!.offset);
   }
 
   @override
@@ -124,17 +135,18 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            print("放大");
+                            debugPrint("放大");
                             larger();
                           },
-                          icon: ImageIcon(AssetImage("assets/icons/plus.png"))),
+                          icon: const ImageIcon(
+                              AssetImage("assets/icons/plus.png"))),
                       IconButton(
                           onPressed: () {
-                            print("缩小");
+                            debugPrint("缩小");
                             smaller();
                           },
-                          icon:
-                              ImageIcon(AssetImage("assets/icons/minus.png"))),
+                          icon: const ImageIcon(
+                              AssetImage("assets/icons/minus.png"))),
                     ],
                   ),
                 ))

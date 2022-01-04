@@ -45,7 +45,7 @@ class DraggableButtonState extends State<DraggableButton> {
           },
           feedback: Container(),
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.work,
               color: Colors.yellow,
               size: buttonSize,
@@ -75,6 +75,7 @@ class ToolsListWidget extends StatefulWidget {
 }
 
 class _ToolsListWidgetState extends State<ToolsListWidget> {
+  // ignore: prefer_typing_uninitialized_variables
   var _workboardBloc;
   late int currentId;
   String? xmlSavedPath;
@@ -161,7 +162,7 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                           getExternalStorageDirectory().then((value) async {
                             // print(value!.path);
                             File file =
-                                new File(value!.path + "/" + _name + ".xml");
+                                File(value!.path + "/" + _name + ".xml");
                             try {
                               await file.writeAsString(imageObjs.toXmlStr());
                               xmlSavedPath = value.path + "/" + _name + ".xml";
@@ -174,7 +175,7 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                             } catch (e) {
-                              print(e);
+                              debugPrint(e.toString());
                               Fluttertoast.showToast(
                                   msg: "写入文件失败",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -340,15 +341,13 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
 
                       // print(labelmeObject.toJson());
 
-                      String _name, _ext;
+                      String _name;
                       _name = widget.imgPath.split("/").last.split(".").first;
-                      _ext = widget.imgPath.split("/").last.split(".").last;
 
                       if (await Permission.storage.request().isGranted) {
                         getExternalStorageDirectory().then((value) async {
                           // print(value!.path);
-                          File file =
-                              new File(value!.path + "/" + _name + ".json");
+                          File file = File(value!.path + "/" + _name + ".json");
                           try {
                             await file.writeAsString(
                                 json.encode(labelmeObject.toJson()));
@@ -362,7 +361,7 @@ class _ToolsListWidgetState extends State<ToolsListWidget> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           } catch (e) {
-                            print(e);
+                            debugPrint(e.toString());
                             Fluttertoast.showToast(
                                 msg: "写入文件失败",
                                 toastLength: Toast.LENGTH_SHORT,

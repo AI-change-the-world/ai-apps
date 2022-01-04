@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -92,13 +94,12 @@ class LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return true;
   }
 }
 
 class PolygonDemo extends StatefulWidget {
-  PolygonDemo({Key? key}) : super(key: key);
+  const PolygonDemo({Key? key}) : super(key: key);
 
   @override
   _PolygonDemoState createState() => _PolygonDemoState();
@@ -110,7 +111,6 @@ class _PolygonDemoState extends State<PolygonDemo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _polygonWorkboardBloc = context.read<PolygonWorkboardBloc>();
   }
@@ -194,7 +194,7 @@ class _PolygonDemoState extends State<PolygonDemo> {
 
                     _polygonWorkboardBloc.add(WidgetAddEvent(
                         w: PolygonPoint(
-                      poffset: Offset(-1, -1),
+                      poffset: const Offset(-1, -1),
                       index: -1,
                       isFirst: false,
                     )));

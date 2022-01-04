@@ -28,7 +28,7 @@ class RectDemo extends StatelessWidget {
 }
 
 class Rect extends StatefulWidget {
-  Rect({Key? key}) : super(key: key);
+  const Rect({Key? key}) : super(key: key);
 
   @override
   _RectState createState() => _RectState();
@@ -57,24 +57,24 @@ class _RectState extends State<Rect> {
 
   setTop(double top) {
     setState(() {
-      this.defaultTop = top;
+      defaultTop = top;
     });
   }
 
   setLeft(double left) {
     setState(() {
-      this.defaultLeft = left;
+      defaultLeft = left;
     });
   }
 
   moveTo(Offset? _off) {
     setState(() {
       if (null != _off) {
-        this.defaultLeft = _off.dx;
-        this.defaultTop = _off.dy;
+        defaultLeft = _off.dx;
+        defaultTop = _off.dy;
       } else {
-        this.defaultLeft = topLeftKey.currentState!.offset.dx;
-        this.defaultTop = topLeftKey.currentState!.offset.dy;
+        defaultLeft = topLeftKey.currentState!.offset.dx;
+        defaultTop = topLeftKey.currentState!.offset.dy;
       }
     });
   }
@@ -87,8 +87,8 @@ class _RectState extends State<Rect> {
         child: Draggable(
             onDraggableCanceled: (velocity, offset) {
               setState(() {
-                this.defaultLeft = offset.dx;
-                this.defaultTop = offset.dy;
+                defaultLeft = offset.dx;
+                defaultTop = offset.dy;
                 topLeftKey.currentState!.offset = offset;
                 topRightKey.currentState!.offset =
                     Offset(offset.dx - circleSize + width, offset.dy);
@@ -154,7 +154,7 @@ class _RectState extends State<Rect> {
                 defaultRectSize - circleSize + defaultTop));
         break;
       default:
-        p = Point(key: key, color: Colors.red, woffset: Offset(0, 0));
+        p = Point(key: key, color: Colors.red, woffset: const Offset(0, 0));
         break;
     }
     return p;
@@ -186,13 +186,13 @@ class _PointState extends State<Point> {
 
   void setLeft(double left) {
     setState(() {
-      this._left = left;
+      _left = left;
     });
   }
 
   void setTop(double top) {
     setState(() {
-      this._top = top;
+      _top = top;
     });
   }
 
@@ -234,7 +234,7 @@ class _PointState extends State<Point> {
         top: _top,
         child: Draggable(
             onDraggableCanceled: (Velocity velocity, Offset _offset) {
-              currentOffset = this.offset;
+              currentOffset = offset;
               Offset topLeftOffset = topLeftKey.currentState!.offset;
               Offset topRightOffset = topRightKey.currentState!.offset;
               Offset bottomLeftOffset = bottomLeftKey.currentState!.offset;
@@ -312,14 +312,14 @@ class _PointState extends State<Point> {
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(150),
-                    border: new Border.all(color: widget.color, width: 0.5))),
+                    border: Border.all(color: widget.color, width: 0.5))),
             child: Container(
                 width: circleSize,
                 height: circleSize,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(150),
-                  border: new Border.all(color: widget.color, width: 0.5),
+                  border: Border.all(color: widget.color, width: 0.5),
                 ))));
   }
 }

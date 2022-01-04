@@ -23,7 +23,6 @@ class PolygonPoint extends StatefulWidget {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    // TODO: implement toString
     return index.toString();
   }
 
@@ -124,18 +123,18 @@ class PolygonPointState extends State<PolygonPoint> {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text("是否要删除这个标注？"),
+                                title: const Text("是否要删除这个标注？"),
                                 actions: [
                                   CupertinoActionSheetAction(
                                       onPressed: () {
                                         Navigator.of(context).pop(0);
                                       },
-                                      child: Text("取消")),
+                                      child: const Text("取消")),
                                   CupertinoActionSheetAction(
                                       onPressed: () {
                                         Navigator.of(context).pop(1);
                                       },
-                                      child: Text("确定"))
+                                      child: const Text("确定"))
                                 ],
                               );
                             });
@@ -180,7 +179,7 @@ class PolygonPointState extends State<PolygonPoint> {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text("请输入类名"),
+                                title: const Text("请输入类名"),
                                 content: Material(
                                     child: TextField(
                                   maxLength: 30,
@@ -188,7 +187,7 @@ class PolygonPointState extends State<PolygonPoint> {
                                 )),
                                 actions: [
                                   CupertinoActionSheetAction(
-                                    child: Text("确定"),
+                                    child: const Text("确定"),
                                     onPressed: () {
                                       Navigator.of(context)
                                           .pop(controller.text);
@@ -210,8 +209,7 @@ class PolygonPointState extends State<PolygonPoint> {
                           decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(150),
-                            border:
-                                new Border.all(color: Colors.red, width: 0.5),
+                            border: Border.all(color: Colors.red, width: 0.5),
                           )),
                     )
                   : Container(
@@ -220,7 +218,7 @@ class PolygonPointState extends State<PolygonPoint> {
                       decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(150),
-                        border: new Border.all(color: Colors.blue, width: 0.5),
+                        border: Border.all(color: Colors.blue, width: 0.5),
                       )),
               feedback: Container(
                   width: circleSize,
@@ -228,7 +226,7 @@ class PolygonPointState extends State<PolygonPoint> {
                   decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(150),
-                      border: new Border.all(
+                      border: Border.all(
                           color: widget.isFirst
                               ? Colors.redAccent
                               : Colors.blueAccent,
@@ -263,7 +261,7 @@ class PolygonPointState extends State<PolygonPoint> {
     }
     labelmeObject.shapes = shapes;
 
-    print(labelmeObject.toJson());
-    print("============================================");
+    debugPrint(labelmeObject.toJson().toString());
+    debugPrint("============================================");
   }
 }

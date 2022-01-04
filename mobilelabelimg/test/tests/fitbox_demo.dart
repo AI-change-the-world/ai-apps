@@ -10,13 +10,15 @@
 import 'package:flutter/material.dart';
 
 class FitboxDemo extends StatelessWidget {
+  const FitboxDemo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "FittedBox缩放布局",
       home: Scaffold(
           appBar: AppBar(
-            title: Text('FittedBox缩放布局'),
+            title: const Text('FittedBox缩放布局'),
           ),
           body: Container(
             color: Colors.grey,
@@ -31,7 +33,7 @@ class FitboxDemo extends StatelessWidget {
 
               child: Container(
                 color: Colors.lightBlue,
-                child: Text('还有谁'),
+                child: const Text('还有谁'),
               ),
             ),
           )),

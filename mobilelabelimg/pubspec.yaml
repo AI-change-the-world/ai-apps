@@ -54,7 +54,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # flutter_lints: ^1.0.4
+  # flutter_drag_scale:
+  #   git: https://github.com/LiuC520/flutter_drag_scale.git
+  # multi_image_picker: ^4.8.1
+  # flutter_absolute_path: ^1.0.6
+  flutter_lints: ^1.0.4
   
 
 # For information on the generic Dart part of this file, see the

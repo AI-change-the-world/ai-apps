@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this, unnecessary_overrides
+
 /*
  * @Descripttion: 
  * @version: 
@@ -40,7 +42,6 @@ class PolygonWorkboardState extends Equatable {
   }
 
   @override
-  // TODO: implement hashCode
   int get hashCode => super.hashCode;
 
   PolygonWorkboardState copyWith(

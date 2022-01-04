@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, unused_field, unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobilelabelimg/workboard/bloc/workboard_bloc.dart';
@@ -10,7 +12,7 @@ class MultiImageAnnotationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        child: MultiAnnotationWorkBoard(),
+        child: const MultiAnnotationWorkBoard(),
         create: (BuildContext context) {
           return WorkboardBloc()..add(RectIntial());
         });
@@ -18,7 +20,7 @@ class MultiImageAnnotationPage extends StatelessWidget {
 }
 
 class MultiAnnotationWorkBoard extends StatefulWidget {
-  MultiAnnotationWorkBoard({Key? key}) : super(key: key);
+  const MultiAnnotationWorkBoard({Key? key}) : super(key: key);
 
   @override
   _MultiAnnotationWorkBoardState createState() =>
@@ -46,14 +48,14 @@ class _MultiAnnotationWorkBoardState extends State<MultiAnnotationWorkBoard> {
     List<String>? imgPaths =
         ModalRoute.of(context)!.settings.arguments as List<String>;
     if (null != imgPaths) {
-      print("=====================");
-      print(imgPaths);
-      print("=====================");
+      debugPrint("=====================");
+      debugPrint(imgPaths.toString());
+      debugPrint("=====================");
     }
 
     return BlocBuilder<WorkboardBloc, WorkboardState>(
         builder: (context, state) {
-      return Scaffold(
+      return const Scaffold(
         body: SafeArea(
           child: Text("asadsasdsa"),
         ),

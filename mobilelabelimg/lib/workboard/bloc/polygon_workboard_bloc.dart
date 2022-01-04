@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, unused_local_variable
+
 /*
  * @Descripttion: 
  * @version: 
@@ -128,7 +130,7 @@ class PolygonWorkboardBloc
     if (await Permission.storage.request().isGranted) {
       var value = await getExternalStorageDirectory();
       File file = File(value!.path + "/" + path);
-      print(value.path + "/" + path);
+      debugPrint(value.path + "/" + path);
       try {
         String content = file.readAsStringSync();
         var _obj = json.decode(content);
@@ -170,7 +172,7 @@ class PolygonWorkboardBloc
           listPolygonEntity.add(polygonEntity);
         }
       } catch (e, stack) {
-        print(stack.toString());
+        debugPrint(stack.toString());
       }
       return emit(state.copyWith(PolygonWorkboardStatus.initial, state.widgets,
           listPolygonEntity, _filepath));

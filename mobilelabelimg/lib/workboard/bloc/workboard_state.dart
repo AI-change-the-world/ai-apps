@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this, unnecessary_overrides
+
 part of 'workboard_bloc.dart';
 
 enum WorkboardStatus { initial, add, delete, refresh }
@@ -14,7 +16,6 @@ class ImageRectBox extends Equatable {
       this.currentFactor = 1.0});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [imageName, rectBoxes, imagePath, currentFactor];
 }
 

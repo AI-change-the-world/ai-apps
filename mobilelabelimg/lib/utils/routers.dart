@@ -18,21 +18,21 @@ import 'package:mobilelabelimg/workboard/views/single_image_workboard.dart';
 // import 'package:mobilelabelimg/workboard/views/workboard_demo.dart';
 
 class Routers {
-  static final pageAnnotationWorkboard = "pageAnnotationWorkboard";
-  static final pageMultiAnnotationWorkboard = "pageMultiAnnotationWorkboard";
-  static final pageMain = "pageMain";
-  static final pageLabelimgMain = "pageLabelimgMain";
-  static final pagePolygonPage = "pagePolygonPage";
-  static final pageLabelmeMain = "pageLabelmeMain";
-  static final policyPage = "policyPage";
+  static const pageAnnotationWorkboard = "pageAnnotationWorkboard";
+  static const pageMultiAnnotationWorkboard = "pageMultiAnnotationWorkboard";
+  static const pageMain = "pageMain";
+  static const pageLabelimgMain = "pageLabelimgMain";
+  static const pagePolygonPage = "pagePolygonPage";
+  static const pageLabelmeMain = "pageLabelmeMain";
+  static const policyPage = "policyPage";
 
   static final Map<String, WidgetBuilder> routers = {
-    pageAnnotationWorkboard: (ctx) => SingleImageAnnotationPage(),
-    pageMultiAnnotationWorkboard: (ctx) => MultiImageAnnotationPage(),
-    pageMain: (ctx) => MainPageV1(),
-    pageLabelimgMain: (ctx) => LabelImgOpenningPage(),
-    pagePolygonPage: (ctx) => PolygonDemoPage(),
-    pageLabelmeMain: (ctx) => LabelmeOpenningPage(),
+    pageAnnotationWorkboard: (ctx) => const SingleImageAnnotationPage(),
+    pageMultiAnnotationWorkboard: (ctx) => const MultiImageAnnotationPage(),
+    pageMain: (ctx) => const MainPageV1(),
+    pageLabelimgMain: (ctx) => const LabelImgOpenningPage(),
+    pagePolygonPage: (ctx) => const PolygonDemoPage(),
+    pageLabelmeMain: (ctx) => const LabelmeOpenningPage(),
     policyPage: (ctx) => PolicyPage(withTitle: true),
   };
 }

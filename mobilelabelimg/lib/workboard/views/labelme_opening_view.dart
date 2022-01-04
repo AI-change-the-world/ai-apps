@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -8,7 +10,7 @@ import 'package:mobilelabelimg/widgets/inkwell_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LabelmeOpenningPage extends StatefulWidget {
-  LabelmeOpenningPage({Key? key}) : super(key: key);
+  const LabelmeOpenningPage({Key? key}) : super(key: key);
 
   @override
   _LabelmeOpenningPageState createState() => _LabelmeOpenningPageState();
@@ -22,7 +24,7 @@ class _LabelmeOpenningPageState extends State<LabelmeOpenningPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("labelme 移动版"),
+        title: const Text("labelme 移动版"),
       ),
       body: SingleChildScrollView(
         child: Align(
@@ -30,13 +32,13 @@ class _LabelmeOpenningPageState extends State<LabelmeOpenningPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               InkWellWidget(
                 height: 80,
                 onWidgetPressed: () async {
-                  print("点击了选取图片");
+                  debugPrint("点击了选取图片");
                   if (await Permission.storage.request().isGranted) {
                     FilePickerResult? image = await FilePicker.platform
                         .pickFiles(type: FileType.image);
@@ -71,28 +73,28 @@ class _LabelmeOpenningPageState extends State<LabelmeOpenningPage> {
                         fontSize: 16.0);
                   }
                 },
-                leading: Icon(
+                leading: const Icon(
                   Icons.file_present,
                   color: Colors.blue,
                 ),
-                title: Text("选取图片进行标注（单张）"),
-                trailing: Icon(Icons.chevron_right),
+                title: const Text("选取图片进行标注（单张）"),
+                trailing: const Icon(Icons.chevron_right),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               InkWellWidget(
                 height: 80,
                 onWidgetPressed: () {
-                  print("点击了返回");
+                  debugPrint("点击了返回");
                   Navigator.of(context).pop();
                 },
-                leading: Icon(
+                leading: const Icon(
                   Icons.backspace,
                   color: Colors.orange,
                 ),
-                title: Text("返回"),
-                trailing: Icon(Icons.chevron_right),
+                title: const Text("返回"),
+                trailing: const Icon(Icons.chevron_right),
               ),
             ],
           ),

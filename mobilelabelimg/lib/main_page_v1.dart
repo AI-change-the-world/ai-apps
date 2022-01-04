@@ -16,7 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 // import 'package:super_tooltip/super_tooltip.dart';
 
 class MainPageV1 extends StatefulWidget {
-  MainPageV1({Key? key}) : super(key: key);
+  const MainPageV1({Key? key}) : super(key: key);
 
   @override
   _MainPageV1State createState() => _MainPageV1State();
@@ -28,7 +28,7 @@ class _MainPageV1State extends State<MainPageV1> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(appname),
+        title: const Text(appname),
       ),
       body: SingleChildScrollView(
         child: Align(
@@ -37,7 +37,7 @@ class _MainPageV1State extends State<MainPageV1> {
             crossAxisAlignment: CrossAxisAlignment.center,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               FlipCard(
@@ -51,11 +51,11 @@ class _MainPageV1State extends State<MainPageV1> {
                   //   height: 50,
                   //   child: Image.asset("assets/app_icons/labelimg.png"),
                   // ),
-                  title: Text("图标源于labelImg仓库"),
+                  title: const Text("图标源于labelImg仓库"),
                   // subtitle: Text(
                   //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
                   trailing: TextButton(
-                    child: Text("跳转仓库"),
+                    child: const Text("跳转仓库"),
                     onPressed: () async {
                       await launch("https://github.com/tzutalin/labelImg");
                     },
@@ -66,12 +66,12 @@ class _MainPageV1State extends State<MainPageV1> {
                   //   print("跳转");
                   //   Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
                   // },
-                  leading: Container(
+                  leading: SizedBox(
                     width: 50,
                     height: 50,
                     child: Image.asset("assets/app_icons/labelimg.png"),
                   ),
-                  title: Text("labelImg 是一个多用于目标识别的标注工具"),
+                  title: const Text("labelImg 是一个多用于目标识别的标注工具"),
                   // subtitle: Text(
                   //     "此图标源于labelImg仓库，https://github.com/tzutalin/labelImg"),
                   // trailing: TextButton(
@@ -81,14 +81,14 @@ class _MainPageV1State extends State<MainPageV1> {
                   //   },
                   // ),
                   trailing: TextButton(
-                    child: Text("点此尝试"),
+                    child: const Text("点此尝试"),
                     onPressed: () {
                       Navigator.of(context).pushNamed(Routers.pageLabelimgMain);
                     },
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               FlipCard(
@@ -97,12 +97,12 @@ class _MainPageV1State extends State<MainPageV1> {
                     //   print("跳转");
                     //   Navigator.of(context).pushNamed(Routers.pageLabelmeMain);
                     // },
-                    leading: Container(
+                    leading: SizedBox(
                       width: 50,
                       height: 50,
                       child: Image.asset("assets/app_icons/labelme.png"),
                     ),
-                    title: Text("labelme 是一个多用于图像分割的标注工具"),
+                    title: const Text("labelme 是一个多用于图像分割的标注工具"),
                     // subtitle:
                     //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
                     // trailing: TextButton(
@@ -113,7 +113,7 @@ class _MainPageV1State extends State<MainPageV1> {
                     // ),
 
                     trailing: TextButton(
-                      child: Text("点此尝试"),
+                      child: const Text("点此尝试"),
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(Routers.pageLabelmeMain);
@@ -130,11 +130,11 @@ class _MainPageV1State extends State<MainPageV1> {
                     //   height: 50,
                     //   child: Image.asset("assets/app_icons/labelme.png"),
                     // ),
-                    title: Text("图标源于labelImg仓库"),
+                    title: const Text("图标源于labelImg仓库"),
                     // subtitle:
                     //     Text("此图标源于labelImg仓库，https://github.com/wkentaro/labelme"),
                     trailing: TextButton(
-                      child: Text("跳转仓库"),
+                      child: const Text("跳转仓库"),
                       onPressed: () async {
                         await launch("https://github.com/wkentaro/labelme");
                       },
@@ -148,29 +148,29 @@ class _MainPageV1State extends State<MainPageV1> {
                     //   },
                     // ),
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               InkWellWidget(
                 onWidgetPressed: () async {
                   await launch("https://guchengxi1994.github.io");
                 },
-                leading: Container(
+                leading: SizedBox(
                   width: 50,
                   height: 50,
                   child: Image.asset("assets/app_icons/me.jpg"),
                 ),
-                title: Text("关于我"),
+                title: const Text("关于我"),
                 // subtitle: Text("此头像为黑暗之魂3防火女"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               InkWellWidget(
                 onWidgetPressed: () async {
                   Navigator.of(context).pushNamed(Routers.policyPage);
                 },
-                leading: Container(
+                leading: const SizedBox(
                   width: 50,
                   height: 50,
                   child: Icon(
@@ -178,7 +178,7 @@ class _MainPageV1State extends State<MainPageV1> {
                     color: Colors.greenAccent,
                   ),
                 ),
-                title: Text("隐私政策"),
+                title: const Text("隐私政策"),
               ),
             ],
           ),

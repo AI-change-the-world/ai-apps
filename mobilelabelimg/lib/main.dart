@@ -9,21 +9,15 @@
  */
 import 'package:flutter/material.dart';
 import 'package:mobilelabelimg/launch_page_v1.dart';
-import 'package:mobilelabelimg/test_page.dart';
 import 'package:mobilelabelimg/utils/routers.dart';
 
-// import 'package:mobilelabelimg/tests/drag_scale.dart';
-// import 'package:mobilelabelimg/tests/scale_demo.dart';
-// import 'package:mobilelabelimg/widgets/rect.dart';
-// import 'package:mobilelabelimg/workboard/views/workboard_demo.dart';
-
 void main() {
-  runApp(new MaterialApp(
+  runApp(MaterialApp(
     routes: Routers.routers,
     debugShowCheckedModeBanner: false,
     // home: PolygonWorkboard(),
     // initialRoute: Routers.pageMain,
-    home: LaunchPage(),
+    home: const LaunchPage(),
     // home: TestPage(),
   ));
 }

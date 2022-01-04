@@ -10,7 +10,7 @@ import 'package:package_info/package_info.dart';
 const fontSize = 14.0;
 
 class LaunchPage extends StatefulWidget {
-  LaunchPage({Key? key}) : super(key: key);
+  const LaunchPage({Key? key}) : super(key: key);
 
   @override
   _LaunchPageState createState() => _LaunchPageState();
@@ -19,6 +19,7 @@ class LaunchPage extends StatefulWidget {
 class _LaunchPageState extends State<LaunchPage>
     with AfterLayoutMixin<LaunchPage> {
   bool _isSelected = false;
+  // ignore: prefer_typing_uninitialized_variables
   var _futureVersionBuilder;
 
   @override
@@ -35,10 +36,10 @@ class _LaunchPageState extends State<LaunchPage>
 
   Future<String> getAppInfo() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appName = packageInfo.appName;
-    String packageName = packageInfo.packageName;
+    // String appName = packageInfo.appName;
+    // String packageName = packageInfo.packageName;
     String version = packageInfo.version;
-    String buildNumber = packageInfo.buildNumber;
+    // String buildNumber = packageInfo.buildNumber;
     // print(version);
     return version;
   }
@@ -48,21 +49,21 @@ class _LaunchPageState extends State<LaunchPage>
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: Text("隐私政策"),
-            content: Container(
+            title: const Text("隐私政策"),
+            content: SizedBox(
                 height: 0.5 * CommonUtil.screenH(),
                 child: PolicyPage(
                   withTitle: false,
                 )),
             actions: <Widget>[
               CupertinoDialogAction(
-                child: Text('取消'),
+                child: const Text('取消'),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               CupertinoDialogAction(
-                child: Text('已认真阅读并同意'),
+                child: const Text('已认真阅读并同意'),
                 onPressed: () {
                   Fluttertoast.showToast(
                       msg: "你已选择同意,已自动帮你勾选同意《隐私政策》",
@@ -100,21 +101,21 @@ class _LaunchPageState extends State<LaunchPage>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               // height: CommonUtil.screenW(),
               width: CommonUtil.screenW(),
               child: Container(
                 width: 0.85 * CommonUtil.screenW(),
                 height: 0.85 * CommonUtil.screenW(),
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/app_icons/look.png"))),
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Text(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: const Text(
                 appname,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -124,17 +125,17 @@ class _LaunchPageState extends State<LaunchPage>
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Container(
-                    margin: EdgeInsets.only(top: 5),
+                    margin: const EdgeInsets.only(top: 5),
                     child: Text(
                       "Version:" + snapshot.data.toString(),
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   );
                 } else {
                   return Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Text(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: const Text(
                       "🤪.🤪.🤪",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -143,54 +144,50 @@ class _LaunchPageState extends State<LaunchPage>
                 }
               },
             ),
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    child: RawMaterialButton(
-                      onPressed: () async {
-                        if (_isSelected) {
-                          await setPolicyAgreed();
-                          print("点击了按钮");
-                          // wechatAuth();
-                          Navigator.pushAndRemoveUntil(context,
-                              MaterialPageRoute(builder: (context) {
-                            return MainPageV1();
-                          }), (route) => false);
-                          // Navigator.pushAndRemoveUntil(context, newRoute, (route) => false)(context,
-                          //     MaterialPageRoute(builder: (context) {
-                          //   return MainPage();
-                          // }));
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "请先阅读并同意用户隐私协议",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.orange,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        }
-                      },
-                      elevation: 2.0,
-                      fillColor: Colors.white,
-                      child: Icon(
-                        Icons.arrow_forward,
-                        size: 35.0,
-                      ),
-                      padding: EdgeInsets.all(15.0),
-                      shape: CircleBorder(),
-                    ),
+            Column(
+              children: [
+                RawMaterialButton(
+                  onPressed: () async {
+                    if (_isSelected) {
+                      await setPolicyAgreed();
+                      debugPrint("点击了按钮");
+                      // wechatAuth();
+                      Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const MainPageV1();
+                      }), (route) => false);
+                      // Navigator.pushAndRemoveUntil(context, newRoute, (route) => false)(context,
+                      //     MaterialPageRoute(builder: (context) {
+                      //   return MainPage();
+                      // }));
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "请先阅读并同意用户隐私协议",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.orange,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  child: const Icon(
+                    Icons.arrow_forward,
+                    size: 35.0,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Text("进入"),
-                  )
-                ],
-              ),
+                  padding: const EdgeInsets.all(15.0),
+                  shape: const CircleBorder(),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: const Text("进入"),
+                )
+              ],
             ),
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               child: Center(
                 child: getRadio(),
               ),
@@ -208,8 +205,7 @@ class _LaunchPageState extends State<LaunchPage>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-                child: InkWell(
+            InkWell(
               onTap: () {
                 setState(() {
                   if (_isSelected) {
@@ -224,27 +220,23 @@ class _LaunchPageState extends State<LaunchPage>
                 size: 22,
                 color: _isSelected ? Colors.blue : Colors.grey,
               ),
-            )),
-            Container(
-              child: Text(
-                "我已阅读并同意" + appname,
-                style: TextStyle(fontSize: fontSize),
-              ),
             ),
-            Container(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(new MaterialPageRoute(builder: (context) {
-                    return PolicyPage(
-                      withTitle: true,
-                    );
-                  }));
-                },
-                child: Text(
-                  "《隐私政策》",
-                  style: TextStyle(color: Colors.blue, fontSize: fontSize),
-                ),
+            const Text(
+              "我已阅读并同意" + appname,
+              style: TextStyle(fontSize: fontSize),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return PolicyPage(
+                    withTitle: true,
+                  );
+                }));
+              },
+              child: const Text(
+                "《隐私政策》",
+                style: TextStyle(color: Colors.blue, fontSize: fontSize),
               ),
             ),
           ],
@@ -252,38 +244,34 @@ class _LaunchPageState extends State<LaunchPage>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: Text(
-                "以及",
-                style: TextStyle(fontSize: fontSize),
-              ),
+            const Text(
+              "以及",
+              style: TextStyle(fontSize: fontSize),
             ),
-            Container(
-              child: InkWell(
-                onTap: () {
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          title: Text("用户须知"),
-                          content: Container(
-                            width: 200,
-                            child: Text("无人工,不智能。致敬所有为人工智能付出的科研人员。"),
-                          ),
-                          actions: [
-                            CupertinoButton(
-                                child: Text("确定"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                })
-                          ],
-                        );
-                      });
-                },
-                child: Text(
-                  "《其它说明》",
-                  style: TextStyle(color: Colors.blue, fontSize: fontSize),
-                ),
+            InkWell(
+              onTap: () {
+                showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: const Text("用户须知"),
+                        content: const SizedBox(
+                          width: 200,
+                          child: Text("无人工,不智能。致敬所有为人工智能付出的科研人员。"),
+                        ),
+                        actions: [
+                          CupertinoButton(
+                              child: const Text("确定"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              })
+                        ],
+                      );
+                    });
+              },
+              child: const Text(
+                "《其它说明》",
+                style: TextStyle(color: Colors.blue, fontSize: fontSize),
               ),
             ),
           ],
@@ -299,7 +287,7 @@ class _LaunchPageState extends State<LaunchPage>
       if (value) {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
-          return MainPageV1();
+          return const MainPageV1();
         }), (route) => false);
       }
     });

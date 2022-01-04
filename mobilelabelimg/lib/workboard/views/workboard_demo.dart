@@ -15,7 +15,7 @@ class Demoview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        child: WorkBoardDemo(),
+        child: const WorkBoardDemo(),
         create: (BuildContext context) {
           return WorkboardBloc()..add(RectIntial());
         });
@@ -23,7 +23,7 @@ class Demoview extends StatelessWidget {
 }
 
 class WorkBoardDemo extends StatefulWidget {
-  WorkBoardDemo({Key? key}) : super(key: key);
+  const WorkBoardDemo({Key? key}) : super(key: key);
 
   @override
   _WorkBoardDemoState createState() => _WorkBoardDemoState();
@@ -72,135 +72,131 @@ class _WorkBoardDemoState extends State<WorkBoardDemo> {
             ),
           ),
         ),
-        floatingActionButton: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FloatingActionButton(
-                onPressed: () {
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          actions: [
-                            CupertinoActionSheetAction(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("取消"))
-                          ],
-                          content: Material(
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              width: 300,
-                              child: Wrap(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.chevron_left,
-                                            color: Colors.white),
-                                        Text(
-                                          "退出",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: CircleBorder(),
-                                      padding: EdgeInsets.all(20),
-                                      primary: Colors.blue, // <-- Button color
-                                      onPrimary: Colors.red, // <-- Splash color
-                                    ),
-                                  )
-                                ],
-                              ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        actions: [
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("取消"))
+                        ],
+                        content: Material(
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            width: 300,
+                            child: Wrap(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.chevron_left,
+                                          color: Colors.white),
+                                      Text(
+                                        "退出",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    padding: const EdgeInsets.all(20),
+                                    primary: Colors.blue, // <-- Button color
+                                    onPrimary: Colors.red, // <-- Splash color
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                        );
-                      });
-                },
-                heroTag: "tool",
-                child: Icon(Icons.work),
-              ),
-              FloatingActionButton(
-                heroTag: "add",
-                onPressed: () {
-                  // addRect();
-                  currentId += 1;
-                  _workboardBloc.add(RectAdded(id: currentId));
-                },
-                child: Icon(Icons.add),
-              ),
-              FloatingActionButton(
-                heroTag: "save",
-                onPressed: () async {
-                  // print(_filepath.split("/").last);
-
-                  Annotation annotation = Annotation();
-
-                  String _name, _ext;
-                  _name = imgPath.split("/").last.split(".").first;
-                  _ext = imgPath.split("/").last.split(".").last;
-
-                  annotation.filename = _name + "." + _ext;
-                  annotation.path = imgPath;
-                  annotation.source = Source();
-                  annotation.size = ClassSize(
-                      width: CommonUtil.screenW().floor(),
-                      height: CommonUtil.screenH().floor());
-                  annotation.segmented = 0;
-                  annotation.object = [];
-
-                  print(_name);
-                  print(_ext);
-                  for (var rect in _workboardBloc.state.param.rectBoxes) {
-                    // print(rect.rectKey.currentState!.className);
-                    // print(rect.rectKey.currentState!.getRectBox());
-                    ClassObject classObject = ClassObject();
-                    classObject.name = rect.rectKey.currentState!.className;
-                    classObject.difficult = 0;
-                    Bndbox bndbox = Bndbox();
-                    bndbox.xmin = rect.rectKey.currentState!.getRectBox()[0];
-                    bndbox.ymin = rect.rectKey.currentState!.getRectBox()[1];
-                    bndbox.xmax = rect.rectKey.currentState!.getRectBox()[2];
-                    bndbox.ymax = rect.rectKey.currentState!.getRectBox()[3];
-                    classObject.bndbox = bndbox;
-                    annotation.object!.add(classObject);
-                  }
-                  ImageObjs imageObjs = ImageObjs(annotation: annotation);
-                  // print(imageObjs.toXmlStr());
-                  if (await Permission.storage.request().isGranted) {
-                    getExternalStorageDirectory().then((value) async {
-                      print(value!.path);
-                      File file = new File(value.path + "/" + _name + ".xml");
-                      try {
-                        await file.writeAsString(imageObjs.toXmlStr());
-                      } catch (e) {
-                        print(e);
-                      }
-
-                      File testReadFile =
-                          File(value.path + "/" + _name + ".xml");
-                      try {
-                        String content = testReadFile.readAsStringSync();
-                        print(content);
-                      } catch (e) {
-                        print(e);
-                      }
+                        ),
+                      );
                     });
-                  }
-                },
-                child: Icon(Icons.save),
-              ),
-            ],
-          ),
+              },
+              heroTag: "tool",
+              child: const Icon(Icons.work),
+            ),
+            FloatingActionButton(
+              heroTag: "add",
+              onPressed: () {
+                // addRect();
+                currentId += 1;
+                _workboardBloc.add(RectAdded(id: currentId));
+              },
+              child: const Icon(Icons.add),
+            ),
+            FloatingActionButton(
+              heroTag: "save",
+              onPressed: () async {
+                // print(_filepath.split("/").last);
+
+                Annotation annotation = Annotation();
+
+                String _name, _ext;
+                _name = imgPath.split("/").last.split(".").first;
+                _ext = imgPath.split("/").last.split(".").last;
+
+                annotation.filename = _name + "." + _ext;
+                annotation.path = imgPath;
+                annotation.source = Source();
+                annotation.size = ClassSize(
+                    width: CommonUtil.screenW().floor(),
+                    height: CommonUtil.screenH().floor());
+                annotation.segmented = 0;
+                annotation.object = [];
+
+                debugPrint(_name);
+                debugPrint(_ext);
+                for (var rect in _workboardBloc.state.param.rectBoxes) {
+                  // print(rect.rectKey.currentState!.className);
+                  // print(rect.rectKey.currentState!.getRectBox());
+                  ClassObject classObject = ClassObject();
+                  classObject.name = rect.rectKey.currentState!.className;
+                  classObject.difficult = 0;
+                  Bndbox bndbox = Bndbox();
+                  bndbox.xmin = rect.rectKey.currentState!.getRectBox()[0];
+                  bndbox.ymin = rect.rectKey.currentState!.getRectBox()[1];
+                  bndbox.xmax = rect.rectKey.currentState!.getRectBox()[2];
+                  bndbox.ymax = rect.rectKey.currentState!.getRectBox()[3];
+                  classObject.bndbox = bndbox;
+                  annotation.object!.add(classObject);
+                }
+                ImageObjs imageObjs = ImageObjs(annotation: annotation);
+                // print(imageObjs.toXmlStr());
+                if (await Permission.storage.request().isGranted) {
+                  getExternalStorageDirectory().then((value) async {
+                    debugPrint(value!.path);
+                    File file = File(value.path + "/" + _name + ".xml");
+                    try {
+                      await file.writeAsString(imageObjs.toXmlStr());
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
+
+                    File testReadFile = File(value.path + "/" + _name + ".xml");
+                    try {
+                      String content = testReadFile.readAsStringSync();
+                      debugPrint(content);
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
+                  });
+                }
+              },
+              child: const Icon(Icons.save),
+            ),
+          ],
         ),
       );
     });

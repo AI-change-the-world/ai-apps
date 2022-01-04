@@ -24,8 +24,8 @@ const appname = "移动端标注工具";
 class CommonUtil {
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
-  static double _width = mediaQuery.size.width;
-  static double _height = mediaQuery.size.height;
+  static final double _width = mediaQuery.size.width;
+  static final double _height = mediaQuery.size.height;
   static double screenW() {
     return _width;
   }
@@ -35,27 +35,23 @@ class CommonUtil {
   }
 
   /// 字体样式
-  static TextStyle fontStyle = TextStyle(fontWeight: FontWeight.bold);
+  static TextStyle fontStyle = const TextStyle(fontWeight: FontWeight.bold);
 
   static TextStyle jobNameStyle =
-      TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
 }
 
 Future<bool> checkFirstLogin() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? _isFirstStartApp = prefs.getBool("isFirstStartApp");
-  if (null == _isFirstStartApp) {
-    _isFirstStartApp = true;
-  }
+  _isFirstStartApp ??= true;
   return _isFirstStartApp;
 }
 
 Future<bool> checkPolicyAgreed() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? _agreed = prefs.getBool("agreed");
-  if (null == _agreed) {
-    _agreed = false;
-  }
+  _agreed ??= false;
   return _agreed;
 }
 
