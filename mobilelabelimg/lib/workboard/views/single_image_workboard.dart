@@ -48,19 +48,21 @@ class _SingleAnnotationWorkBoardState extends State<SingleAnnotationWorkBoard> {
 
   void smaller() {
     currentFactor = currentFactor * smallFactor;
-    if (currentFactor < 0.8) {
-      _maxMinController.value = _maxMinController.value * 0.8;
+    if (currentFactor <= 0.8) {
+      currentFactor = 0.8;
+      _maxMinController.value = Matrix4.identity() * 0.8;
     } else {
-      _maxMinController.value = _maxMinController.value * currentFactor;
+      _maxMinController.value = Matrix4.identity() * currentFactor;
     }
   }
 
   void larger() {
     currentFactor = currentFactor * largerFactor;
-    if (currentFactor > 2.5) {
-      _maxMinController.value = _maxMinController.value * 2.5;
+    if (currentFactor >= 2.5) {
+      currentFactor = 2.5;
+      _maxMinController.value = Matrix4.identity() * 2.5;
     } else {
-      _maxMinController.value = _maxMinController.value * currentFactor;
+      _maxMinController.value = Matrix4.identity() * currentFactor;
     }
   }
 
