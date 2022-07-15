@@ -1,5 +1,7 @@
 # [mobilelabelimg](./mobilelabelimg/lib/main.dart) is a  tool on mobiles to label images. It has not been finished yet.
 
+#  mobilelabelimg will be merged into [simple-tools-for-machine-learning](https://github.com/guchengxi1994/simple-tools-for-machine-learning), there will be a refactor
+
 # demo
 
 ## labelImg
